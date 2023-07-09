@@ -50,6 +50,21 @@ In the `dddml` directory in the root of the repository, create a DDDML file like
 
 ### Run dddappp Project Creation Tool
 
+#### Update dddappp Docker Image
+
+Since the dddappp v0.0.1 image is updated frequently, you may be required to manually delete the image and pull it again before `docker run`.
+
+```shell
+# If you have already run it, you may need to Clean Up Exited Docker Containers first
+docker rm $(docker ps -aq --filter "ancestor=wubuku/dddappp-aptos:0.0.1")
+# remove the image
+docker image rm wubuku/dddappp-aptos:0.0.1
+# pull the image
+git pull wubuku/dddappp-aptos:0.0.1
+```
+
+---
+
 In repository root directory, run:
 
 ```shell
@@ -216,7 +231,7 @@ The parameters you need to fill in are placeholders containing their type and me
 
 ### Initialize the On-chain Contracts
 
-We will use Rooch CLI and other command line tools (`curl`, `jq`) to test the published contracts below.
+We will use Aptos CLI and other command line tools (`curl`, `jq`) to test the published contracts below.
 
 Use `aptos move run` command to submit a transaction and initialize the contract:
 
@@ -360,15 +375,7 @@ We can submit a transaction like this to delete a comment:
 [TBD]
 ```
 
-## Some Tips
-
-### Clean Up Exited Docker Containers
-
-Run the command:
-
-```shell
-docker rm $(docker ps -aq --filter "ancestor=wubuku/dddappp-aptos:0.0.1")
-```
+## Others
 
 ### A More Complex Aptos Demo
 
