@@ -275,13 +275,15 @@ aptos move run --function-id 'default::aptos_blog_demo_init::initialize' --assum
 
 ### CRUD Articles
 
+Note that `{ACCOUNT_ADDRESS}`, `{RESOURCE_ACCOUNT_ADDRESS}` and `{ARTICLE_TABLE_HANDLE}` in the command lines below are placeholders, please replace them with the actual values before executing the commands.
+
 #### Create Articles
 
 You can create an article like this (you need to replace the placeholder `{ACCOUNT_ADDRESS}` with your actual account address):
 
 ```shell
 aptos move run --function-id 'default::article_aggregate::create' \
---args 'string:hello' 'string:world' address:0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6 \
+--args 'string:hello' 'string:world' address:{ACCOUNT_ADDRESS} \
 --assume-yes
 ```
 
@@ -300,30 +302,30 @@ Our contracts use a separate resource account to hold information of articles an
 You can get the address of this resource account by using the following command:
 
 ```shell
-curl https://fullnode.devnet.aptoslabs.com/v1/accounts/0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6/resource/0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6::resource_account::ResourceAccount
+curl https://fullnode.devnet.aptoslabs.com/v1/accounts/{ACCOUNT_ADDRESS}/resource/{ACCOUNT_ADDRESS}::resource_account::ResourceAccount
 ```
 
 The output is similar to the following:
 
 ```json
-{"type":"0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6::resource_account::ResourceAccount","data":{"cap":{"account":"0x4a678117b35d3e43175c095da0e9cb24617e38109f630681900518f9a7f4fb2d"}}}
+{"type":"{ACCOUNT_ADDRESS}::resource_account::ResourceAccount","data":{"cap":{"account":"{RESOURCE_ACCOUNT_ADDRESS}"}}}
 ```
 
-In the location `0x4a678117b35d3e43175c095da0e9cb24617e38109f630681900518f9a7f4fb2d` above, the address of the resource account will be displayed.
+In the location `{RESOURCE_ACCOUNT_ADDRESS}` above, the address of the resource account will be displayed.
 
 #### Get Article Table Handle
 
 ```shell
-curl 'https://fullnode.devnet.aptoslabs.com/v1/accounts/0x4a678117b35d3e43175c095da0e9cb24617e38109f630681900518f9a7f4fb2d/resource/0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6::article::Tables'
+curl 'https://fullnode.devnet.aptoslabs.com/v1/accounts/{RESOURCE_ACCOUNT_ADDRESS}/resource/{ACCOUNT_ADDRESS}::article::Tables'
 ```
 
 The output is similar to the following:
 
 ```json
-{"type":"0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6::article::Tables","data":{"article_table":{"handle":"0x51033f03bb91e41007f0e74eacdf6773bc401b106927cc01f8eb19da53845f8c"}}}
+{"type":"{ACCOUNT_ADDRESS}::article::Tables","data":{"article_table":{"handle":"{ARTICLE_TABLE_HANDLE}"}}}
 ```
 
-In the location `0x51033f03bb91e41007f0e74eacdf6773bc401b106927cc01f8eb19da53845f8c` above, the article table handle will be displayed.
+In the location `{ARTICLE_TABLE_HANDLE}` above, the article table handle will be displayed.
 
 ---
 
@@ -336,8 +338,8 @@ You can read the information of an article like this, let's assume that the ID o
 ```shell
 curl --request POST \
 --header 'Content-Type: application/json' \
---url https://fullnode.devnet.aptoslabs.com/v1/tables/0x51033f03bb91e41007f0e74eacdf6773bc401b106927cc01f8eb19da53845f8c/item \
---data '{"key_type":"u128","value_type":"0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6::article::Article","key":"1"}'
+--url https://fullnode.devnet.aptoslabs.com/v1/tables/{ARTICLE_TABLE_HANDLE}/item \
+--data '{"key_type":"u128","value_type":"{ACCOUNT_ADDRESS}::article::Article","key":"1"}'
 ```
 
 #### Update Articles
@@ -346,7 +348,7 @@ You can update an article like this: (Note that the first argument after --args 
 
 ```shell
 aptos move run --function-id 'default::article_aggregate::update' \
---args u128:1 'string:foo' 'string:bar' address:0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6 \
+--args u128:1 'string:foo' 'string:bar' address:{ACCOUNT_ADDRESS} \
 --assume-yes
 ```
 
@@ -355,8 +357,8 @@ Then re-query the article's information to see if it has been updated successful
 ```shell
 curl --request POST \
 --header 'Content-Type: application/json' \
---url https://fullnode.devnet.aptoslabs.com/v1/tables/0x51033f03bb91e41007f0e74eacdf6773bc401b106927cc01f8eb19da53845f8c/item \
---data '{"key_type":"u128","value_type":"0x746b3158919b5aad6a11c1afc638879c10207f194cde10fc11f595d11ee145a6::article::Article","key":"1"}'
+--url https://fullnode.devnet.aptoslabs.com/v1/tables/{ARTICLE_TABLE_HANDLE}/item \
+--data '{"key_type":"u128","value_type":"{ACCOUNT_ADDRESS}::article::Article","key":"1"}'
 ```
 
 #### Delete Articles
