@@ -1,9 +1,9 @@
-module aptos_blog_example::article_create_logic {
-    use aptos_blog_example::article;
-    use aptos_blog_example::article_created;
+module aptos_blog_demo::article_create_logic {
+    use aptos_blog_demo::article;
+    use aptos_blog_demo::article_created;
     use std::string::String;
 
-    friend aptos_blog_example::article_aggregate;
+    friend aptos_blog_demo::article_aggregate;
 
     public(friend) fun verify(
         account: &signer,
@@ -25,12 +25,11 @@ module aptos_blog_example::article_create_logic {
         let title = article_created::title(article_created);
         let body = article_created::body(article_created);
         let owner = article_created::owner(article_created);
-        let article = article::create_article(
+        article::create_article(
             title,
             body,
             owner,
-        );
-        article
+        )
     }
 
 }

@@ -1,8 +1,8 @@
-module aptos_blog_example::article_remove_comment_logic {
-    use aptos_blog_example::article;
-    use aptos_blog_example::comment_removed;
+module aptos_blog_demo::article_remove_comment_logic {
+    use aptos_blog_demo::article;
+    use aptos_blog_demo::comment_removed;
 
-    friend aptos_blog_example::article_aggregate;
+    friend aptos_blog_demo::article_aggregate;
 
     public(friend) fun verify(
         account: &signer,
@@ -10,6 +10,8 @@ module aptos_blog_example::article_remove_comment_logic {
         article: &article::Article,
     ): article::CommentRemoved {
         let _ = account;
+        let comment = article::borrow_comment(article, comment_seq_id);
+        let _ = comment;
         article::new_comment_removed(
             article,
             comment_seq_id,

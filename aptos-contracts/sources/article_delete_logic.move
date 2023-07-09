@@ -1,7 +1,7 @@
-module aptos_blog_example::article_delete_logic {
-    use aptos_blog_example::article;
+module aptos_blog_demo::article_delete_logic {
+    use aptos_blog_demo::article;
 
-    friend aptos_blog_example::article_aggregate;
+    friend aptos_blog_demo::article_aggregate;
 
     public(friend) fun verify(
         account: &signer,

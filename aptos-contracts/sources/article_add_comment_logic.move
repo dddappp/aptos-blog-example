@@ -1,10 +1,10 @@
-module aptos_blog_example::article_add_comment_logic {
-    use aptos_blog_example::article;
-    use aptos_blog_example::comment;
-    use aptos_blog_example::comment_added;
+module aptos_blog_demo::article_add_comment_logic {
+    use aptos_blog_demo::article;
+    use aptos_blog_demo::comment;
+    use aptos_blog_demo::comment_added;
     use std::string::String;
 
-    friend aptos_blog_example::article_aggregate;
+    friend aptos_blog_demo::article_aggregate;
 
     public(friend) fun verify(
         account: &signer,
@@ -20,7 +20,7 @@ module aptos_blog_example::article_add_comment_logic {
             comment_seq_id,
             commenter,
             body,
-            owner,//std::signer::address_of(account),
+            owner,
         )
     }
 

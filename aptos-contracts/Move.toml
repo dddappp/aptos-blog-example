@@ -1,9 +1,9 @@
 [package]
-name = "AptosBlogExample"
+name = "AptosBlogDemo"
 version = "0.0.1"
 
 [addresses]
-aptos_blog_example = "_"
+aptos_blog_demo = "_"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "aptos-cli-v1.0.11" }

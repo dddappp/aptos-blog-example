@@ -1,9 +1,9 @@
-module aptos_blog_example::article_update_logic {
-    use aptos_blog_example::article;
-    use aptos_blog_example::article_updated;
+module aptos_blog_demo::article_update_logic {
+    use aptos_blog_demo::article;
+    use aptos_blog_demo::article_updated;
     use std::string::String;
 
-    friend aptos_blog_example::article_aggregate;
+    friend aptos_blog_demo::article_aggregate;
 
     public(friend) fun verify(
         account: &signer,

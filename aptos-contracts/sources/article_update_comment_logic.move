@@ -1,10 +1,10 @@
-module aptos_blog_example::article_update_comment_logic {
-    use aptos_blog_example::article;
-    use aptos_blog_example::comment;
-    use aptos_blog_example::comment_updated;
+module aptos_blog_demo::article_update_comment_logic {
+    use aptos_blog_demo::article;
+    use aptos_blog_demo::comment;
+    use aptos_blog_demo::comment_updated;
     use std::string::String;
 
-    friend aptos_blog_example::article_aggregate;
+    friend aptos_blog_demo::article_aggregate;
 
     public(friend) fun verify(
         account: &signer,
@@ -15,6 +15,8 @@ module aptos_blog_example::article_update_comment_logic {
         article: &article::Article,
     ): article::CommentUpdated {
         let _ = account;
+        let comment = article::borrow_comment(article, comment_seq_id);
+        let _ = comment;
         article::new_comment_updated(
             article,
             comment_seq_id,
