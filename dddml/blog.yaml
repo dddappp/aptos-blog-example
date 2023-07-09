@@ -1,0 +1,37 @@
+aggregates:
+  Article:
+    metadata:
+      Preprocessors: ["MOVE_CRUD_IT"]
+    id:
+      name: ArticleId
+      type: u128
+      generator:
+        class: sequence
+        structName: ArticleIdGenerator
+    properties:
+      Title:
+        type: String
+        length: 200
+      Body:
+        type: String
+        length: 2000
+      Owner:
+        type: address
+      Comments:
+        itemType: Comment
+    entities:
+      Comment:
+        metadata:
+          Preprocessors: ["MOVE_CRUD_IT"]
+        id:
+          name: CommentSeqId
+          type: u64
+        properties:
+          Commenter:
+            type: String
+            length: 100
+          Body:
+            type: String
+            length: 500
+          Owner:
+            type: address
