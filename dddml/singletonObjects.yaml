@@ -1,0 +1,5 @@
+singletonObjects:
+  BlogState:
+    properties:
+      IsEmergency:
+        type: bool
