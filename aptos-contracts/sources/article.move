@@ -20,8 +20,10 @@ module aptos_blog_demo::article {
     friend aptos_blog_demo::article_update_comment_logic;
     friend aptos_blog_demo::article_aggregate;
 
+    const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EID_NOT_FOUND: u64 = 106;
     const ENOT_INITIALIZED: u64 = 110;
 
     struct Events has key {
@@ -119,10 +121,12 @@ module aptos_blog_demo::article {
 
     public(friend) fun add_comment(article: &mut Article, comment: Comment) {
         let key = comment::comment_seq_id(&comment);
+        assert!(!table_with_length::contains(&article.comments, key), EID_ALREADY_EXISTS);
         table_with_length::add(&mut article.comments, key, comment);
     }
 
     public(friend) fun remove_comment(article: &mut Article, comment_seq_id: u64) {
+        assert!(table_with_length::contains(&article.comments, comment_seq_id), EID_NOT_FOUND);
         let comment = table_with_length::remove(&mut article.comments, comment_seq_id);
         comment::drop_comment(comment);
     }
