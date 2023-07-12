@@ -5,4 +5,5 @@
 
 module aptos_blog_demo::blog_state_deleted {
 
+
 }

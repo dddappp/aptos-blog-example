@@ -29,7 +29,7 @@ module aptos_blog_demo::blog_state_aggregate {
         account: &signer,
         is_emergency: bool,
     ) {
-        let blog_state= blog_state::remove_blog_state();
+        let blog_state = blog_state::remove_blog_state();
         let blog_state_updated = blog_state_update_logic::verify(
             account,
             is_emergency,
@@ -47,7 +47,7 @@ module aptos_blog_demo::blog_state_aggregate {
     public entry fun delete(
         account: &signer,
     ) {
-        let blog_state= blog_state::remove_blog_state();
+        let blog_state = blog_state::remove_blog_state();
         let blog_state_deleted = blog_state_delete_logic::verify(
             account,
             &blog_state,
