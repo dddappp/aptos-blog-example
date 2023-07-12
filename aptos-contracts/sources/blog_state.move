@@ -8,6 +8,9 @@ module aptos_blog_demo::blog_state {
     use aptos_blog_demo::pass_object;
     use aptos_framework::account;
     use aptos_framework::event;
+    friend aptos_blog_demo::blog_state_create_logic;
+    friend aptos_blog_demo::blog_state_update_logic;
+    friend aptos_blog_demo::blog_state_delete_logic;
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_INITIALIZED: u64 = 110;
