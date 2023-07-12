@@ -1,5 +1,7 @@
 singletonObjects:
   BlogState:
+    metadata:
+      Preprocessors: ["MOVE_CRUD_IT"]
     properties:
       IsEmergency:
         type: bool
