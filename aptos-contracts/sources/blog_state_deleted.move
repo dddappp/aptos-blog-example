@@ -5,6 +5,4 @@
 
 module aptos_blog_demo::blog_state_deleted {
 
-    //use aptos_blog_demo::blog_state::{Self, BlogStateDeleted};
-
 }

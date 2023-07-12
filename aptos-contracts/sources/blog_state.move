@@ -11,6 +11,8 @@ module aptos_blog_demo::blog_state {
     friend aptos_blog_demo::blog_state_create_logic;
     friend aptos_blog_demo::blog_state_update_logic;
     friend aptos_blog_demo::blog_state_delete_logic;
+    friend aptos_blog_demo::blog_state_aggregate;
+
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_INITIALIZED: u64 = 110;
@@ -142,6 +144,24 @@ module aptos_blog_demo::blog_state {
             version: _version,
             is_emergency: _is_emergency,
         } = blog_state;
+    }
+
+    public(friend) fun emit_blog_state_created(blog_state_created: BlogStateCreated) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.blog_state_created_handle, blog_state_created);
+    }
+
+    public(friend) fun emit_blog_state_updated(blog_state_updated: BlogStateUpdated) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.blog_state_updated_handle, blog_state_updated);
+    }
+
+    public(friend) fun emit_blog_state_deleted(blog_state_deleted: BlogStateDeleted) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.blog_state_deleted_handle, blog_state_deleted);
     }
 
 }

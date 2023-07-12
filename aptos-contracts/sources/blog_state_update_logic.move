@@ -2,7 +2,7 @@ module aptos_blog_demo::blog_state_update_logic {
     use aptos_blog_demo::blog_state;
     use aptos_blog_demo::blog_state_updated;
 
-    //friend aptos_blog_demo::blog_state_aggregate;
+    friend aptos_blog_demo::blog_state_aggregate;
 
     public(friend) fun verify(
         account: &signer,
