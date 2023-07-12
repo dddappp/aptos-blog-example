@@ -52,3 +52,28 @@ aptos move run --function-id 'default::article_aggregate::update_comment' \
 --assume-yes
 ```
 
+## BlogState singleton object
+
+### Create method
+
+```shell
+aptos move run --function-id 'default::blog_state_aggregate::create' \
+--args bool:is_emergency \
+--assume-yes
+```
+
+### Update method
+
+```shell
+aptos move run --function-id 'default::blog_state_aggregate::update' \
+--args bool:is_emergency \
+--assume-yes
+```
+
+### Delete method
+
+```shell
+aptos move run --function-id 'default::blog_state_aggregate::delete' \
+--assume-yes
+```
+
