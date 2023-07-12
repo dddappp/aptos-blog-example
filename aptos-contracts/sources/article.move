@@ -20,7 +20,7 @@ module aptos_blog_demo::article {
     friend aptos_blog_demo::article_update_comment_logic;
     friend aptos_blog_demo::article_aggregate;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_INITIALIZED: u64 = 110;
 
@@ -96,7 +96,7 @@ module aptos_blog_demo::article {
     }
 
     public(friend) fun set_title(article: &mut Article, title: String) {
-        assert!(std::string::length(&title) <= 200, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&title) <= 200, EDATA_TOO_LONG);
         article.title = title;
     }
 
@@ -105,7 +105,7 @@ module aptos_blog_demo::article {
     }
 
     public(friend) fun set_body(article: &mut Article, body: String) {
-        assert!(std::string::length(&body) <= 2000, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&body) <= 2000, EDATA_TOO_LONG);
         article.body = body;
     }
 
@@ -149,8 +149,8 @@ module aptos_blog_demo::article {
         body: String,
         owner: address,
     ): Article {
-        assert!(std::string::length(&title) <= 200, EID_DATA_TOO_LONG);
-        assert!(std::string::length(&body) <= 2000, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&title) <= 200, EDATA_TOO_LONG);
+        assert!(std::string::length(&body) <= 2000, EDATA_TOO_LONG);
         Article {
             article_id,
             version: 0,

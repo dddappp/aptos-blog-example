@@ -13,7 +13,7 @@ module aptos_blog_demo::blog_state {
     friend aptos_blog_demo::blog_state_delete_logic;
     friend aptos_blog_demo::blog_state_aggregate;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_INITIALIZED: u64 = 110;
 
