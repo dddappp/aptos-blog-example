@@ -14,6 +14,7 @@ module aptos_blog_demo::blog_state_delete_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         blog_state_deleted: &blog_state::BlogStateDeleted,
         blog_state: blog_state::BlogState,
     ): blog_state::BlogState {

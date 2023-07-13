@@ -17,6 +17,7 @@ module aptos_blog_demo::blog_state_create_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         blog_state_created: &blog_state::BlogStateCreated,
     ): blog_state::BlogState {
         let is_emergency = blog_state_created::is_emergency(blog_state_created);

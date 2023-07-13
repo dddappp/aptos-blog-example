@@ -25,6 +25,7 @@ module aptos_blog_demo::article_add_comment_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         comment_added: &article::CommentAdded,
         article: article::Article,
     ): article::Article {

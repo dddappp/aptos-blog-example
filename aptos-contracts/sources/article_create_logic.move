@@ -20,6 +20,7 @@ module aptos_blog_demo::article_create_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         article_created: &article::ArticleCreated,
     ): article::Article {
         let title = article_created::title(article_created);

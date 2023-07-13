@@ -20,6 +20,7 @@ module aptos_blog_demo::blog_state_aggregate {
             articles,
         );
         let blog_state = blog_state_create_logic::mutate(
+            account,
             &blog_state_created,
         );
         blog_state::add_blog_state(blog_state);
@@ -40,6 +41,7 @@ module aptos_blog_demo::blog_state_aggregate {
             &blog_state,
         );
         let updated_blog_state = blog_state_update_logic::mutate(
+            account,
             &blog_state_updated,
             blog_state,
         );
@@ -57,6 +59,7 @@ module aptos_blog_demo::blog_state_aggregate {
             &blog_state,
         );
         let updated_blog_state = blog_state_delete_logic::mutate(
+            account,
             &blog_state_deleted,
             blog_state,
         );

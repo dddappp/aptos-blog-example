@@ -19,6 +19,7 @@ module aptos_blog_demo::article_remove_comment_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         comment_removed: &article::CommentRemoved,
         article: article::Article,
     ): article::Article {

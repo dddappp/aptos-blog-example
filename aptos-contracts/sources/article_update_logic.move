@@ -22,6 +22,7 @@ module aptos_blog_demo::article_update_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         article_updated: &article::ArticleUpdated,
         article: article::Article,
     ): article::Article {

@@ -14,6 +14,7 @@ module aptos_blog_demo::article_delete_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         article_deleted: &article::ArticleDeleted,
         article: article::Article,
     ): article::Article {

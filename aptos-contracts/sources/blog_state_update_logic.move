@@ -19,6 +19,7 @@ module aptos_blog_demo::blog_state_update_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         blog_state_updated: &blog_state::BlogStateUpdated,
         blog_state: blog_state::BlogState,
     ): blog_state::BlogState {

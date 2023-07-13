@@ -26,6 +26,7 @@ module aptos_blog_demo::article_aggregate {
             owner,
         );
         let article = article_create_logic::mutate(
+            account,
             &article_created,
         );
         article::add_article(article);
@@ -49,6 +50,7 @@ module aptos_blog_demo::article_aggregate {
             &article,
         );
         let updated_article = article_update_logic::mutate(
+            account,
             &article_updated,
             article,
         );
@@ -67,6 +69,7 @@ module aptos_blog_demo::article_aggregate {
             &article,
         );
         let updated_article = article_delete_logic::mutate(
+            account,
             &article_deleted,
             article,
         );
@@ -93,6 +96,7 @@ module aptos_blog_demo::article_aggregate {
             &article,
         );
         let updated_article = article_add_comment_logic::mutate(
+            account,
             &comment_added,
             article,
         );
@@ -113,6 +117,7 @@ module aptos_blog_demo::article_aggregate {
             &article,
         );
         let updated_article = article_remove_comment_logic::mutate(
+            account,
             &comment_removed,
             article,
         );
@@ -139,6 +144,7 @@ module aptos_blog_demo::article_aggregate {
             &article,
         );
         let updated_article = article_update_comment_logic::mutate(
+            account,
             &comment_updated,
             article,
         );
