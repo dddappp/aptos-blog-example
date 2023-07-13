@@ -58,7 +58,7 @@ aptos move run --function-id 'default::article_aggregate::update_comment' \
 
 ```shell
 aptos move run --function-id 'default::blog_state_aggregate::create' \
---args bool:is_emergency \
+--args bool:is_emergency 'vector<u128>:articles_item_1,articles_item_2' \
 --assume-yes
 ```
 
@@ -66,7 +66,7 @@ aptos move run --function-id 'default::blog_state_aggregate::create' \
 
 ```shell
 aptos move run --function-id 'default::blog_state_aggregate::update' \
---args bool:is_emergency \
+--args bool:is_emergency 'vector<u128>:articles_item_1,articles_item_2' \
 --assume-yes
 ```
 

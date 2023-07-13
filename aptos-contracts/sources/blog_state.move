@@ -38,6 +38,7 @@ module aptos_blog_demo::blog_state {
     struct BlogState has key, store {
         version: u64,
         is_emergency: bool,
+        articles: vector<u128>,
     }
 
     public fun version(blog_state: &BlogState): u64 {
@@ -52,47 +53,71 @@ module aptos_blog_demo::blog_state {
         blog_state.is_emergency = is_emergency;
     }
 
+    public fun articles(blog_state: &BlogState): vector<u128> {
+        blog_state.articles
+    }
+
+    public(friend) fun set_articles(blog_state: &mut BlogState, articles: vector<u128>) {
+        blog_state.articles = articles;
+    }
+
     public(friend) fun new_blog_state(
         is_emergency: bool,
+        articles: vector<u128>,
     ): BlogState {
         BlogState {
             version: 0,
             is_emergency,
+            articles,
         }
     }
 
     struct BlogStateCreated has store, drop {
         is_emergency: bool,
+        articles: vector<u128>,
     }
 
     public fun blog_state_created_is_emergency(blog_state_created: &BlogStateCreated): bool {
         blog_state_created.is_emergency
     }
 
+    public fun blog_state_created_articles(blog_state_created: &BlogStateCreated): vector<u128> {
+        blog_state_created.articles
+    }
+
     public(friend) fun new_blog_state_created(
         is_emergency: bool,
+        articles: vector<u128>,
     ): BlogStateCreated {
         BlogStateCreated {
             is_emergency,
+            articles,
         }
     }
 
     struct BlogStateUpdated has store, drop {
         version: u64,
         is_emergency: bool,
+        articles: vector<u128>,
     }
 
     public fun blog_state_updated_is_emergency(blog_state_updated: &BlogStateUpdated): bool {
         blog_state_updated.is_emergency
     }
 
+    public fun blog_state_updated_articles(blog_state_updated: &BlogStateUpdated): vector<u128> {
+        blog_state_updated.articles
+    }
+
     public(friend) fun new_blog_state_updated(
         blog_state: &BlogState,
         is_emergency: bool,
+        articles: vector<u128>,
     ): BlogStateUpdated {
         BlogStateUpdated {
             version: version(blog_state),
             is_emergency,
+            articles,
         }
     }
 
@@ -143,6 +168,7 @@ module aptos_blog_demo::blog_state {
         let BlogState {
             version: _version,
             is_emergency: _is_emergency,
+            articles: _articles,
         } = blog_state;
     }
 

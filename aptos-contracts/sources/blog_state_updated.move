@@ -11,4 +11,8 @@ module aptos_blog_demo::blog_state_updated {
         blog_state::blog_state_updated_is_emergency(blog_state_updated)
     }
 
+    public fun articles(blog_state_updated: &BlogStateUpdated): vector<u128> {
+        blog_state::blog_state_updated_articles(blog_state_updated)
+    }
+
 }

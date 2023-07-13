@@ -12,10 +12,12 @@ module aptos_blog_demo::blog_state_aggregate {
     public entry fun create(
         account: &signer,
         is_emergency: bool,
+        articles: vector<u128>,
     ) {
         let blog_state_created = blog_state_create_logic::verify(
             account,
             is_emergency,
+            articles,
         );
         let blog_state = blog_state_create_logic::mutate(
             &blog_state_created,
@@ -28,11 +30,13 @@ module aptos_blog_demo::blog_state_aggregate {
     public entry fun update(
         account: &signer,
         is_emergency: bool,
+        articles: vector<u128>,
     ) {
         let blog_state = blog_state::remove_blog_state();
         let blog_state_updated = blog_state_update_logic::verify(
             account,
             is_emergency,
+            articles,
             &blog_state,
         );
         let updated_blog_state = blog_state_update_logic::mutate(
