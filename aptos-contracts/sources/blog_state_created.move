@@ -6,13 +6,14 @@
 module aptos_blog_demo::blog_state_created {
 
     use aptos_blog_demo::blog_state::{Self, BlogStateCreated};
+    use std::string::String;
+
+    public fun name(blog_state_created: &BlogStateCreated): String {
+        blog_state::blog_state_created_name(blog_state_created)
+    }
 
     public fun is_emergency(blog_state_created: &BlogStateCreated): bool {
         blog_state::blog_state_created_is_emergency(blog_state_created)
-    }
-
-    public fun articles(blog_state_created: &BlogStateCreated): vector<u128> {
-        blog_state::blog_state_created_articles(blog_state_created)
     }
 
 }

@@ -8,7 +8,10 @@ module aptos_blog_demo::blog_state {
     use aptos_blog_demo::pass_object;
     use aptos_framework::account;
     use aptos_framework::event;
+    use std::string::String;
     friend aptos_blog_demo::blog_state_create_logic;
+    friend aptos_blog_demo::blog_state_add_article_logic;
+    friend aptos_blog_demo::blog_state_remove_article_logic;
     friend aptos_blog_demo::blog_state_update_logic;
     friend aptos_blog_demo::blog_state_delete_logic;
     friend aptos_blog_demo::blog_state_aggregate;
@@ -19,6 +22,8 @@ module aptos_blog_demo::blog_state {
 
     struct Events has key {
         blog_state_created_handle: event::EventHandle<BlogStateCreated>,
+        article_added_to_blog_handle: event::EventHandle<ArticleAddedToBlog>,
+        article_removed_from_blog_handle: event::EventHandle<ArticleRemovedFromBlog>,
         blog_state_updated_handle: event::EventHandle<BlogStateUpdated>,
         blog_state_deleted_handle: event::EventHandle<BlogStateDeleted>,
     }
@@ -29,6 +34,8 @@ module aptos_blog_demo::blog_state {
         let res_account = genesis_account::resource_account_signer();
         move_to(&res_account, Events {
             blog_state_created_handle: account::new_event_handle<BlogStateCreated>(&res_account),
+            article_added_to_blog_handle: account::new_event_handle<ArticleAddedToBlog>(&res_account),
+            article_removed_from_blog_handle: account::new_event_handle<ArticleRemovedFromBlog>(&res_account),
             blog_state_updated_handle: account::new_event_handle<BlogStateUpdated>(&res_account),
             blog_state_deleted_handle: account::new_event_handle<BlogStateDeleted>(&res_account),
         });
@@ -37,20 +44,22 @@ module aptos_blog_demo::blog_state {
 
     struct BlogState has key, store {
         version: u64,
-        is_emergency: bool,
+        name: String,
         articles: vector<u128>,
+        is_emergency: bool,
     }
 
     public fun version(blog_state: &BlogState): u64 {
         blog_state.version
     }
 
-    public fun is_emergency(blog_state: &BlogState): bool {
-        blog_state.is_emergency
+    public fun name(blog_state: &BlogState): String {
+        blog_state.name
     }
 
-    public(friend) fun set_is_emergency(blog_state: &mut BlogState, is_emergency: bool) {
-        blog_state.is_emergency = is_emergency;
+    public(friend) fun set_name(blog_state: &mut BlogState, name: String) {
+        assert!(std::string::length(&name) <= 200, EDATA_TOO_LONG);
+        blog_state.name = name;
     }
 
     public fun articles(blog_state: &BlogState): vector<u128> {
@@ -61,63 +70,119 @@ module aptos_blog_demo::blog_state {
         blog_state.articles = articles;
     }
 
+    public fun is_emergency(blog_state: &BlogState): bool {
+        blog_state.is_emergency
+    }
+
+    public(friend) fun set_is_emergency(blog_state: &mut BlogState, is_emergency: bool) {
+        blog_state.is_emergency = is_emergency;
+    }
+
     public(friend) fun new_blog_state(
-        is_emergency: bool,
+        name: String,
         articles: vector<u128>,
+        is_emergency: bool,
     ): BlogState {
+        assert!(std::string::length(&name) <= 200, EDATA_TOO_LONG);
         BlogState {
             version: 0,
-            is_emergency,
+            name,
             articles,
+            is_emergency,
         }
     }
 
     struct BlogStateCreated has store, drop {
+        name: String,
         is_emergency: bool,
-        articles: vector<u128>,
+    }
+
+    public fun blog_state_created_name(blog_state_created: &BlogStateCreated): String {
+        blog_state_created.name
     }
 
     public fun blog_state_created_is_emergency(blog_state_created: &BlogStateCreated): bool {
         blog_state_created.is_emergency
     }
 
-    public fun blog_state_created_articles(blog_state_created: &BlogStateCreated): vector<u128> {
-        blog_state_created.articles
-    }
-
     public(friend) fun new_blog_state_created(
+        name: String,
         is_emergency: bool,
-        articles: vector<u128>,
     ): BlogStateCreated {
         BlogStateCreated {
+            name,
             is_emergency,
-            articles,
+        }
+    }
+
+    struct ArticleAddedToBlog has store, drop {
+        version: u64,
+        article_id: u128,
+    }
+
+    public fun article_added_to_blog_article_id(article_added_to_blog: &ArticleAddedToBlog): u128 {
+        article_added_to_blog.article_id
+    }
+
+    public(friend) fun new_article_added_to_blog(
+        blog_state: &BlogState,
+        article_id: u128,
+    ): ArticleAddedToBlog {
+        ArticleAddedToBlog {
+            version: version(blog_state),
+            article_id,
+        }
+    }
+
+    struct ArticleRemovedFromBlog has store, drop {
+        version: u64,
+        article_id: u128,
+    }
+
+    public fun article_removed_from_blog_article_id(article_removed_from_blog: &ArticleRemovedFromBlog): u128 {
+        article_removed_from_blog.article_id
+    }
+
+    public(friend) fun new_article_removed_from_blog(
+        blog_state: &BlogState,
+        article_id: u128,
+    ): ArticleRemovedFromBlog {
+        ArticleRemovedFromBlog {
+            version: version(blog_state),
+            article_id,
         }
     }
 
     struct BlogStateUpdated has store, drop {
         version: u64,
-        is_emergency: bool,
+        name: String,
         articles: vector<u128>,
+        is_emergency: bool,
     }
 
-    public fun blog_state_updated_is_emergency(blog_state_updated: &BlogStateUpdated): bool {
-        blog_state_updated.is_emergency
+    public fun blog_state_updated_name(blog_state_updated: &BlogStateUpdated): String {
+        blog_state_updated.name
     }
 
     public fun blog_state_updated_articles(blog_state_updated: &BlogStateUpdated): vector<u128> {
         blog_state_updated.articles
     }
 
+    public fun blog_state_updated_is_emergency(blog_state_updated: &BlogStateUpdated): bool {
+        blog_state_updated.is_emergency
+    }
+
     public(friend) fun new_blog_state_updated(
         blog_state: &BlogState,
-        is_emergency: bool,
+        name: String,
         articles: vector<u128>,
+        is_emergency: bool,
     ): BlogStateUpdated {
         BlogStateUpdated {
             version: version(blog_state),
-            is_emergency,
+            name,
             articles,
+            is_emergency,
         }
     }
 
@@ -167,8 +232,9 @@ module aptos_blog_demo::blog_state {
     public(friend) fun drop_blog_state(blog_state: BlogState) {
         let BlogState {
             version: _version,
-            is_emergency: _is_emergency,
+            name: _name,
             articles: _articles,
+            is_emergency: _is_emergency,
         } = blog_state;
     }
 
@@ -176,6 +242,18 @@ module aptos_blog_demo::blog_state {
         assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.blog_state_created_handle, blog_state_created);
+    }
+
+    public(friend) fun emit_article_added_to_blog(article_added_to_blog: ArticleAddedToBlog) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.article_added_to_blog_handle, article_added_to_blog);
+    }
+
+    public(friend) fun emit_article_removed_from_blog(article_removed_from_blog: ArticleRemovedFromBlog) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.article_removed_from_blog_handle, article_removed_from_blog);
     }
 
     public(friend) fun emit_blog_state_updated(blog_state_updated: BlogStateUpdated) acquires Events {

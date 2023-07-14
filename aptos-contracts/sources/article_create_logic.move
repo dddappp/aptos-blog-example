@@ -2,6 +2,7 @@ module aptos_blog_demo::article_create_logic {
     use aptos_blog_demo::article;
     use aptos_blog_demo::article_created;
     use std::string::String;
+    use aptos_blog_demo::blog_state_aggregate;
 
     friend aptos_blog_demo::article_aggregate;
 
@@ -26,11 +27,13 @@ module aptos_blog_demo::article_create_logic {
         let title = article_created::title(article_created);
         let body = article_created::body(article_created);
         let owner = article_created::owner(article_created);
-        article::create_article(
+        let article = article::create_article(
             title,
             body,
             owner,
-        )
+        );
+        blog_state_aggregate::add_article(_account, article::article_id(&article));
+        article
     }
 
 }

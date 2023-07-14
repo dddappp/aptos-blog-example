@@ -3,8 +3,31 @@ singletonObjects:
     metadata:
       Preprocessors: [ "MOVE_CRUD_IT" ]
     properties:
-      IsEmergency:
-        type: bool
+      Name:
+        type: String
+        length: 200
       Articles:
         itemType: u128
-
+      IsEmergency:
+        type: bool
+    methods:
+      Create:
+        parameters:
+          Name:
+            type: String
+          IsEmergency:
+            type: bool
+      AddArticle:
+        isInternal: true
+        event:
+          name: ArticleAddedToBlog
+        parameters:
+          ArticleId:
+            type: u128
+      RemoveArticle:
+        isInternal: true
+        event:
+          name: ArticleRemovedFromBlog
+        parameters:
+          ArticleId:
+            type: u128

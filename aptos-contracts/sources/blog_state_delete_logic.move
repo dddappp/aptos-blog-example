@@ -1,4 +1,5 @@
 module aptos_blog_demo::blog_state_delete_logic {
+    use aptos_blog_demo::genesis_account;
     use aptos_blog_demo::blog_state;
 
     friend aptos_blog_demo::blog_state_aggregate;
@@ -7,7 +8,7 @@ module aptos_blog_demo::blog_state_delete_logic {
         account: &signer,
         blog_state: &blog_state::BlogState,
     ): blog_state::BlogStateDeleted {
-        let _ = account;
+        genesis_account::assert_genesis_account(account);
         blog_state::new_blog_state_deleted(
             blog_state,
         )

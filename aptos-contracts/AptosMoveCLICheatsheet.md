@@ -58,7 +58,23 @@ aptos move run --function-id 'default::article_aggregate::update_comment' \
 
 ```shell
 aptos move run --function-id 'default::blog_state_aggregate::create' \
---args bool:is_emergency 'vector<u128>:articles_item_1,articles_item_2' \
+--args 'string:name' bool:is_emergency \
+--assume-yes
+```
+
+### AddArticle method
+
+```shell
+aptos move run --function-id 'default::blog_state_aggregate::add_article' \
+--args u128:article_id \
+--assume-yes
+```
+
+### RemoveArticle method
+
+```shell
+aptos move run --function-id 'default::blog_state_aggregate::remove_article' \
+--args u128:article_id \
 --assume-yes
 ```
 
@@ -66,7 +82,7 @@ aptos move run --function-id 'default::blog_state_aggregate::create' \
 
 ```shell
 aptos move run --function-id 'default::blog_state_aggregate::update' \
---args bool:is_emergency 'vector<u128>:articles_item_1,articles_item_2' \
+--args 'string:name' 'vector<u128>:articles_item_1,articles_item_2' bool:is_emergency \
 --assume-yes
 ```
 

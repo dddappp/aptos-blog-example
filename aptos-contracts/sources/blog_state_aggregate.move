@@ -5,19 +5,22 @@
 
 module aptos_blog_demo::blog_state_aggregate {
     use aptos_blog_demo::blog_state;
+    use aptos_blog_demo::blog_state_add_article_logic;
     use aptos_blog_demo::blog_state_create_logic;
     use aptos_blog_demo::blog_state_delete_logic;
+    use aptos_blog_demo::blog_state_remove_article_logic;
     use aptos_blog_demo::blog_state_update_logic;
+    use std::string::String;
 
     public entry fun create(
         account: &signer,
+        name: String,
         is_emergency: bool,
-        articles: vector<u128>,
     ) {
         let blog_state_created = blog_state_create_logic::verify(
             account,
+            name,
             is_emergency,
-            articles,
         );
         let blog_state = blog_state_create_logic::mutate(
             account,
@@ -28,16 +31,58 @@ module aptos_blog_demo::blog_state_aggregate {
     }
 
 
+    public entry fun add_article(
+        account: &signer,
+        article_id: u128,
+    ) {
+        let blog_state = blog_state::remove_blog_state();
+        let article_added_to_blog = blog_state_add_article_logic::verify(
+            account,
+            article_id,
+            &blog_state,
+        );
+        let updated_blog_state = blog_state_add_article_logic::mutate(
+            account,
+            &article_added_to_blog,
+            blog_state,
+        );
+        blog_state::update_version_and_add(updated_blog_state);
+        blog_state::emit_article_added_to_blog(article_added_to_blog);
+    }
+
+
+    public entry fun remove_article(
+        account: &signer,
+        article_id: u128,
+    ) {
+        let blog_state = blog_state::remove_blog_state();
+        let article_removed_from_blog = blog_state_remove_article_logic::verify(
+            account,
+            article_id,
+            &blog_state,
+        );
+        let updated_blog_state = blog_state_remove_article_logic::mutate(
+            account,
+            &article_removed_from_blog,
+            blog_state,
+        );
+        blog_state::update_version_and_add(updated_blog_state);
+        blog_state::emit_article_removed_from_blog(article_removed_from_blog);
+    }
+
+
     public entry fun update(
         account: &signer,
-        is_emergency: bool,
+        name: String,
         articles: vector<u128>,
+        is_emergency: bool,
     ) {
         let blog_state = blog_state::remove_blog_state();
         let blog_state_updated = blog_state_update_logic::verify(
             account,
-            is_emergency,
+            name,
             articles,
+            is_emergency,
             &blog_state,
         );
         let updated_blog_state = blog_state_update_logic::mutate(
