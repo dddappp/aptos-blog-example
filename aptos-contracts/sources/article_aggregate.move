@@ -33,7 +33,6 @@ module aptos_blog_demo::article_aggregate {
         article::emit_article_created(article_created);
     }
 
-
     public entry fun update(
         account: &signer,
         article_id: u128,
@@ -58,7 +57,6 @@ module aptos_blog_demo::article_aggregate {
         article::emit_article_updated(article_updated);
     }
 
-
     public entry fun delete(
         account: &signer,
         article_id: u128,
@@ -76,7 +74,6 @@ module aptos_blog_demo::article_aggregate {
         article::drop_article(updated_article);
         article::emit_article_deleted(article_deleted);
     }
-
 
     public entry fun add_comment(
         account: &signer,
@@ -104,7 +101,6 @@ module aptos_blog_demo::article_aggregate {
         article::emit_comment_added(comment_added);
     }
 
-
     public entry fun remove_comment(
         account: &signer,
         article_id: u128,
@@ -124,7 +120,6 @@ module aptos_blog_demo::article_aggregate {
         article::update_version_and_add(updated_article);
         article::emit_comment_removed(comment_removed);
     }
-
 
     public entry fun update_comment(
         account: &signer,

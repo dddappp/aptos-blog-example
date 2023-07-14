@@ -2,6 +2,7 @@ singletonObjects:
   BlogState:
     metadata:
       Preprocessors: [ "MOVE_CRUD_IT" ]
+    friends: [ "Article.Create", "Article.Delete" ]
     properties:
       Name:
         type: String

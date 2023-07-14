@@ -12,6 +12,9 @@ module aptos_blog_demo::blog_state_aggregate {
     use aptos_blog_demo::blog_state_update_logic;
     use std::string::String;
 
+    friend aptos_blog_demo::article_create_logic;
+    friend aptos_blog_demo::article_delete_logic;
+
     public entry fun create(
         account: &signer,
         name: String,
@@ -30,8 +33,7 @@ module aptos_blog_demo::blog_state_aggregate {
         blog_state::emit_blog_state_created(blog_state_created);
     }
 
-
-    public entry fun add_article(
+    public(friend) fun add_article(
         account: &signer,
         article_id: u128,
     ) {
@@ -50,8 +52,7 @@ module aptos_blog_demo::blog_state_aggregate {
         blog_state::emit_article_added_to_blog(article_added_to_blog);
     }
 
-
-    public entry fun remove_article(
+    public(friend) fun remove_article(
         account: &signer,
         article_id: u128,
     ) {
@@ -69,7 +70,6 @@ module aptos_blog_demo::blog_state_aggregate {
         blog_state::update_version_and_add(updated_blog_state);
         blog_state::emit_article_removed_from_blog(article_removed_from_blog);
     }
-
 
     public entry fun update(
         account: &signer,
@@ -93,7 +93,6 @@ module aptos_blog_demo::blog_state_aggregate {
         blog_state::update_version_and_add(updated_blog_state);
         blog_state::emit_blog_state_updated(blog_state_updated);
     }
-
 
     public entry fun delete(
         account: &signer,
