@@ -32,7 +32,7 @@ module aptos_blog_demo::article_create_logic {
             body,
             owner,
         );
-        blog_state_aggregate::add_article(_account, article::article_id(&article));
+        blog_state_aggregate::add_article(article::article_id(&article));
         article
     }
 

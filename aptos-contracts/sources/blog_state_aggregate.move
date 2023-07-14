@@ -34,17 +34,14 @@ module aptos_blog_demo::blog_state_aggregate {
     }
 
     public(friend) fun add_article(
-        account: &signer,
         article_id: u128,
     ) {
         let blog_state = blog_state::remove_blog_state();
         let article_added_to_blog = blog_state_add_article_logic::verify(
-            account,
             article_id,
             &blog_state,
         );
         let updated_blog_state = blog_state_add_article_logic::mutate(
-            account,
             &article_added_to_blog,
             blog_state,
         );
@@ -53,17 +50,14 @@ module aptos_blog_demo::blog_state_aggregate {
     }
 
     public(friend) fun remove_article(
-        account: &signer,
         article_id: u128,
     ) {
         let blog_state = blog_state::remove_blog_state();
         let article_removed_from_blog = blog_state_remove_article_logic::verify(
-            account,
             article_id,
             &blog_state,
         );
         let updated_blog_state = blog_state_remove_article_logic::mutate(
-            account,
             &article_removed_from_blog,
             blog_state,
         );

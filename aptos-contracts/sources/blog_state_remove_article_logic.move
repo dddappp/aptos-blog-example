@@ -7,7 +7,6 @@ module aptos_blog_demo::blog_state_remove_article_logic {
     friend aptos_blog_demo::blog_state_aggregate;
 
     public(friend) fun verify(
-        _account: &signer,
         article_id: u128,
         blog_state: &blog_state::BlogState,
     ): blog_state::ArticleRemovedFromBlog {
@@ -18,7 +17,6 @@ module aptos_blog_demo::blog_state_remove_article_logic {
     }
 
     public(friend) fun mutate(
-        _account: &signer,
         article_removed_from_blog: &blog_state::ArticleRemovedFromBlog,
         blog_state: blog_state::BlogState,
     ): blog_state::BlogState {

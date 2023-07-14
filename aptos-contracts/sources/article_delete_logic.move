@@ -22,7 +22,7 @@ module aptos_blog_demo::article_delete_logic {
         let article_id = article::article_id(&article);
         let _ = article_id;
         let _ = article_deleted;
-        blog_state_aggregate::remove_article(_account, article::article_id(&article));
+        blog_state_aggregate::remove_article(article::article_id(&article));
         article
     }
 

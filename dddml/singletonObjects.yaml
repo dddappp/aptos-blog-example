@@ -20,6 +20,8 @@ singletonObjects:
             type: bool
       AddArticle:
         isInternal: true
+        metadata:
+          NoSigner: true
         event:
           name: ArticleAddedToBlog
         parameters:
@@ -27,6 +29,8 @@ singletonObjects:
             type: u128
       RemoveArticle:
         isInternal: true
+        metadata:
+          NoSigner: true
         event:
           name: ArticleRemovedFromBlog
         parameters:
