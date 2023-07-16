@@ -83,6 +83,20 @@ module aptos_blog_demo::article {
         body: String,
         owner: address,
         comments: TableWithLength<u64, Comment>,
+        comment_seq_id_generator: CommentSeqIdGenerator,
+    }
+
+    struct CommentSeqIdGenerator has store {
+        sequence: u64,
+    }
+
+    public(friend) fun current_comment_seq_id(article: &Article): u64 {
+        article.comment_seq_id_generator.sequence
+    }
+
+    public(friend) fun next_comment_seq_id(article: &mut Article): u64 {
+        article.comment_seq_id_generator.sequence = article.comment_seq_id_generator.sequence + 1;
+        current_comment_seq_id(article)
     }
 
     public fun article_id(article: &Article): u128 {
@@ -162,6 +176,7 @@ module aptos_blog_demo::article {
             body,
             owner,
             comments: table_with_length::new<u64, Comment>(),
+            comment_seq_id_generator: CommentSeqIdGenerator { sequence: 0, },
         }
     }
 
@@ -450,7 +465,11 @@ module aptos_blog_demo::article {
             body: _body,
             owner: _owner,
             comments,
+            comment_seq_id_generator,
         } = article;
+        let CommentSeqIdGenerator {
+            sequence: _sequence,
+        } = comment_seq_id_generator;
         table_with_length::destroy_empty(comments);
     }
 

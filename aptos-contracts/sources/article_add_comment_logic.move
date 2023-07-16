@@ -8,13 +8,14 @@ module aptos_blog_demo::article_add_comment_logic {
 
     public(friend) fun verify(
         account: &signer,
-        comment_seq_id: u64,
+        //comment_seq_id: u64,
         commenter: String,
         body: String,
         owner: address,
         article: &article::Article,
     ): article::CommentAdded {
         let _ = account;
+        let comment_seq_id = article::current_comment_seq_id(article) + 1;
         article::new_comment_added(
             article,
             comment_seq_id,
@@ -29,7 +30,7 @@ module aptos_blog_demo::article_add_comment_logic {
         comment_added: &article::CommentAdded,
         article: article::Article,
     ): article::Article {
-        let comment_seq_id = comment_added::comment_seq_id(comment_added);
+        let comment_seq_id = article::next_comment_seq_id(&mut article);
         let commenter = comment_added::commenter(comment_added);
         let body = comment_added::body(comment_added);
         let owner = comment_added::owner(comment_added);
