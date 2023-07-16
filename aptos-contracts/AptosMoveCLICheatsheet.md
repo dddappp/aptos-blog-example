@@ -32,7 +32,7 @@ aptos move run --function-id 'default::article_aggregate::delete' \
 
 ```shell
 aptos move run --function-id 'default::article_aggregate::add_comment' \
---args u128:article_id u64:comment_seq_id 'string:commenter' 'string:body' address:owner \
+--args u128:article_id 'string:commenter' 'string:body' address:owner \
 --assume-yes
 ```
 

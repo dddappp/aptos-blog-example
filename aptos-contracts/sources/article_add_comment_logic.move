@@ -8,7 +8,6 @@ module aptos_blog_demo::article_add_comment_logic {
 
     public(friend) fun verify(
         account: &signer,
-        //comment_seq_id: u64,
         commenter: String,
         body: String,
         owner: address,

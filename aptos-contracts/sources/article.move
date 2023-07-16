@@ -96,7 +96,7 @@ module aptos_blog_demo::article {
 
     public(friend) fun next_comment_seq_id(article: &mut Article): u64 {
         article.comment_seq_id_generator.sequence = article.comment_seq_id_generator.sequence + 1;
-        current_comment_seq_id(article)
+        article.comment_seq_id_generator.sequence
     }
 
     public fun article_id(article: &Article): u128 {
@@ -468,7 +468,7 @@ module aptos_blog_demo::article {
             comment_seq_id_generator,
         } = article;
         let CommentSeqIdGenerator {
-            sequence: _sequence,
+            sequence: _,
         } = comment_seq_id_generator;
         table_with_length::destroy_empty(comments);
     }

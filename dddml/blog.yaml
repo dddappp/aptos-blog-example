@@ -26,6 +26,9 @@ aggregates:
         id:
           name: CommentSeqId
           type: u64
+          generator:
+            class: sequence
+            structName: CommentSeqIdGenerator
         properties:
           Commenter:
             type: String

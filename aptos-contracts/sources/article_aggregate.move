@@ -78,7 +78,6 @@ module aptos_blog_demo::article_aggregate {
     public entry fun add_comment(
         account: &signer,
         article_id: u128,
-        //comment_seq_id: u64,
         commenter: String,
         body: String,
         owner: address,
@@ -86,7 +85,6 @@ module aptos_blog_demo::article_aggregate {
         let article = article::remove_article(article_id);
         let comment_added = article_add_comment_logic::verify(
             account,
-            //comment_seq_id,
             commenter,
             body,
             owner,
