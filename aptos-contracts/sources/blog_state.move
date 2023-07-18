@@ -224,6 +224,21 @@ module aptos_blog_demo::blog_state {
         pass_object::new(blog_state)
     }
 
+    public fun singleton_name(): String acquires BlogState {
+        let blog_state = borrow_global<BlogState>(genesis_account::resouce_account_address());
+        blog_state.name
+    }
+
+    public fun singleton_articles(): vector<u128> acquires BlogState {
+        let blog_state = borrow_global<BlogState>(genesis_account::resouce_account_address());
+        blog_state.articles
+    }
+
+    public fun singleton_is_emergency(): bool acquires BlogState {
+        let blog_state = borrow_global<BlogState>(genesis_account::resouce_account_address());
+        blog_state.is_emergency
+    }
+
     public fun return_blog_state(blog_state_pass_obj: pass_object::PassObject<BlogState>) {
         let blog_state = pass_object::extract(blog_state_pass_obj);
         private_add_blog_state(blog_state);
