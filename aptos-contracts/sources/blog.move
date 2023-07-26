@@ -7,6 +7,8 @@ module aptos_blog_demo::blog {
     use aptos_blog_demo::genesis_account;
     use aptos_blog_demo::pass_object;
     use aptos_framework::account;
+    use aptos_framework::aptos_coin::AptosCoin;
+    use aptos_framework::coin::Coin;
     use aptos_framework::event;
     use std::string::String;
     friend aptos_blog_demo::blog_create_logic;
@@ -46,6 +48,7 @@ module aptos_blog_demo::blog {
         version: u64,
         name: String,
         articles: vector<u128>,
+        vault: Coin<AptosCoin>,
         is_emergency: bool,
     }
 
@@ -70,6 +73,14 @@ module aptos_blog_demo::blog {
         blog.articles = articles;
     }
 
+    public(friend) fun borrow_vault(blog: &Blog): &Coin<AptosCoin> {
+        &blog.vault
+    }
+
+    public(friend) fun borrow_mut_vault(blog: &mut Blog): &mut Coin<AptosCoin> {
+        &mut blog.vault
+    }
+
     public fun is_emergency(blog: &Blog): bool {
         blog.is_emergency
     }
@@ -88,6 +99,7 @@ module aptos_blog_demo::blog {
             version: 0,
             name,
             articles,
+            vault: aptos_framework::coin::zero(),
             is_emergency,
         }
     }
@@ -249,8 +261,10 @@ module aptos_blog_demo::blog {
             version: _version,
             name: _name,
             articles: _articles,
+            vault,
             is_emergency: _is_emergency,
         } = blog;
+        aptos_framework::coin::destroy_zero(vault);
     }
 
     public(friend) fun emit_blog_created(blog_created: BlogCreated) acquires Events {

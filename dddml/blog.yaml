@@ -50,8 +50,11 @@ singletonObjects:
         length: 200
       Articles:
         itemType: u128
+      Vault:
+        type: "Coin<APT>"
       IsEmergency:
         type: bool
+
     methods:
       Create:
         parameters:
@@ -59,6 +62,7 @@ singletonObjects:
             type: String
           IsEmergency:
             type: bool
+
       AddArticle:
         isInternal: true
         metadata:
