@@ -52,12 +52,12 @@ aptos move run --function-id 'default::article_aggregate::update_comment' \
 --assume-yes
 ```
 
-## BlogState singleton object
+## Blog singleton object
 
 ### Create method
 
 ```shell
-aptos move run --function-id 'default::blog_state_aggregate::create' \
+aptos move run --function-id 'default::blog_aggregate::create' \
 --args 'string:name' bool:is_emergency \
 --assume-yes
 ```
@@ -65,7 +65,7 @@ aptos move run --function-id 'default::blog_state_aggregate::create' \
 ### Update method
 
 ```shell
-aptos move run --function-id 'default::blog_state_aggregate::update' \
+aptos move run --function-id 'default::blog_aggregate::update' \
 --args 'string:name' 'vector<u128>:articles_item_1,articles_item_2' bool:is_emergency \
 --assume-yes
 ```
@@ -73,7 +73,7 @@ aptos move run --function-id 'default::blog_state_aggregate::update' \
 ### Delete method
 
 ```shell
-aptos move run --function-id 'default::blog_state_aggregate::delete' \
+aptos move run --function-id 'default::blog_aggregate::delete' \
 --assume-yes
 ```
 

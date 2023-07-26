@@ -1,5 +1,5 @@
 module aptos_blog_demo::article_delete_logic {
-    use aptos_blog_demo::blog_state_aggregate;
+    use aptos_blog_demo::blog_aggregate;
     use aptos_blog_demo::article;
 
     friend aptos_blog_demo::article_aggregate;
@@ -22,7 +22,7 @@ module aptos_blog_demo::article_delete_logic {
         let article_id = article::article_id(&article);
         let _ = article_id;
         let _ = article_deleted;
-        blog_state_aggregate::remove_article(article::article_id(&article));
+        blog_aggregate::remove_article(article::article_id(&article));
         article
     }
 

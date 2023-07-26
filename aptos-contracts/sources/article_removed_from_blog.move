@@ -5,10 +5,10 @@
 
 module aptos_blog_demo::article_removed_from_blog {
 
-    use aptos_blog_demo::blog_state::{Self, ArticleRemovedFromBlog};
+    use aptos_blog_demo::blog::{Self, ArticleRemovedFromBlog};
 
     public fun article_id(article_removed_from_blog: &ArticleRemovedFromBlog): u128 {
-        blog_state::article_removed_from_blog_article_id(article_removed_from_blog)
+        blog::article_removed_from_blog_article_id(article_removed_from_blog)
     }
 
 }

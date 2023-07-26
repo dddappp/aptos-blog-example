@@ -5,13 +5,13 @@
 
 module aptos_blog_demo::aptos_blog_demo_init {
     use aptos_blog_demo::article;
-    use aptos_blog_demo::blog_state;
+    use aptos_blog_demo::blog;
     use aptos_blog_demo::genesis_account;
 
     public entry fun initialize(account: &signer) {
         genesis_account::initialize(account);
         article::initialize(account);
-        blog_state::initialize(account);
+        blog::initialize(account);
     }
 
 }

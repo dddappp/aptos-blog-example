@@ -38,3 +38,44 @@ aggregates:
             length: 500
           Owner:
             type: address
+
+singletonObjects:
+  Blog:
+    metadata:
+      Preprocessors: [ "MOVE_CRUD_IT" ]
+    friends: [ "Article.Create", "Article.Delete" ]
+    properties:
+      Name:
+        type: String
+        length: 200
+      Articles:
+        itemType: u128
+      IsEmergency:
+        type: bool
+    methods:
+      Create:
+        parameters:
+          Name:
+            type: String
+          IsEmergency:
+            type: bool
+      AddArticle:
+        isInternal: true
+        metadata:
+          NoSigner: true
+        event:
+          name: ArticleAddedToBlog
+        parameters:
+          ArticleId:
+            type: u128
+      RemoveArticle:
+        isInternal: true
+        metadata:
+          NoSigner: true
+        event:
+          name: ArticleRemovedFromBlog
+        parameters:
+          ArticleId:
+            type: u128
+
+

@@ -5,10 +5,10 @@
 
 module aptos_blog_demo::article_added_to_blog {
 
-    use aptos_blog_demo::blog_state::{Self, ArticleAddedToBlog};
+    use aptos_blog_demo::blog::{Self, ArticleAddedToBlog};
 
     public fun article_id(article_added_to_blog: &ArticleAddedToBlog): u128 {
-        blog_state::article_added_to_blog_article_id(article_added_to_blog)
+        blog::article_added_to_blog_article_id(article_added_to_blog)
     }
 
 }

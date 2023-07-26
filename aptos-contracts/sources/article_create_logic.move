@@ -2,7 +2,7 @@ module aptos_blog_demo::article_create_logic {
     use aptos_blog_demo::article;
     use aptos_blog_demo::article_created;
     use std::string::String;
-    use aptos_blog_demo::blog_state_aggregate;
+    use aptos_blog_demo::blog_aggregate;
 
     friend aptos_blog_demo::article_aggregate;
 
@@ -32,7 +32,7 @@ module aptos_blog_demo::article_create_logic {
             body,
             owner,
         );
-        blog_state_aggregate::add_article(article::article_id(&article));
+        blog_aggregate::add_article(article::article_id(&article));
         article
     }
 
