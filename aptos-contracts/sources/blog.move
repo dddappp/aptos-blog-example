@@ -14,6 +14,8 @@ module aptos_blog_demo::blog {
     friend aptos_blog_demo::blog_create_logic;
     friend aptos_blog_demo::blog_add_article_logic;
     friend aptos_blog_demo::blog_remove_article_logic;
+    friend aptos_blog_demo::blog_donate_logic;
+    friend aptos_blog_demo::blog_withdraw_logic;
     friend aptos_blog_demo::blog_update_logic;
     friend aptos_blog_demo::blog_delete_logic;
     friend aptos_blog_demo::blog_aggregate;
@@ -26,6 +28,8 @@ module aptos_blog_demo::blog {
         blog_created_handle: event::EventHandle<BlogCreated>,
         article_added_to_blog_handle: event::EventHandle<ArticleAddedToBlog>,
         article_removed_from_blog_handle: event::EventHandle<ArticleRemovedFromBlog>,
+        donation_received_handle: event::EventHandle<DonationReceived>,
+        vault_withdrawn_handle: event::EventHandle<VaultWithdrawn>,
         blog_updated_handle: event::EventHandle<BlogUpdated>,
         blog_deleted_handle: event::EventHandle<BlogDeleted>,
     }
@@ -38,6 +42,8 @@ module aptos_blog_demo::blog {
             blog_created_handle: account::new_event_handle<BlogCreated>(&res_account),
             article_added_to_blog_handle: account::new_event_handle<ArticleAddedToBlog>(&res_account),
             article_removed_from_blog_handle: account::new_event_handle<ArticleRemovedFromBlog>(&res_account),
+            donation_received_handle: account::new_event_handle<DonationReceived>(&res_account),
+            vault_withdrawn_handle: account::new_event_handle<VaultWithdrawn>(&res_account),
             blog_updated_handle: account::new_event_handle<BlogUpdated>(&res_account),
             blog_deleted_handle: account::new_event_handle<BlogDeleted>(&res_account),
         });
@@ -165,6 +171,44 @@ module aptos_blog_demo::blog {
         }
     }
 
+    struct DonationReceived has store, drop {
+        version: u64,
+        amount: u64,
+    }
+
+    public fun donation_received_amount(donation_received: &DonationReceived): u64 {
+        donation_received.amount
+    }
+
+    public(friend) fun new_donation_received(
+        blog: &Blog,
+        amount: u64,
+    ): DonationReceived {
+        DonationReceived {
+            version: version(blog),
+            amount,
+        }
+    }
+
+    struct VaultWithdrawn has store, drop {
+        version: u64,
+        amount: u64,
+    }
+
+    public fun vault_withdrawn_amount(vault_withdrawn: &VaultWithdrawn): u64 {
+        vault_withdrawn.amount
+    }
+
+    public(friend) fun new_vault_withdrawn(
+        blog: &Blog,
+        amount: u64,
+    ): VaultWithdrawn {
+        VaultWithdrawn {
+            version: version(blog),
+            amount,
+        }
+    }
+
     struct BlogUpdated has store, drop {
         version: u64,
         name: String,
@@ -283,6 +327,18 @@ module aptos_blog_demo::blog {
         assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.article_removed_from_blog_handle, article_removed_from_blog);
+    }
+
+    public(friend) fun emit_donation_received(donation_received: DonationReceived) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.donation_received_handle, donation_received);
+    }
+
+    public(friend) fun emit_vault_withdrawn(vault_withdrawn: VaultWithdrawn) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.vault_withdrawn_handle, vault_withdrawn);
     }
 
     public(friend) fun emit_blog_updated(blog_updated: BlogUpdated) acquires Events {

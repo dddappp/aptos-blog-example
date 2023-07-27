@@ -82,4 +82,22 @@ singletonObjects:
           ArticleId:
             type: u128
 
-
+      Donate:
+        shouldCallByReference: true
+        parameters:
+          Amount:
+            type: Coin<APT>
+        event:
+          name: DonationReceived
+          properties:
+            Amount:
+              type: u64
+      Withdraw:
+        shouldCallByReference: true
+        parameters:
+          Amount:
+            type: u64
+        result:
+          type: Coin<APT>
+        event:
+          name: VaultWithdrawn

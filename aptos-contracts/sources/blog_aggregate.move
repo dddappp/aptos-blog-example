@@ -8,8 +8,12 @@ module aptos_blog_demo::blog_aggregate {
     use aptos_blog_demo::blog_add_article_logic;
     use aptos_blog_demo::blog_create_logic;
     use aptos_blog_demo::blog_delete_logic;
+    use aptos_blog_demo::blog_donate_logic;
     use aptos_blog_demo::blog_remove_article_logic;
     use aptos_blog_demo::blog_update_logic;
+    use aptos_blog_demo::blog_withdraw_logic;
+    use aptos_framework::aptos_coin::AptosCoin;
+    use aptos_framework::coin::Coin;
     use std::string::String;
 
     friend aptos_blog_demo::article_create_logic;
@@ -63,6 +67,46 @@ module aptos_blog_demo::blog_aggregate {
         );
         blog::update_version_and_add(updated_blog);
         blog::emit_article_removed_from_blog(article_removed_from_blog);
+    }
+
+    public fun donate(
+        account: &signer,
+        amount: Coin<AptosCoin>,
+    ) {
+        let blog = blog::remove_blog();
+        let donation_received = blog_donate_logic::verify(
+            account,
+            &amount,
+            &blog,
+        );
+        let updated_blog = blog_donate_logic::mutate(
+            account,
+            &donation_received,
+            amount,
+            blog,
+        );
+        blog::update_version_and_add(updated_blog);
+        blog::emit_donation_received(donation_received);
+    }
+
+    public fun withdraw(
+        account: &signer,
+        amount: u64,
+    ): Coin<AptosCoin> {
+        let blog = blog::remove_blog();
+        let vault_withdrawn = blog_withdraw_logic::verify(
+            account,
+            amount,
+            &blog,
+        );
+        let (updated_blog, withdraw_return) = blog_withdraw_logic::mutate(
+            account,
+            &vault_withdrawn,
+            blog,
+        );
+        blog::update_version_and_add(updated_blog);
+        blog::emit_vault_withdrawn(vault_withdrawn);
+        withdraw_return
     }
 
     public entry fun update(
