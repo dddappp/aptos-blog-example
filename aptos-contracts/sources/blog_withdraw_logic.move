@@ -1,4 +1,5 @@
 module aptos_blog_demo::blog_withdraw_logic {
+    use std::signer;
     use aptos_blog_demo::blog;
     use aptos_blog_demo::vault_withdrawn;
     use aptos_framework::aptos_coin::AptosCoin;
@@ -13,6 +14,7 @@ module aptos_blog_demo::blog_withdraw_logic {
         blog: &blog::Blog,
     ): blog::VaultWithdrawn {
         let _ = account;
+        assert!(@admin_addr == signer::address_of(account), 111);
         blog::new_vault_withdrawn(
             blog,
             amount,
