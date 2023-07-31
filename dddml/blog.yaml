@@ -83,7 +83,7 @@ singletonObjects:
             type: u128
 
       Donate:
-        shouldCallByReference: true
+        #shouldCallByReference: true
         parameters:
           Amount:
             type: Coin<APT>
@@ -93,7 +93,7 @@ singletonObjects:
             Amount:
               type: u64
       Withdraw:
-        shouldCallByReference: true
+        #shouldCallByReference: true
         parameters:
           Amount:
             type: u64
