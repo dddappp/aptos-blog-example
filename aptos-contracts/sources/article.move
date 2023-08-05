@@ -34,6 +34,18 @@ module aptos_blog_demo::article {
         comment_added_handle: event::EventHandle<CommentAdded>,
         comment_removed_handle: event::EventHandle<CommentRemoved>,
         comment_updated_handle: event::EventHandle<CommentUpdated>,
+        comment_table_item_added_handle: event::EventHandle<CommentTableItemAdded>,
+    }
+
+    struct CommentTableItemAdded has store, drop {
+        article_id: u128,
+        comment_seq_id: u64,
+    }
+
+    fun emit_comment_table_item_added(table_item_added: CommentTableItemAdded) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.comment_table_item_added_handle, table_item_added);
     }
 
     struct Tables has key {
@@ -57,6 +69,7 @@ module aptos_blog_demo::article {
             comment_added_handle: account::new_event_handle<CommentAdded>(&res_account),
             comment_removed_handle: account::new_event_handle<CommentRemoved>(&res_account),
             comment_updated_handle: account::new_event_handle<CommentUpdated>(&res_account),
+            comment_table_item_added_handle: account::new_event_handle<CommentTableItemAdded>(&res_account),
         });
 
         let article_id_generator = ArticleIdGenerator {
@@ -133,10 +146,14 @@ module aptos_blog_demo::article {
         article.owner = owner;
     }
 
-    public(friend) fun add_comment(article: &mut Article, comment: Comment) {
-        let key = comment::comment_seq_id(&comment);
-        assert!(!table_with_length::contains(&article.comments, key), EID_ALREADY_EXISTS);
-        table_with_length::add(&mut article.comments, key, comment);
+    public(friend) fun add_comment(article: &mut Article, comment: Comment) acquires Events {
+        let comment_seq_id = comment::comment_seq_id(&comment);
+        assert!(!table_with_length::contains(&article.comments, comment_seq_id), EID_ALREADY_EXISTS);
+        table_with_length::add(&mut article.comments, comment_seq_id, comment);
+        emit_comment_table_item_added(CommentTableItemAdded {
+            article_id: article_id(article),
+            comment_seq_id,
+        });
     }
 
     public(friend) fun remove_comment(article: &mut Article, comment_seq_id: u64) {
