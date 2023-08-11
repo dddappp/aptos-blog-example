@@ -118,7 +118,7 @@ wubuku/dddappp-aptos:0.0.1 \
 
 The command parameters above are straightforward:
 
-* Note that `/PATH/TO/test` should be replaced with the path of your local directory where you actually place the application code. This line indicates mounting your local directory into the `/myapp` directory inside the container.
+* The first line indicates mounting your local directory into the `/myapp` directory inside the container.
 * `dddmlDirectoryPath` is the directory where DDDML model files are located. It should be a readable directory path in the container.
 * Interpret the value of parameter `boundedContextName` as the name of your application you want to develop. When there are multiple parts in your name, separate them with dots and use PascalCase naming style for each part. Bounded-context is a term in Domain-driven design (DDD) that refers to a specific problem domain scope that contains specific business boundaries, constraints, and language. If you don't understand this concept for now, it's not a big deal.
 * `aptosMoveProjectDirectoryPath` is directory path where on-chain Aptos contract code is placed. It should be a readable and writable directory path in container.
@@ -129,7 +129,7 @@ The command parameters above are straightforward:
 * `javaProjectNamePrefix` is name prefix of each module of off-chain service. It's recommended to use an all-lowercase name.
 * `pomGroupId` is GroupId of off-chain service. We use Maven as project management tool for off-chain service. It should be all lowercase and parts should be separated by dots.
 
-After executing above command successfully, a directory `aptos-contracts` should be added to local directory `/PATH/TO/test`.
+After executing above command successfully, a directory `aptos-contracts` should be added to local current directory.
 
 
 ### Implementing Business Logic
@@ -446,7 +446,61 @@ aptos move run --function-id 'default::article_aggregate::remove_comment' \
 --assume-yes
 ```
 
-### Off-chain Service
+### Test Off-chain Service
+
+After running the latest version of the dddappp tool, an Off-chain service project will be generated in the `aptos-java-service` directory.
+It can pull application events and entity states on the chain into the off-chain database, and provides query APIs.
+
+#### Creating and Initialize Database for Off-Chain Service
+
+Use a MySQL client to connect to the local MySQL server and execute the following script to create an empty database (assuming the name is `test2`):
+
+```sql
+CREATE SCHEMA `test2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+```
+
+Go to the `aptos-java-service` directory and package the Java project:
+
+```shell
+mvn package
+```
+
+Then, run a command-line tool to initialize the database:
+
+```shell
+java -jar ./aptosblogdemo-service-cli/target/aptosblogdemo-service-cli-0.0.1-SNAPSHOT.jar ddl -d "./scripts" -c "jdbc:mysql://127.0.0.1:3306/test2?enabledTLSProtocols=TLSv1.2&characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false" -u root -p 123456
+```
+
+
+#### Configuring Off-Chain Service
+
+Open the `application-test.yml` file located in the directory `aptos-java-service/aptosblogdemo-service-rest/src/main/resources` and set the published contract address.
+After setting, it should look like this:
+
+```yaml
+aptos:
+  contract:
+    address:
+      "0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738"
+    node-api:
+      base-url: "https://fullnode.devnet.aptoslabs.com/v1"
+```
+
+#### Starting Off-Chain Service
+
+In the `aptos-java-service` directory, run the following command to start the off-chain service:
+
+```shell
+mvn -pl aptosblogdemo-service-rest -am spring-boot:run
+```
+
+#### Query Off-chain Service APIs
+
+You can use the following command to query article list:
+
+```shell
+curl http://localhost:1023/api/Articles
+```
 
 [TBD]
 
