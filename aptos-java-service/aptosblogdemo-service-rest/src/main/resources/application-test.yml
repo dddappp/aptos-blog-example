@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost/test3?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false
     username: root
     password: 123456
 
@@ -17,7 +17,7 @@ server:
 aptos:
   contract:
     address:
-      "0x2239450816c09cef0202c090ec15f648a33e3fff0209167cad1ef6830b1d5d1f"
+      "0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738"
     node-api:
       base-url: "https://fullnode.devnet.aptoslabs.com/v1"
 #    pull-day-summary-events:

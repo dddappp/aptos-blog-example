@@ -188,6 +188,42 @@ public class BlogResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{accountAddress}/_commands/Update")
+    public void update(@PathVariable("accountAddress") String accountAddress, @RequestBody BlogCommands.Update content) {
+        try {
+
+            BlogCommands.Update cmd = content;//.toUpdate();
+            String idObj = accountAddress;
+            if (cmd.getAccountAddress() == null) {
+                cmd.setAccountAddress(idObj);
+            } else if (!cmd.getAccountAddress().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", accountAddress, cmd.getAccountAddress());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            blogApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+
+    @PutMapping("{accountAddress}/_commands/Delete")
+    public void delete(@PathVariable("accountAddress") String accountAddress, @RequestBody BlogCommands.Delete content) {
+        try {
+
+            BlogCommands.Delete cmd = content;//.toDelete();
+            String idObj = accountAddress;
+            if (cmd.getAccountAddress() == null) {
+                cmd.setAccountAddress(idObj);
+            } else if (!cmd.getAccountAddress().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", accountAddress, cmd.getAccountAddress());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            blogApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

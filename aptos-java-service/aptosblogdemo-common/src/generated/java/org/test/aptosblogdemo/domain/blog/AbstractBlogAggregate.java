@@ -54,7 +54,7 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newCreateEvent(name, isEmergency, offChainVersion, commandId, requesterId);
+            Event e = newBlogCreated(name, isEmergency, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
@@ -79,6 +79,30 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             }
 
             Event e = newArticleRemovedFromBlog(articleId, offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
+        @Override
+        public void update(String name, BigInteger[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c) {
+            try {
+                verifyUpdate(name, articles, isEmergency, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newBlogUpdated(name, articles, isEmergency, offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
+        @Override
+        public void delete(Long offChainVersion, String commandId, String requesterId, BlogCommands.Delete c) {
+            try {
+                verifyDelete(c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newBlogDeleted(offChainVersion, commandId, requesterId);
             apply(e);
         }
 
@@ -182,9 +206,50 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
            
 
-        protected AbstractBlogEvent.CreateEvent newCreateEvent(String name, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId) {
+        protected void verifyUpdate(String name, BigInteger[] articles, Boolean isEmergency, BlogCommands.Update c) {
+            String Name = name;
+            BigInteger[] Articles = articles;
+            Boolean IsEmergency = isEmergency;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.blog.UpdateLogic",
+                    "verify",
+                    new Class[]{BlogState.class, String.class, BigInteger[].class, Boolean.class, VerificationContext.class},
+                    new Object[]{getState(), name, articles, isEmergency, VerificationContext.forCommand(c)}
+            );
+
+//package org.test.aptosblogdemo.domain.blog;
+//
+//public class UpdateLogic {
+//    public static void verify(BlogState blogState, String name, BigInteger[] articles, Boolean isEmergency, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected void verifyDelete(BlogCommands.Delete c) {
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.blog.DeleteLogic",
+                    "verify",
+                    new Class[]{BlogState.class, VerificationContext.class},
+                    new Object[]{getState(), VerificationContext.forCommand(c)}
+            );
+
+//package org.test.aptosblogdemo.domain.blog;
+//
+//public class DeleteLogic {
+//    public static void verify(BlogState blogState, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected AbstractBlogEvent.BlogCreated newBlogCreated(String name, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId) {
             BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
-            AbstractBlogEvent.CreateEvent e = new AbstractBlogEvent.CreateEvent();
+            AbstractBlogEvent.BlogCreated e = new AbstractBlogEvent.BlogCreated();
 
             e.setName(name);
             e.setIsEmergency(isEmergency);
@@ -226,6 +291,45 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             AbstractBlogEvent.ArticleRemovedFromBlog e = new AbstractBlogEvent.ArticleRemovedFromBlog();
 
             e.setArticleId(articleId);
+            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setBlogEventId(eventId);
+            return e;
+        }
+
+        protected AbstractBlogEvent.BlogUpdated newBlogUpdated(String name, BigInteger[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId) {
+            BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
+            AbstractBlogEvent.BlogUpdated e = new AbstractBlogEvent.BlogUpdated();
+
+            e.setName(name);
+            e.setArticles(articles);
+            e.setIsEmergency(isEmergency);
+            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setBlogEventId(eventId);
+            return e;
+        }
+
+        protected AbstractBlogEvent.BlogDeleted newBlogDeleted(Long offChainVersion, String commandId, String requesterId) {
+            BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
+            AbstractBlogEvent.BlogDeleted e = new AbstractBlogEvent.BlogDeleted();
+
             e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
             e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
             e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.

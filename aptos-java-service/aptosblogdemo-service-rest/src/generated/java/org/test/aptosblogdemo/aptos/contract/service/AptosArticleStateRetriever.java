@@ -71,7 +71,7 @@ public class AptosArticleStateRetriever {
                     tableHandle,
                     ContractConstants.toNumericalAddressType(ContractConstants.ARTICLE_ID_TYPE, this.aptosContractAddress),
                     this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_ARTICLE,
-                    articleId,
+                    articleId.toString(),
                     Article.class,
                     null
             );
@@ -116,7 +116,7 @@ public class AptosArticleStateRetriever {
                         commentTableHandle,
                         ContractConstants.toNumericalAddressType(ContractConstants.COMMENT_ID_TYPE, this.aptosContractAddress),
                         this.aptosContractAddress + "::" + ContractConstants.COMMENT_MODULE_COMMENT,
-                        commentSeqId,
+                        commentSeqId.toString(),
                         Comment.class,
                         null
                 );

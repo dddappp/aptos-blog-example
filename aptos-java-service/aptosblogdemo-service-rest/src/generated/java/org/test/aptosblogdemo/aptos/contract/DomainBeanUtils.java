@@ -19,11 +19,13 @@ import org.test.aptosblogdemo.aptos.contract.article.CommentAdded;
 import org.test.aptosblogdemo.aptos.contract.article.CommentRemoved;
 import org.test.aptosblogdemo.aptos.contract.article.CommentUpdated;
 import org.test.aptosblogdemo.domain.blog.AbstractBlogEvent;
-import org.test.aptosblogdemo.aptos.contract.blog.CreateEvent;
+import org.test.aptosblogdemo.aptos.contract.blog.BlogCreated;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleAddedToBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleRemovedFromBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.DonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.VaultWithdrawn;
+import org.test.aptosblogdemo.aptos.contract.blog.BlogUpdated;
+import org.test.aptosblogdemo.aptos.contract.blog.BlogDeleted;
 
 /**
  * Utils that convert beans in the contract package to domain beans.
@@ -129,18 +131,18 @@ public class DomainBeanUtils {
         return commentUpdated;
     }
 
-    public static AbstractBlogEvent.CreateEvent toCreateEvent(Event<CreateEvent> eventEnvelope) {
-        CreateEvent contractEvent = eventEnvelope.getData();
+    public static AbstractBlogEvent.BlogCreated toBlogCreated(Event<BlogCreated> eventEnvelope) {
+        BlogCreated contractEvent = eventEnvelope.getData();
 
-        AbstractBlogEvent.CreateEvent createEvent = new AbstractBlogEvent.CreateEvent();
-        createEvent.setAccountAddress(contractEvent.getAccountAddress());
-        createEvent.setName(contractEvent.getName());
-        createEvent.setIsEmergency(contractEvent.getIsEmergency());
-        createEvent.setVersion(contractEvent.getVersion());
+        AbstractBlogEvent.BlogCreated blogCreated = new AbstractBlogEvent.BlogCreated();
+        blogCreated.setAccountAddress(contractEvent.getAccountAddress());
+        blogCreated.setName(contractEvent.getName());
+        blogCreated.setIsEmergency(contractEvent.getIsEmergency());
+        blogCreated.setVersion(BigInteger.valueOf(-1));
 
-        setAptosEventProperties(createEvent, eventEnvelope);
+        setAptosEventProperties(blogCreated, eventEnvelope);
 
-        return createEvent;
+        return blogCreated;
     }
 
     public static AbstractBlogEvent.ArticleAddedToBlog toArticleAddedToBlog(Event<ArticleAddedToBlog> eventEnvelope) {
@@ -193,6 +195,33 @@ public class DomainBeanUtils {
         setAptosEventProperties(vaultWithdrawn, eventEnvelope);
 
         return vaultWithdrawn;
+    }
+
+    public static AbstractBlogEvent.BlogUpdated toBlogUpdated(Event<BlogUpdated> eventEnvelope) {
+        BlogUpdated contractEvent = eventEnvelope.getData();
+
+        AbstractBlogEvent.BlogUpdated blogUpdated = new AbstractBlogEvent.BlogUpdated();
+        blogUpdated.setAccountAddress(contractEvent.getAccountAddress());
+        blogUpdated.setName(contractEvent.getName());
+        blogUpdated.setArticles(contractEvent.getArticles());
+        blogUpdated.setIsEmergency(contractEvent.getIsEmergency());
+        blogUpdated.setVersion(contractEvent.getVersion());
+
+        setAptosEventProperties(blogUpdated, eventEnvelope);
+
+        return blogUpdated;
+    }
+
+    public static AbstractBlogEvent.BlogDeleted toBlogDeleted(Event<BlogDeleted> eventEnvelope) {
+        BlogDeleted contractEvent = eventEnvelope.getData();
+
+        AbstractBlogEvent.BlogDeleted blogDeleted = new AbstractBlogEvent.BlogDeleted();
+        blogDeleted.setAccountAddress(contractEvent.getAccountAddress());
+        blogDeleted.setVersion(contractEvent.getVersion());
+
+        setAptosEventProperties(blogDeleted, eventEnvelope);
+
+        return blogDeleted;
     }
 
     public static org.test.aptosblogdemo.aptos.contract.persistence.CommentTableItemAdded toPersistenceCommentTableItemAdded(Event<CommentTableItemAdded> eventEnvelope) {

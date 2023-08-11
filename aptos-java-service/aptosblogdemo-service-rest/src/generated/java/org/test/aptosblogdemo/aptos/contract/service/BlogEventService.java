@@ -13,11 +13,13 @@ import org.test.aptosblogdemo.aptos.contract.ContractConstants;
 import org.test.aptosblogdemo.aptos.contract.DomainBeanUtils;
 import org.test.aptosblogdemo.aptos.contract.AptosAccount;
 
-import org.test.aptosblogdemo.aptos.contract.blog.CreateEvent;
+import org.test.aptosblogdemo.aptos.contract.blog.BlogCreated;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleAddedToBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleRemovedFromBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.DonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.VaultWithdrawn;
+import org.test.aptosblogdemo.aptos.contract.blog.BlogUpdated;
+import org.test.aptosblogdemo.aptos.contract.blog.BlogDeleted;
 import org.test.aptosblogdemo.aptos.contract.repository.BlogEventRepository;
 import org.test.aptosblogdemo.aptos.contract.repository.AptosAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,19 @@ import java.util.*;
 
 @Service
 public class BlogEventService {
+
+    public static final java.util.Set<String> DELETION_COMMAND_EVENTS = new java.util.HashSet<>(java.util.Arrays.asList("BlogDeleted"));
+
+    public static boolean isDeletionCommand(String eventType) {
+        return DELETION_COMMAND_EVENTS.contains(eventType);
+    }
+
+    public static boolean isDeletionCommand(AbstractBlogEvent e) {
+        if (isDeletionCommand(e.getEventClass())) {
+            return true;
+        }
+        return false;
+    }
 
     @Value("${aptos.contract.address}")
     private String aptosContractAddress;
@@ -52,24 +67,24 @@ public class BlogEventService {
     }
 
     @Transactional
-    public void pullCreateEvents() {
+    public void pullBlogCreatedEvents() {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
-        BigInteger cursor = getCreateEventNextCursor();
+        BigInteger cursor = getBlogCreatedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
         }
         while (true) {
-            List<Event<CreateEvent>> eventPage;
+            List<Event<BlogCreated>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
                         resourceAccountAddress,
                         this.aptosContractAddress + "::" + ContractConstants.BLOG_MODULE_EVENTS,
-                        ContractConstants.BLOG_MODULE_CREATE_EVENT_HANDLE_FIELD,
-                        CreateEvent.class,
+                        ContractConstants.BLOG_MODULE_BLOG_CREATED_HANDLE_FIELD,
+                        BlogCreated.class,
                         cursor.longValue(),
                         limit
                 );
@@ -79,8 +94,9 @@ public class BlogEventService {
 
             if (eventPage != null && eventPage.size() > 0) {
                 cursor = cursor.add(BigInteger.ONE);
-                for (Event<CreateEvent> eventEnvelope : eventPage) {
-                    saveCreateEvent(eventEnvelope);
+                for (Event<BlogCreated> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
+                    saveBlogCreated(eventEnvelope);
                 }
             } else {
                 break;
@@ -88,17 +104,17 @@ public class BlogEventService {
         }
     }
 
-    private BigInteger getCreateEventNextCursor() {
-        AbstractBlogEvent.CreateEvent lastEvent = blogEventRepository.findFirstCreateEventByOrderByAptosEventSequenceNumber();
+    private BigInteger getBlogCreatedEventNextCursor() {
+        AbstractBlogEvent.BlogCreated lastEvent = blogEventRepository.findFirstBlogCreatedByOrderByAptosEventSequenceNumber();
         return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
     }
 
-    private void saveCreateEvent(Event<CreateEvent> eventEnvelope) {
-        AbstractBlogEvent.CreateEvent createEvent = DomainBeanUtils.toCreateEvent(eventEnvelope);
-        if (blogEventRepository.findById(createEvent.getBlogEventId()).isPresent()) {
+    private void saveBlogCreated(Event<BlogCreated> eventEnvelope) {
+        AbstractBlogEvent.BlogCreated blogCreated = DomainBeanUtils.toBlogCreated(eventEnvelope);
+        if (blogEventRepository.findById(blogCreated.getBlogEventId()).isPresent()) {
             return;
         }
-        blogEventRepository.save(createEvent);
+        blogEventRepository.save(blogCreated);
     }
 
     @Transactional
@@ -130,6 +146,7 @@ public class BlogEventService {
             if (eventPage != null && eventPage.size() > 0) {
                 cursor = cursor.add(BigInteger.ONE);
                 for (Event<ArticleAddedToBlog> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveArticleAddedToBlog(eventEnvelope);
                 }
             } else {
@@ -180,6 +197,7 @@ public class BlogEventService {
             if (eventPage != null && eventPage.size() > 0) {
                 cursor = cursor.add(BigInteger.ONE);
                 for (Event<ArticleRemovedFromBlog> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveArticleRemovedFromBlog(eventEnvelope);
                 }
             } else {
@@ -230,6 +248,7 @@ public class BlogEventService {
             if (eventPage != null && eventPage.size() > 0) {
                 cursor = cursor.add(BigInteger.ONE);
                 for (Event<DonationReceived> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveDonationReceived(eventEnvelope);
                 }
             } else {
@@ -280,6 +299,7 @@ public class BlogEventService {
             if (eventPage != null && eventPage.size() > 0) {
                 cursor = cursor.add(BigInteger.ONE);
                 for (Event<VaultWithdrawn> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveVaultWithdrawn(eventEnvelope);
                 }
             } else {
@@ -299,6 +319,108 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(vaultWithdrawn);
+    }
+
+    @Transactional
+    public void pullBlogUpdatedEvents() {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getBlogUpdatedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<BlogUpdated>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.BLOG_MODULE_EVENTS,
+                        ContractConstants.BLOG_MODULE_BLOG_UPDATED_HANDLE_FIELD,
+                        BlogUpdated.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<BlogUpdated> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
+                    saveBlogUpdated(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getBlogUpdatedEventNextCursor() {
+        AbstractBlogEvent.BlogUpdated lastEvent = blogEventRepository.findFirstBlogUpdatedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveBlogUpdated(Event<BlogUpdated> eventEnvelope) {
+        AbstractBlogEvent.BlogUpdated blogUpdated = DomainBeanUtils.toBlogUpdated(eventEnvelope);
+        if (blogEventRepository.findById(blogUpdated.getBlogEventId()).isPresent()) {
+            return;
+        }
+        blogEventRepository.save(blogUpdated);
+    }
+
+    @Transactional
+    public void pullBlogDeletedEvents() {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getBlogDeletedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<BlogDeleted>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.BLOG_MODULE_EVENTS,
+                        ContractConstants.BLOG_MODULE_BLOG_DELETED_HANDLE_FIELD,
+                        BlogDeleted.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<BlogDeleted> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
+                    saveBlogDeleted(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getBlogDeletedEventNextCursor() {
+        AbstractBlogEvent.BlogDeleted lastEvent = blogEventRepository.findFirstBlogDeletedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveBlogDeleted(Event<BlogDeleted> eventEnvelope) {
+        AbstractBlogEvent.BlogDeleted blogDeleted = DomainBeanUtils.toBlogDeleted(eventEnvelope);
+        if (blogEventRepository.findById(blogDeleted.getBlogEventId()).isPresent()) {
+            return;
+        }
+        blogEventRepository.save(blogDeleted);
     }
 
     private String getResourceAccountAddress() {

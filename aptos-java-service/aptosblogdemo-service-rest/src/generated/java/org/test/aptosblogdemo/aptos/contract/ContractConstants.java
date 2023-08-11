@@ -28,8 +28,8 @@ public class ContractConstants {
     public static final String ARTICLE_MODULE_COMMENT_UPDATED = "article::CommentUpdated";
     public static final String ARTICLE_MODULE_COMMENT_UPDATED_HANDLE_FIELD = "comment_updated_handle";
 
-    public static final String BLOG_MODULE_CREATE_EVENT = "blog::CreateEvent";
-    public static final String BLOG_MODULE_CREATE_EVENT_HANDLE_FIELD = "create_event_handle";
+    public static final String BLOG_MODULE_BLOG_CREATED = "blog::BlogCreated";
+    public static final String BLOG_MODULE_BLOG_CREATED_HANDLE_FIELD = "blog_created_handle";
 
     public static final String BLOG_MODULE_ARTICLE_ADDED_TO_BLOG = "blog::ArticleAddedToBlog";
     public static final String BLOG_MODULE_ARTICLE_ADDED_TO_BLOG_HANDLE_FIELD = "article_added_to_blog_handle";
@@ -42,6 +42,12 @@ public class ContractConstants {
 
     public static final String BLOG_MODULE_VAULT_WITHDRAWN = "blog::VaultWithdrawn";
     public static final String BLOG_MODULE_VAULT_WITHDRAWN_HANDLE_FIELD = "vault_withdrawn_handle";
+
+    public static final String BLOG_MODULE_BLOG_UPDATED = "blog::BlogUpdated";
+    public static final String BLOG_MODULE_BLOG_UPDATED_HANDLE_FIELD = "blog_updated_handle";
+
+    public static final String BLOG_MODULE_BLOG_DELETED = "blog::BlogDeleted";
+    public static final String BLOG_MODULE_BLOG_DELETED_HANDLE_FIELD = "blog_deleted_handle";
 
     public static final String ARTICLE_MODULE_ARTICLE = "article::Article";
 

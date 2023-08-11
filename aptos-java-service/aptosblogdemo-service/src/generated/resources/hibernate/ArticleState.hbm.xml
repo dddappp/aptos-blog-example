@@ -2,7 +2,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.test.aptosblogdemo.domain.article">
   <class name="org.test.aptosblogdemo.domain.article.AbstractArticleState$SimpleArticleState" table="article">
-    <id name="articleId" column="article_id">
+    <id name="articleId">
+      <column name="article_id" sql-type="DECIMAL(20,0)" />
       <generator class="assigned" />
     </id>
     <version name="offChainVersion" column="off_chain_version" type="long" />

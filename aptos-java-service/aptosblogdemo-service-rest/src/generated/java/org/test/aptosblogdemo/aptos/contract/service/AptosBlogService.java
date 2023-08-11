@@ -56,5 +56,14 @@ public class AptosBlogService {
         blogStateRepository.merge(blogState);
     }
 
+    @Transactional
+    public void deleteBlog(String accountAddress) {
+        BlogState.MutableBlogState s = (BlogState.MutableBlogState) blogStateRepository.get(accountAddress, true);
+        if (s != null) {
+            s.setDeleted(true);
+            blogStateRepository.merge(s);
+        }
+    }
+
 }
 

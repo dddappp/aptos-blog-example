@@ -209,12 +209,16 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         setStateReadOnly(false);
         if (false) { 
             ;
-        } else if (e instanceof AbstractBlogEvent.CreateEvent) {
-            when((AbstractBlogEvent.CreateEvent)e);
+        } else if (e instanceof AbstractBlogEvent.BlogCreated) {
+            when((AbstractBlogEvent.BlogCreated)e);
         } else if (e instanceof AbstractBlogEvent.ArticleAddedToBlog) {
             when((AbstractBlogEvent.ArticleAddedToBlog)e);
         } else if (e instanceof AbstractBlogEvent.ArticleRemovedFromBlog) {
             when((AbstractBlogEvent.ArticleRemovedFromBlog)e);
+        } else if (e instanceof AbstractBlogEvent.BlogUpdated) {
+            when((AbstractBlogEvent.BlogUpdated)e);
+        } else if (e instanceof AbstractBlogEvent.BlogDeleted) {
+            when((AbstractBlogEvent.BlogDeleted)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -232,7 +236,7 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setVersion(s.getVersion());
     }
 
-    public void when(AbstractBlogEvent.CreateEvent e) {
+    public void when(AbstractBlogEvent.BlogCreated e) {
         throwOnWrongEvent(e);
 
         String name = e.getName();
@@ -399,6 +403,94 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
 //
 //public class DonateLogic {
 //    public static BlogState mutate(BlogState blogState, BigInteger amount, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
+
+    }
+
+    public void when(AbstractBlogEvent.BlogUpdated e) {
+        throwOnWrongEvent(e);
+
+        String name = e.getName();
+        String Name = name;
+        BigInteger[] articles = e.getArticles();
+        BigInteger[] Articles = articles;
+        Boolean isEmergency = e.getIsEmergency();
+        Boolean IsEmergency = isEmergency;
+        BigInteger aptosEventVersion = e.getAptosEventVersion();
+        BigInteger AptosEventVersion = aptosEventVersion;
+        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
+        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
+        String aptosEventType = e.getAptosEventType();
+        String AptosEventType = aptosEventType;
+        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
+        AptosEventGuid AptosEventGuid = aptosEventGuid;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.blog.UpdateLogic",
+                    "mutate",
+                    new Class[]{BlogState.class, String.class, BigInteger[].class, Boolean.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new Object[]{this, name, articles, isEmergency, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.test.aptosblogdemo.domain.blog;
+//
+//public class UpdateLogic {
+//    public static BlogState mutate(BlogState blogState, String name, BigInteger[] articles, Boolean isEmergency, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
+
+    }
+
+    public void when(AbstractBlogEvent.BlogDeleted e) {
+        throwOnWrongEvent(e);
+
+        BigInteger aptosEventVersion = e.getAptosEventVersion();
+        BigInteger AptosEventVersion = aptosEventVersion;
+        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
+        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
+        String aptosEventType = e.getAptosEventType();
+        String AptosEventType = aptosEventType;
+        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
+        AptosEventGuid AptosEventGuid = aptosEventGuid;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.blog.DeleteLogic",
+                    "mutate",
+                    new Class[]{BlogState.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new Object[]{this, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.test.aptosblogdemo.domain.blog;
+//
+//public class DeleteLogic {
+//    public static BlogState mutate(BlogState blogState, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
 //    }
 //}
 

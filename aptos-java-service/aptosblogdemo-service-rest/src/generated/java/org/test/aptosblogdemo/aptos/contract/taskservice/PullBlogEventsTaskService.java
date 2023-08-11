@@ -16,9 +16,9 @@ public class PullBlogEventsTaskService {
     @Autowired
     private BlogEventService blogEventService;
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.create-event.fixed-delay:5000}")
-    public void pullCreateEvents() {
-        blogEventService.pullCreateEvents();
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.blog-created.fixed-delay:5000}")
+    public void pullBlogCreatedEvents() {
+        blogEventService.pullBlogCreatedEvents();
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.article-added-to-blog.fixed-delay:5000}")
@@ -39,6 +39,16 @@ public class PullBlogEventsTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.vault-withdrawn.fixed-delay:5000}")
     public void pullVaultWithdrawnEvents() {
         blogEventService.pullVaultWithdrawnEvents();
+    }
+
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.blog-updated.fixed-delay:5000}")
+    public void pullBlogUpdatedEvents() {
+        blogEventService.pullBlogUpdatedEvents();
+    }
+
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.blog-deleted.fixed-delay:5000}")
+    public void pullBlogDeletedEvents() {
+        blogEventService.pullBlogDeletedEvents();
     }
 
 }

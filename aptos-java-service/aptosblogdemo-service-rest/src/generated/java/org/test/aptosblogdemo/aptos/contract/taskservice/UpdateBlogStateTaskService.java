@@ -28,7 +28,11 @@ public class UpdateBlogStateTaskService {
     @Transactional
     public void updateBlogStates() {
         blogEventRepository.findByStatusIsNull().forEach(e -> {
-            aptosBlogService.updateBlogState(e.getAccountAddress());
+            if (BlogEventService.isDeletionCommand(e)) {
+                aptosBlogService.deleteBlog(e.getAccountAddress());
+            } else {
+                aptosBlogService.updateBlogState(e.getAccountAddress());
+            }
             blogEventService.updateStatusToProcessed(e);
         });
     }

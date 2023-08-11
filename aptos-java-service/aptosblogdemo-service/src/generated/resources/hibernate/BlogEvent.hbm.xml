@@ -39,11 +39,13 @@
       <property name="DynamicPropertiesLob">
         <column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" />
       </property>
-      <subclass name="AbstractBlogEvent$CreateEvent" discriminator-value="CreateEvent" />
+      <subclass name="AbstractBlogEvent$BlogCreated" discriminator-value="BlogCreated" />
       <subclass name="AbstractBlogEvent$ArticleAddedToBlog" discriminator-value="ArticleAddedToBlog" />
       <subclass name="AbstractBlogEvent$ArticleRemovedFromBlog" discriminator-value="ArticleRemovedFromBlog" />
       <subclass name="AbstractBlogEvent$DonationReceived" discriminator-value="DonationReceived" />
       <subclass name="AbstractBlogEvent$VaultWithdrawn" discriminator-value="VaultWithdrawn" />
+      <subclass name="AbstractBlogEvent$BlogUpdated" discriminator-value="BlogUpdated" />
+      <subclass name="AbstractBlogEvent$BlogDeleted" discriminator-value="BlogDeleted" />
     </subclass>
   </class>
 </hibernate-mapping>

@@ -107,6 +107,22 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.blog.UpdateLogic",
+                    "verify",
+                    new Class[]{BlogState.class, String.class, BigInteger[].class, Boolean.class, VerificationContext.class},
+                    new String[]{"_", "name", "articles", "isEmergency"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.blog.DeleteLogic",
+                    "verify",
+                    new Class[]{BlogState.class, VerificationContext.class},
+                    new String[]{"_"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.CreateLogic",
                     "mutate",
                     new Class[]{ArticleState.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
@@ -175,6 +191,22 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{BlogState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
                     new String[]{"_", "articleId", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.blog.UpdateLogic",
+                    "mutate",
+                    new Class[]{BlogState.class, String.class, BigInteger[].class, Boolean.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "articles", "isEmergency", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.blog.DeleteLogic",
+                    "mutate",
+                    new Class[]{BlogState.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
             );
 
 

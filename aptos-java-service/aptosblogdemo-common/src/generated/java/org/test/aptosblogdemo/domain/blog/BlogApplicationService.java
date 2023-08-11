@@ -21,6 +21,10 @@ public interface BlogApplicationService {
 
     void when(BlogCommands.RemoveArticle c);
 
+    void when(BlogCommands.Update c);
+
+    void when(BlogCommands.Delete c);
+
     BlogState get(String id);
 
     Iterable<BlogState> getAll(Integer firstResult, Integer maxResults);

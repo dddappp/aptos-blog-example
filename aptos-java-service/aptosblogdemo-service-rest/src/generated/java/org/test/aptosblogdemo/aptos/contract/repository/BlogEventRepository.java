@@ -13,7 +13,7 @@ public interface BlogEventRepository extends JpaRepository<AbstractBlogEvent, Bl
 
     List<AbstractBlogEvent> findByStatusIsNull();
 
-    AbstractBlogEvent.CreateEvent findFirstCreateEventByOrderByAptosEventSequenceNumber();
+    AbstractBlogEvent.BlogCreated findFirstBlogCreatedByOrderByAptosEventSequenceNumber();
 
     AbstractBlogEvent.ArticleAddedToBlog findFirstArticleAddedToBlogByOrderByAptosEventSequenceNumber();
 
@@ -22,5 +22,9 @@ public interface BlogEventRepository extends JpaRepository<AbstractBlogEvent, Bl
     AbstractBlogEvent.DonationReceived findFirstDonationReceivedByOrderByAptosEventSequenceNumber();
 
     AbstractBlogEvent.VaultWithdrawn findFirstVaultWithdrawnByOrderByAptosEventSequenceNumber();
+
+    AbstractBlogEvent.BlogUpdated findFirstBlogUpdatedByOrderByAptosEventSequenceNumber();
+
+    AbstractBlogEvent.BlogDeleted findFirstBlogDeletedByOrderByAptosEventSequenceNumber();
 
 }

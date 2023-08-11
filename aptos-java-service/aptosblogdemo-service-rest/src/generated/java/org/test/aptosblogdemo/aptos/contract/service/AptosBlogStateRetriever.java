@@ -46,7 +46,18 @@ public class AptosBlogStateRetriever {
 
     public BlogState retrieveBlogState(String accountAddress) {
         String resourceAccountAddress = getResourceAccountAddress();
-        return null;//todo toBlogState(blog);
+        AccountResource<Blog> accountResource;
+        try {
+            accountResource = aptosNodeApiClient.getAccountResource(resourceAccountAddress,
+                    this.aptosContractAddress + "::" + ContractConstants.BLOG_MODULE_BLOG,
+                    Blog.class,
+                    null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Blog blog = accountResource.getData();
+        blog.setAccountAddress(resourceAccountAddress);
+        return toBlogState(blog);
     }
 
     private BlogState toBlogState(Blog blog) {

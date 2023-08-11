@@ -182,11 +182,11 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class CreateEvent extends BlogClobEvent {
+    public static class BlogCreated extends BlogClobEvent {
 
         @Override
         public String getEventClass() {
-            return "CreateEvent";
+            return "BlogCreated";
         }
 
         public String getName() {
@@ -295,6 +295,60 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
         public void setAmount(BigInteger value) {
             getDynamicProperties().put("amount", value);
+        }
+
+    }
+
+    public static class BlogUpdated extends BlogClobEvent {
+
+        @Override
+        public String getEventClass() {
+            return "BlogUpdated";
+        }
+
+        public String getName() {
+            Object val = getDynamicProperties().get("name");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setName(String value) {
+            getDynamicProperties().put("name", value);
+        }
+
+        public BigInteger[] getArticles() {
+            Object val = getDynamicProperties().get("articles");
+            if (val instanceof BigInteger[]) {
+                return (BigInteger[]) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger[].class);
+        }
+
+        public void setArticles(BigInteger[] value) {
+            getDynamicProperties().put("articles", value);
+        }
+
+        public Boolean getIsEmergency() {
+            Object val = getDynamicProperties().get("isEmergency");
+            if (val instanceof Boolean) {
+                return (Boolean) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Boolean.class);
+        }
+
+        public void setIsEmergency(Boolean value) {
+            getDynamicProperties().put("isEmergency", value);
+        }
+
+    }
+
+    public static class BlogDeleted extends BlogClobEvent {
+
+        @Override
+        public String getEventClass() {
+            return "BlogDeleted";
         }
 
     }

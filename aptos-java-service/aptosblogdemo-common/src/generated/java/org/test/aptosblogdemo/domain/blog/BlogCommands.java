@@ -269,5 +269,120 @@ public class BlogCommands {
 
     }
 
+    public static class Update extends AbstractBlogCommand implements BlogCommand {
+
+        public String getCommandType() {
+            return "Update";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Account Address
+         */
+        private String accountAddress;
+
+        public String getAccountAddress() {
+            return this.accountAddress;
+        }
+
+        public void setAccountAddress(String accountAddress) {
+            this.accountAddress = accountAddress;
+        }
+
+        /**
+         * Name
+         */
+        private String name;
+
+        public String getName() {
+            return this.name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        /**
+         * Articles
+         */
+        private BigInteger[] articles;
+
+        public BigInteger[] getArticles() {
+            return this.articles;
+        }
+
+        public void setArticles(BigInteger[] articles) {
+            this.articles = articles;
+        }
+
+        /**
+         * Is Emergency
+         */
+        private Boolean isEmergency;
+
+        public Boolean getIsEmergency() {
+            return this.isEmergency;
+        }
+
+        public void setIsEmergency(Boolean isEmergency) {
+            this.isEmergency = isEmergency;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
+    public static class Delete extends AbstractBlogCommand implements BlogCommand {
+
+        public String getCommandType() {
+            return "Delete";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Account Address
+         */
+        private String accountAddress;
+
+        public String getAccountAddress() {
+            return this.accountAddress;
+        }
+
+        public void setAccountAddress(String accountAddress) {
+            this.accountAddress = accountAddress;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
 }
 
