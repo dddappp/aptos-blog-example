@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.test.aptosblogdemo.domain.article">
+  <class name="org.test.aptosblogdemo.aptos.contract.persistence.CommentTableItemAdded" table="aptos_comment_table_item_added">
+    <composite-id name="articleCommentId" class="org.test.aptosblogdemo.domain.article.ArticleCommentId">
+      <key-property name="articleId">
+        <column name="article_comment_id_article_id" sql-type="DECIMAL(20,0)" />
+      </key-property>
+      <key-property name="commentSeqId">
+        <column name="article_comment_id_comment_seq_id" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
+    <property name="aptosEventVersion">
+      <column name="aptos_event_version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="aptosEventSequenceNumber">
+      <column name="aptos_event_sequence_number" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="aptosEventType">
+      <column name="aptos_event_type" length="500" />
+    </property>
+    <component name="aptosEventGuid" class="org.test.aptosblogdemo.domain.AptosEventGuid">
+      <property name="creationNumber">
+        <column name="aptos_event_guid_creation_number" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="accountAddress">
+        <column name="aptos_event_guid_account_address" sql-type="VARCHAR(66)" />
+      </property>
+    </component>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.test.aptosblogdemo.domain.article">
+  <class name="AbstractCommentEvent" table="comment_event" abstract="true">
+    <composite-id name="commentEventId" class="org.test.aptosblogdemo.domain.article.CommentEventId">
+      <key-property name="articleId">
+        <column name="article_comment_id_article_id" sql-type="DECIMAL(20,0)" />
+      </key-property>
+      <key-property name="commentSeqId">
+        <column name="article_comment_id_comment_seq_id" sql-type="DECIMAL(20,0)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_class" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>

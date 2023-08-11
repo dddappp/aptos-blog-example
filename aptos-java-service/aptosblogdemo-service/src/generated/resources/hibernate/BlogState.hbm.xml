@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.test.aptosblogdemo.domain.blog">
+  <class name="org.test.aptosblogdemo.domain.blog.AbstractBlogState$SimpleBlogState" table="blog">
+    <id name="accountAddress" length="66" column="account_address">
+      <generator class="assigned" />
+    </id>
+    <version name="offChainVersion" column="off_chain_version" type="long" />
+    <property name="name">
+      <column name="name" length="200" />
+    </property>
+    <component name="vault" class="org.test.aptosblogdemo.domain.Coin">
+      <property name="value">
+        <column name="vault_value" sql-type="DECIMAL(20,0)" />
+      </property>
+    </component>
+    <property name="isEmergency">
+      <column name="is_emergency" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="version">
+      <column name="version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <set name="articles" table="blog_articles" lazy="false">
+      <key column="AccountAddress" />
+      <element column="articles_item" type="java.math.BigInteger" not-null="true" />
+    </set>
+  </class>
+</hibernate-mapping>
