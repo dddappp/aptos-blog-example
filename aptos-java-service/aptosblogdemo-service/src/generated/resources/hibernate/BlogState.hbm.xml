@@ -2,7 +2,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.test.aptosblogdemo.domain.blog">
   <class name="org.test.aptosblogdemo.domain.blog.AbstractBlogState$SimpleBlogState" table="blog">
-    <id name="accountAddress" length="66" column="account_address">
+    <id name="accountAddress" length="66">
+      <column name="account_address" sql-type="VARCHAR(66)" />
       <generator class="assigned" />
     </id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
