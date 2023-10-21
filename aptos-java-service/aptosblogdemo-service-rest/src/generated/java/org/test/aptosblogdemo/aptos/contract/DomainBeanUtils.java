@@ -16,8 +16,8 @@ import org.test.aptosblogdemo.aptos.contract.article.ArticleCreated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleUpdated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleDeleted;
 import org.test.aptosblogdemo.aptos.contract.article.CommentAdded;
-import org.test.aptosblogdemo.aptos.contract.article.CommentRemoved;
 import org.test.aptosblogdemo.aptos.contract.article.CommentUpdated;
+import org.test.aptosblogdemo.aptos.contract.article.CommentRemoved;
 import org.test.aptosblogdemo.domain.blog.AbstractBlogEvent;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogCreated;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleAddedToBlog;
@@ -102,19 +102,6 @@ public class DomainBeanUtils {
         return commentAdded;
     }
 
-    public static AbstractArticleEvent.CommentRemoved toCommentRemoved(Event<CommentRemoved> eventEnvelope) {
-        CommentRemoved contractEvent = eventEnvelope.getData();
-
-        AbstractArticleEvent.CommentRemoved commentRemoved = new AbstractArticleEvent.CommentRemoved();
-        commentRemoved.setArticleId(contractEvent.getArticleId());
-        commentRemoved.setCommentSeqId(contractEvent.getCommentSeqId());
-        commentRemoved.setVersion(contractEvent.getVersion());
-
-        setAptosEventProperties(commentRemoved, eventEnvelope);
-
-        return commentRemoved;
-    }
-
     public static AbstractArticleEvent.CommentUpdated toCommentUpdated(Event<CommentUpdated> eventEnvelope) {
         CommentUpdated contractEvent = eventEnvelope.getData();
 
@@ -129,6 +116,19 @@ public class DomainBeanUtils {
         setAptosEventProperties(commentUpdated, eventEnvelope);
 
         return commentUpdated;
+    }
+
+    public static AbstractArticleEvent.CommentRemoved toCommentRemoved(Event<CommentRemoved> eventEnvelope) {
+        CommentRemoved contractEvent = eventEnvelope.getData();
+
+        AbstractArticleEvent.CommentRemoved commentRemoved = new AbstractArticleEvent.CommentRemoved();
+        commentRemoved.setArticleId(contractEvent.getArticleId());
+        commentRemoved.setCommentSeqId(contractEvent.getCommentSeqId());
+        commentRemoved.setVersion(contractEvent.getVersion());
+
+        setAptosEventProperties(commentRemoved, eventEnvelope);
+
+        return commentRemoved;
     }
 
     public static AbstractBlogEvent.BlogCreated toBlogCreated(Event<BlogCreated> eventEnvelope) {

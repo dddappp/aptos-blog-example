@@ -16,15 +16,15 @@ module aptos_blog_demo::article {
     friend aptos_blog_demo::article_update_logic;
     friend aptos_blog_demo::article_delete_logic;
     friend aptos_blog_demo::article_add_comment_logic;
-    friend aptos_blog_demo::article_remove_comment_logic;
     friend aptos_blog_demo::article_update_comment_logic;
+    friend aptos_blog_demo::article_remove_comment_logic;
     friend aptos_blog_demo::article_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const EID_NOT_FOUND: u64 = 106;
-    const ENOT_INITIALIZED: u64 = 110;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const EIdNotFound: u64 = 106;
+    const ENotInitialized: u64 = 110;
 
     struct Events has key {
         // article_id_generator_created_handle: event::EventHandle<ArticleIdGeneratorCreated>,
@@ -32,8 +32,8 @@ module aptos_blog_demo::article {
         article_updated_handle: event::EventHandle<ArticleUpdated>,
         article_deleted_handle: event::EventHandle<ArticleDeleted>,
         comment_added_handle: event::EventHandle<CommentAdded>,
-        comment_removed_handle: event::EventHandle<CommentRemoved>,
         comment_updated_handle: event::EventHandle<CommentUpdated>,
+        comment_removed_handle: event::EventHandle<CommentRemoved>,
         comment_table_item_added_handle: event::EventHandle<CommentTableItemAdded>,
     }
 
@@ -43,7 +43,7 @@ module aptos_blog_demo::article {
     }
 
     fun emit_comment_table_item_added(table_item_added: CommentTableItemAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.comment_table_item_added_handle, table_item_added);
     }
@@ -67,8 +67,8 @@ module aptos_blog_demo::article {
             article_updated_handle: account::new_event_handle<ArticleUpdated>(&res_account),
             article_deleted_handle: account::new_event_handle<ArticleDeleted>(&res_account),
             comment_added_handle: account::new_event_handle<CommentAdded>(&res_account),
-            comment_removed_handle: account::new_event_handle<CommentRemoved>(&res_account),
             comment_updated_handle: account::new_event_handle<CommentUpdated>(&res_account),
+            comment_removed_handle: account::new_event_handle<CommentRemoved>(&res_account),
             comment_table_item_added_handle: account::new_event_handle<CommentTableItemAdded>(&res_account),
         });
 
@@ -125,7 +125,7 @@ module aptos_blog_demo::article {
     }
 
     public(friend) fun set_title(article: &mut Article, title: String) {
-        assert!(std::string::length(&title) <= 200, EDATA_TOO_LONG);
+        assert!(std::string::length(&title) <= 200, EDataTooLong);
         article.title = title;
     }
 
@@ -134,7 +134,7 @@ module aptos_blog_demo::article {
     }
 
     public(friend) fun set_body(article: &mut Article, body: String) {
-        assert!(std::string::length(&body) <= 2000, EDATA_TOO_LONG);
+        assert!(std::string::length(&body) <= 2000, EDataTooLong);
         article.body = body;
     }
 
@@ -148,7 +148,7 @@ module aptos_blog_demo::article {
 
     public(friend) fun add_comment(article: &mut Article, comment: Comment) acquires Events {
         let comment_seq_id = comment::comment_seq_id(&comment);
-        assert!(!table_with_length::contains(&article.comments, comment_seq_id), EID_ALREADY_EXISTS);
+        assert!(!table_with_length::contains(&article.comments, comment_seq_id), EIdAlreadyExists);
         table_with_length::add(&mut article.comments, comment_seq_id, comment);
         emit_comment_table_item_added(CommentTableItemAdded {
             article_id: article_id(article),
@@ -157,7 +157,7 @@ module aptos_blog_demo::article {
     }
 
     public(friend) fun remove_comment(article: &mut Article, comment_seq_id: u64) {
-        assert!(table_with_length::contains(&article.comments, comment_seq_id), EID_NOT_FOUND);
+        assert!(table_with_length::contains(&article.comments, comment_seq_id), EIdNotFound);
         let comment = table_with_length::remove(&mut article.comments, comment_seq_id);
         comment::drop_comment(comment);
     }
@@ -184,8 +184,8 @@ module aptos_blog_demo::article {
         body: String,
         owner: address,
     ): Article {
-        assert!(std::string::length(&title) <= 200, EDATA_TOO_LONG);
-        assert!(std::string::length(&body) <= 2000, EDATA_TOO_LONG);
+        assert!(std::string::length(&title) <= 200, EDataTooLong);
+        assert!(std::string::length(&body) <= 2000, EDataTooLong);
         Article {
             article_id,
             version: 0,
@@ -225,7 +225,7 @@ module aptos_blog_demo::article {
         body: String,
         owner: address,
     ): ArticleCreated acquires ArticleIdGenerator {
-        assert!(exists<ArticleIdGenerator>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<ArticleIdGenerator>(genesis_account::resouce_account_address()), ENotInitialized);
         let article_id_generator = borrow_global_mut<ArticleIdGenerator>(genesis_account::resouce_account_address());
         let article_id = next_article_id(article_id_generator);
         ArticleCreated {
@@ -339,31 +339,6 @@ module aptos_blog_demo::article {
         }
     }
 
-    struct CommentRemoved has store, drop {
-        article_id: u128,
-        version: u64,
-        comment_seq_id: u64,
-    }
-
-    public fun comment_removed_article_id(comment_removed: &CommentRemoved): u128 {
-        comment_removed.article_id
-    }
-
-    public fun comment_removed_comment_seq_id(comment_removed: &CommentRemoved): u64 {
-        comment_removed.comment_seq_id
-    }
-
-    public(friend) fun new_comment_removed(
-        article: &Article,
-        comment_seq_id: u64,
-    ): CommentRemoved {
-        CommentRemoved {
-            article_id: article_id(article),
-            version: version(article),
-            comment_seq_id,
-        }
-    }
-
     struct CommentUpdated has store, drop {
         article_id: u128,
         version: u64,
@@ -410,13 +385,38 @@ module aptos_blog_demo::article {
         }
     }
 
+    struct CommentRemoved has store, drop {
+        article_id: u128,
+        version: u64,
+        comment_seq_id: u64,
+    }
+
+    public fun comment_removed_article_id(comment_removed: &CommentRemoved): u128 {
+        comment_removed.article_id
+    }
+
+    public fun comment_removed_comment_seq_id(comment_removed: &CommentRemoved): u64 {
+        comment_removed.comment_seq_id
+    }
+
+    public(friend) fun new_comment_removed(
+        article: &Article,
+        comment_seq_id: u64,
+    ): CommentRemoved {
+        CommentRemoved {
+            article_id: article_id(article),
+            version: version(article),
+            comment_seq_id,
+        }
+    }
+
 
     public(friend) fun create_article(
         title: String,
         body: String,
         owner: address,
     ): Article acquires ArticleIdGenerator {
-        assert!(exists<ArticleIdGenerator>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<ArticleIdGenerator>(genesis_account::resouce_account_address()), ENotInitialized);
         let article_id_generator = borrow_global<ArticleIdGenerator>(genesis_account::resouce_account_address());
         let article_id = current_article_id(article_id_generator);
         let article = new_article(
@@ -443,23 +443,23 @@ module aptos_blog_demo::article {
 
     public(friend) fun update_version_and_add(article: Article) acquires Tables {
         article.version = article.version + 1;
-        //assert!(article.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(article.version != 0, EInappropriateVersion);
         private_add_article(article);
     }
 
     public(friend) fun add_article(article: Article) acquires Tables {
-        assert!(article.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(article.version == 0, EInappropriateVersion);
         private_add_article(article);
     }
 
     public(friend) fun remove_article(article_id: u128): Article acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::remove(&mut tables.article_table, article_id)
     }
 
     fun private_add_article(article: Article) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::add(&mut tables.article_table, article_id(&article), article);
     }
@@ -491,39 +491,39 @@ module aptos_blog_demo::article {
     }
 
     public(friend) fun emit_article_created(article_created: ArticleCreated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.article_created_handle, article_created);
     }
 
     public(friend) fun emit_article_updated(article_updated: ArticleUpdated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.article_updated_handle, article_updated);
     }
 
     public(friend) fun emit_article_deleted(article_deleted: ArticleDeleted) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.article_deleted_handle, article_deleted);
     }
 
     public(friend) fun emit_comment_added(comment_added: CommentAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.comment_added_handle, comment_added);
     }
 
-    public(friend) fun emit_comment_removed(comment_removed: CommentRemoved) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
-        event::emit_event(&mut events.comment_removed_handle, comment_removed);
-    }
-
     public(friend) fun emit_comment_updated(comment_updated: CommentUpdated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.comment_updated_handle, comment_updated);
+    }
+
+    public(friend) fun emit_comment_removed(comment_removed: CommentRemoved) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.comment_removed_handle, comment_removed);
     }
 
 }

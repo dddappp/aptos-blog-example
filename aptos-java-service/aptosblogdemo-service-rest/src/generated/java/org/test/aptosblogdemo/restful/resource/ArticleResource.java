@@ -243,11 +243,11 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/RemoveComment")
-    public void removeComment(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.RemoveComment content) {
+    @PutMapping("{articleId}/_commands/UpdateComment")
+    public void updateComment(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.UpdateComment content) {
         try {
 
-            ArticleCommands.RemoveComment cmd = content;//.toRemoveComment();
+            ArticleCommands.UpdateComment cmd = content;//.toUpdateComment();
             BigInteger idObj = articleId;
             if (cmd.getArticleId() == null) {
                 cmd.setArticleId(idObj);
@@ -261,11 +261,11 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/UpdateComment")
-    public void updateComment(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.UpdateComment content) {
+    @PutMapping("{articleId}/_commands/RemoveComment")
+    public void removeComment(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.RemoveComment content) {
         try {
 
-            ArticleCommands.UpdateComment cmd = content;//.toUpdateComment();
+            ArticleCommands.RemoveComment cmd = content;//.toRemoveComment();
             BigInteger idObj = articleId;
             if (cmd.getArticleId() == null) {
                 cmd.setArticleId(idObj);

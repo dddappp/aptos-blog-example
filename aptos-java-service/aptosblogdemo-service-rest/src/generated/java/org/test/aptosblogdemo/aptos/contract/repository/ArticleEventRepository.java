@@ -21,8 +21,8 @@ public interface ArticleEventRepository extends JpaRepository<AbstractArticleEve
 
     AbstractArticleEvent.CommentAdded findFirstCommentAddedByOrderByAptosEventSequenceNumber();
 
-    AbstractArticleEvent.CommentRemoved findFirstCommentRemovedByOrderByAptosEventSequenceNumber();
-
     AbstractArticleEvent.CommentUpdated findFirstCommentUpdatedByOrderByAptosEventSequenceNumber();
+
+    AbstractArticleEvent.CommentRemoved findFirstCommentRemovedByOrderByAptosEventSequenceNumber();
 
 }

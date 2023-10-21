@@ -9,11 +9,11 @@ module aptos_blog_demo::comment {
     friend aptos_blog_demo::article_update_logic;
     friend aptos_blog_demo::article_delete_logic;
     friend aptos_blog_demo::article_add_comment_logic;
-    friend aptos_blog_demo::article_remove_comment_logic;
     friend aptos_blog_demo::article_update_comment_logic;
+    friend aptos_blog_demo::article_remove_comment_logic;
     friend aptos_blog_demo::article;
 
-    const EDATA_TOO_LONG: u64 = 102;
+    const EDataTooLong: u64 = 102;
 
     struct Comment has store {
         comment_seq_id: u64,
@@ -31,7 +31,7 @@ module aptos_blog_demo::comment {
     }
 
     public(friend) fun set_commenter(comment: &mut Comment, commenter: String) {
-        assert!(std::string::length(&commenter) <= 100, EDATA_TOO_LONG);
+        assert!(std::string::length(&commenter) <= 100, EDataTooLong);
         comment.commenter = commenter;
     }
 
@@ -40,7 +40,7 @@ module aptos_blog_demo::comment {
     }
 
     public(friend) fun set_body(comment: &mut Comment, body: String) {
-        assert!(std::string::length(&body) <= 500, EDATA_TOO_LONG);
+        assert!(std::string::length(&body) <= 500, EDataTooLong);
         comment.body = body;
     }
 
@@ -58,8 +58,8 @@ module aptos_blog_demo::comment {
         body: String,
         owner: address,
     ): Comment {
-        assert!(std::string::length(&commenter) <= 100, EDATA_TOO_LONG);
-        assert!(std::string::length(&body) <= 500, EDATA_TOO_LONG);
+        assert!(std::string::length(&commenter) <= 100, EDataTooLong);
+        assert!(std::string::length(&body) <= 500, EDataTooLong);
         Comment {
             comment_seq_id,
             commenter,

@@ -99,26 +99,6 @@ module aptos_blog_demo::article_aggregate {
         article::emit_comment_added(comment_added);
     }
 
-    public entry fun remove_comment(
-        account: &signer,
-        article_id: u128,
-        comment_seq_id: u64,
-    ) {
-        let article = article::remove_article(article_id);
-        let comment_removed = article_remove_comment_logic::verify(
-            account,
-            comment_seq_id,
-            &article,
-        );
-        let updated_article = article_remove_comment_logic::mutate(
-            account,
-            &comment_removed,
-            article,
-        );
-        article::update_version_and_add(updated_article);
-        article::emit_comment_removed(comment_removed);
-    }
-
     public entry fun update_comment(
         account: &signer,
         article_id: u128,
@@ -143,6 +123,26 @@ module aptos_blog_demo::article_aggregate {
         );
         article::update_version_and_add(updated_article);
         article::emit_comment_updated(comment_updated);
+    }
+
+    public entry fun remove_comment(
+        account: &signer,
+        article_id: u128,
+        comment_seq_id: u64,
+    ) {
+        let article = article::remove_article(article_id);
+        let comment_removed = article_remove_comment_logic::verify(
+            account,
+            comment_seq_id,
+            &article,
+        );
+        let updated_article = article_remove_comment_logic::mutate(
+            account,
+            &comment_removed,
+            article,
+        );
+        article::update_version_and_add(updated_article);
+        article::emit_comment_removed(comment_removed);
     }
 
 }

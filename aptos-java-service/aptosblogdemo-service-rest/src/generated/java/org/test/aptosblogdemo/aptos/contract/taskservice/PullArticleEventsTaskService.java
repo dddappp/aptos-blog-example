@@ -36,14 +36,14 @@ public class PullArticleEventsTaskService {
         articleEventService.pullCommentAddedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-removed.fixed-delay:5000}")
-    public void pullCommentRemovedEvents() {
-        articleEventService.pullCommentRemovedEvents();
-    }
-
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-updated.fixed-delay:5000}")
     public void pullCommentUpdatedEvents() {
         articleEventService.pullCommentUpdatedEvents();
+    }
+
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-removed.fixed-delay:5000}")
+    public void pullCommentRemovedEvents() {
+        articleEventService.pullCommentRemovedEvents();
     }
 
 }

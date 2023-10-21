@@ -17,8 +17,8 @@ import org.test.aptosblogdemo.aptos.contract.article.ArticleCreated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleUpdated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleDeleted;
 import org.test.aptosblogdemo.aptos.contract.article.CommentAdded;
-import org.test.aptosblogdemo.aptos.contract.article.CommentRemoved;
 import org.test.aptosblogdemo.aptos.contract.article.CommentUpdated;
+import org.test.aptosblogdemo.aptos.contract.article.CommentRemoved;
 import org.test.aptosblogdemo.aptos.contract.repository.ArticleEventRepository;
 import org.test.aptosblogdemo.aptos.contract.repository.AptosAccountRepository;
 import org.test.aptosblogdemo.aptos.contract.repository.CommentTableItemAddedRepository;
@@ -271,56 +271,6 @@ public class ArticleEventService {
     }
 
     @Transactional
-    public void pullCommentRemovedEvents() {
-        String resourceAccountAddress = getResourceAccountAddress();
-        if (resourceAccountAddress == null) {
-            return;
-        }
-        int limit = 1;
-        BigInteger cursor = getCommentRemovedEventNextCursor();
-        if (cursor == null) {
-            cursor = BigInteger.ZERO;
-        }
-        while (true) {
-            List<Event<CommentRemoved>> eventPage;
-            try {
-                eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        resourceAccountAddress,
-                        this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_EVENTS,
-                        ContractConstants.ARTICLE_MODULE_COMMENT_REMOVED_HANDLE_FIELD,
-                        CommentRemoved.class,
-                        cursor.longValue(),
-                        limit
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
-                for (Event<CommentRemoved> eventEnvelope : eventPage) {
-                    saveCommentRemoved(eventEnvelope);
-                }
-            } else {
-                break;
-            }
-        }
-    }
-
-    private BigInteger getCommentRemovedEventNextCursor() {
-        AbstractArticleEvent.CommentRemoved lastEvent = articleEventRepository.findFirstCommentRemovedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
-    }
-
-    private void saveCommentRemoved(Event<CommentRemoved> eventEnvelope) {
-        AbstractArticleEvent.CommentRemoved commentRemoved = DomainBeanUtils.toCommentRemoved(eventEnvelope);
-        if (articleEventRepository.findById(commentRemoved.getArticleEventId()).isPresent()) {
-            return;
-        }
-        articleEventRepository.save(commentRemoved);
-    }
-
-    @Transactional
     public void pullCommentUpdatedEvents() {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
@@ -368,6 +318,56 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(commentUpdated);
+    }
+
+    @Transactional
+    public void pullCommentRemovedEvents() {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getCommentRemovedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<CommentRemoved>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_EVENTS,
+                        ContractConstants.ARTICLE_MODULE_COMMENT_REMOVED_HANDLE_FIELD,
+                        CommentRemoved.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<CommentRemoved> eventEnvelope : eventPage) {
+                    saveCommentRemoved(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getCommentRemovedEventNextCursor() {
+        AbstractArticleEvent.CommentRemoved lastEvent = articleEventRepository.findFirstCommentRemovedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveCommentRemoved(Event<CommentRemoved> eventEnvelope) {
+        AbstractArticleEvent.CommentRemoved commentRemoved = DomainBeanUtils.toCommentRemoved(eventEnvelope);
+        if (articleEventRepository.findById(commentRemoved.getArticleEventId()).isPresent()) {
+            return;
+        }
+        articleEventRepository.save(commentRemoved);
     }
 
     @Transactional

@@ -43,8 +43,8 @@
       <subclass name="AbstractArticleEvent$ArticleUpdated" discriminator-value="ArticleUpdated" />
       <subclass name="AbstractArticleEvent$ArticleDeleted" discriminator-value="ArticleDeleted" />
       <subclass name="AbstractArticleEvent$CommentAdded" discriminator-value="CommentAdded" />
-      <subclass name="AbstractArticleEvent$CommentRemoved" discriminator-value="CommentRemoved" />
       <subclass name="AbstractArticleEvent$CommentUpdated" discriminator-value="CommentUpdated" />
+      <subclass name="AbstractArticleEvent$CommentRemoved" discriminator-value="CommentRemoved" />
     </subclass>
   </class>
 </hibernate-mapping>

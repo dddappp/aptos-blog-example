@@ -36,19 +36,19 @@ aptos move run --function-id 'default::article_aggregate::add_comment' \
 --assume-yes
 ```
 
-### RemoveComment method
-
-```shell
-aptos move run --function-id 'default::article_aggregate::remove_comment' \
---args u128:article_id u64:comment_seq_id \
---assume-yes
-```
-
 ### UpdateComment method
 
 ```shell
 aptos move run --function-id 'default::article_aggregate::update_comment' \
 --args u128:article_id u64:comment_seq_id 'string:commenter' 'string:body' address:owner \
+--assume-yes
+```
+
+### RemoveComment method
+
+```shell
+aptos move run --function-id 'default::article_aggregate::remove_comment' \
+--args u128:article_id u64:comment_seq_id \
 --assume-yes
 ```
 

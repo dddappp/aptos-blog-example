@@ -51,18 +51,18 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
-                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
-                    "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "commentSeqId"}
-            );
-
-
-        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.UpdateCommentLogic",
                     "verify",
                     new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
                     new String[]{"_", "commentSeqId", "commenter", "body", "owner"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
+                    "verify",
+                    new Class[]{ArticleState.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "commentSeqId"}
             );
 
 
@@ -155,18 +155,18 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
-                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "commentSeqId", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
-            );
-
-
-        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.UpdateCommentLogic",
                     "mutate",
                     new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
                     new String[]{"_", "commentSeqId", "commenter", "body", "owner", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
+                    "mutate",
+                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "commentSeqId", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
             );
 
 

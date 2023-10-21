@@ -22,11 +22,11 @@ public class ContractConstants {
     public static final String ARTICLE_MODULE_COMMENT_ADDED = "article::CommentAdded";
     public static final String ARTICLE_MODULE_COMMENT_ADDED_HANDLE_FIELD = "comment_added_handle";
 
-    public static final String ARTICLE_MODULE_COMMENT_REMOVED = "article::CommentRemoved";
-    public static final String ARTICLE_MODULE_COMMENT_REMOVED_HANDLE_FIELD = "comment_removed_handle";
-
     public static final String ARTICLE_MODULE_COMMENT_UPDATED = "article::CommentUpdated";
     public static final String ARTICLE_MODULE_COMMENT_UPDATED_HANDLE_FIELD = "comment_updated_handle";
+
+    public static final String ARTICLE_MODULE_COMMENT_REMOVED = "article::CommentRemoved";
+    public static final String ARTICLE_MODULE_COMMENT_REMOVED_HANDLE_FIELD = "comment_removed_handle";
 
     public static final String BLOG_MODULE_BLOG_CREATED = "blog::BlogCreated";
     public static final String BLOG_MODULE_BLOG_CREATED_HANDLE_FIELD = "blog_created_handle";

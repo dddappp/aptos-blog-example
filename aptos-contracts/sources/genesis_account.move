@@ -13,7 +13,7 @@ module aptos_blog_demo::genesis_account {
     friend aptos_blog_demo::article;
     friend aptos_blog_demo::blog;
 
-    const ENOT_GENESIS_ACCOUNT: u64 = 100;
+    const ENotGenesisAccount: u64 = 100;
 
     struct Events has key {
         resource_account_created_handle: event::EventHandle<ResourceAccountCreated>,
@@ -39,7 +39,7 @@ module aptos_blog_demo::genesis_account {
     }
 
     public fun assert_genesis_account(account: &signer) {
-        assert!(signer::address_of(account) == @aptos_blog_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        assert!(signer::address_of(account) == @aptos_blog_demo, error::invalid_argument(ENotGenesisAccount));
     }
 
     public(friend) fun resource_account_signer(): signer {
