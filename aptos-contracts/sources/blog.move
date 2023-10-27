@@ -267,8 +267,8 @@ module aptos_blog_demo::blog {
     }
 
     public(friend) fun remove_blog(): Blog acquires Blog {
-        assert!(exists<Blog>(genesis_account::resouce_account_address()), ENotInitialized);
-        move_from<Blog>(genesis_account::resouce_account_address())
+        assert!(exists<Blog>(genesis_account::resource_account_address()), ENotInitialized);
+        move_from<Blog>(genesis_account::resource_account_address())
     }
 
     fun private_add_blog(blog: Blog) {
@@ -281,17 +281,17 @@ module aptos_blog_demo::blog {
     }
 
     public fun singleton_name(): String acquires Blog {
-        let blog = borrow_global<Blog>(genesis_account::resouce_account_address());
+        let blog = borrow_global<Blog>(genesis_account::resource_account_address());
         blog.name
     }
 
     public fun singleton_articles(): vector<u128> acquires Blog {
-        let blog = borrow_global<Blog>(genesis_account::resouce_account_address());
+        let blog = borrow_global<Blog>(genesis_account::resource_account_address());
         blog.articles
     }
 
     public fun singleton_is_emergency(): bool acquires Blog {
-        let blog = borrow_global<Blog>(genesis_account::resouce_account_address());
+        let blog = borrow_global<Blog>(genesis_account::resource_account_address());
         blog.is_emergency
     }
 
@@ -311,45 +311,49 @@ module aptos_blog_demo::blog {
         aptos_framework::coin::destroy_zero(vault);
     }
 
+    public fun blog_exists(): bool {
+        exists<Blog>(genesis_account::resource_account_address())
+    }
+
     public(friend) fun emit_blog_created(blog_created: BlogCreated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.blog_created_handle, blog_created);
     }
 
     public(friend) fun emit_article_added_to_blog(article_added_to_blog: ArticleAddedToBlog) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.article_added_to_blog_handle, article_added_to_blog);
     }
 
     public(friend) fun emit_article_removed_from_blog(article_removed_from_blog: ArticleRemovedFromBlog) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.article_removed_from_blog_handle, article_removed_from_blog);
     }
 
     public(friend) fun emit_donation_received(donation_received: DonationReceived) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.donation_received_handle, donation_received);
     }
 
     public(friend) fun emit_vault_withdrawn(vault_withdrawn: VaultWithdrawn) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.vault_withdrawn_handle, vault_withdrawn);
     }
 
     public(friend) fun emit_blog_updated(blog_updated: BlogUpdated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.blog_updated_handle, blog_updated);
     }
 
     public(friend) fun emit_blog_deleted(blog_deleted: BlogDeleted) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.blog_deleted_handle, blog_deleted);
     }
 

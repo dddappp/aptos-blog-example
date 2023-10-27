@@ -43,8 +43,8 @@ module aptos_blog_demo::article {
     }
 
     fun emit_comment_table_item_added(table_item_added: CommentTableItemAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.comment_table_item_added_handle, table_item_added);
     }
 
@@ -76,7 +76,7 @@ module aptos_blog_demo::article {
             sequence: 0,
         };
         move_to(&res_account, article_id_generator);
-        // let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        // let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         // event::emit_event(&mut events.article_id_generator_created_handle, ArticleIdGeneratorCreated {
         // });
 
@@ -225,8 +225,8 @@ module aptos_blog_demo::article {
         body: String,
         owner: address,
     ): ArticleCreated acquires ArticleIdGenerator {
-        assert!(exists<ArticleIdGenerator>(genesis_account::resouce_account_address()), ENotInitialized);
-        let article_id_generator = borrow_global_mut<ArticleIdGenerator>(genesis_account::resouce_account_address());
+        assert!(exists<ArticleIdGenerator>(genesis_account::resource_account_address()), ENotInitialized);
+        let article_id_generator = borrow_global_mut<ArticleIdGenerator>(genesis_account::resource_account_address());
         let article_id = next_article_id(article_id_generator);
         ArticleCreated {
             article_id,
@@ -416,8 +416,8 @@ module aptos_blog_demo::article {
         body: String,
         owner: address,
     ): Article acquires ArticleIdGenerator {
-        assert!(exists<ArticleIdGenerator>(genesis_account::resouce_account_address()), ENotInitialized);
-        let article_id_generator = borrow_global<ArticleIdGenerator>(genesis_account::resouce_account_address());
+        assert!(exists<ArticleIdGenerator>(genesis_account::resource_account_address()), ENotInitialized);
+        let article_id_generator = borrow_global<ArticleIdGenerator>(genesis_account::resource_account_address());
         let article_id = current_article_id(article_id_generator);
         let article = new_article(
             article_id,
@@ -453,15 +453,15 @@ module aptos_blog_demo::article {
     }
 
     public(friend) fun remove_article(article_id: u128): Article acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
         table::remove(&mut tables.article_table, article_id)
     }
 
     fun private_add_article(article: Article) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        table::add(&mut tables.article_table, article_id(&article), article);
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
+        table::add(&mut tables.article_table, article.article_id, article);
     }
 
     public fun get_article(article_id: u128): pass_object::PassObject<Article> acquires Tables {
@@ -490,39 +490,44 @@ module aptos_blog_demo::article {
         table_with_length::destroy_empty(comments);
     }
 
+    public fun contains_article(article_id: u128): bool acquires Tables {
+        let tables = borrow_global<Tables>(genesis_account::resource_account_address());
+        table::contains(&tables.article_table, article_id)
+    }
+
     public(friend) fun emit_article_created(article_created: ArticleCreated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.article_created_handle, article_created);
     }
 
     public(friend) fun emit_article_updated(article_updated: ArticleUpdated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.article_updated_handle, article_updated);
     }
 
     public(friend) fun emit_article_deleted(article_deleted: ArticleDeleted) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.article_deleted_handle, article_deleted);
     }
 
     public(friend) fun emit_comment_added(comment_added: CommentAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.comment_added_handle, comment_added);
     }
 
     public(friend) fun emit_comment_updated(comment_updated: CommentUpdated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.comment_updated_handle, comment_updated);
     }
 
     public(friend) fun emit_comment_removed(comment_removed: CommentRemoved) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.comment_removed_handle, comment_removed);
     }
 

@@ -34,7 +34,7 @@ module aptos_blog_demo::genesis_account {
 
         let events = borrow_global_mut<Events>(signer::address_of(account));
         event::emit_event(&mut events.resource_account_created_handle, ResourceAccountCreated {
-            address: resouce_account_address(),
+            address: resource_account_address(),
         });
     }
 
@@ -46,7 +46,7 @@ module aptos_blog_demo::genesis_account {
         resource_account::resource_account_signer(@aptos_blog_demo)
     }
 
-    public fun resouce_account_address(): address {
+    public fun resource_account_address(): address {
         let res_account = resource_account::resource_account_signer(@aptos_blog_demo);
         signer::address_of(&res_account)
     }
