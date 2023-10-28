@@ -76,9 +76,6 @@ module aptos_blog_demo::article {
             sequence: 0,
         };
         move_to(&res_account, article_id_generator);
-        // let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
-        // event::emit_event(&mut events.article_id_generator_created_handle, ArticleIdGeneratorCreated {
-        // });
 
         move_to(
             &res_account,
