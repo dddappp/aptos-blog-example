@@ -66,7 +66,7 @@ aptos move run --function-id 'default::blog_aggregate::create' \
 
 ```shell
 aptos move run --function-id 'default::blog_aggregate::update' \
---args 'string:name' 'vector<u128>:articles_item_1,articles_item_2' bool:is_emergency \
+--args 'string:name' 'u128:[articles_item_1,articles_item_2]' bool:is_emergency \
 --assume-yes
 ```
 
