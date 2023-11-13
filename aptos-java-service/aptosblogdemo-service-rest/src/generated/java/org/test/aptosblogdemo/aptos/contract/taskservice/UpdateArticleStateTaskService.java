@@ -36,4 +36,5 @@ public class UpdateArticleStateTaskService {
             articleEventService.updateStatusToProcessed(e);
         });
     }
+
 }

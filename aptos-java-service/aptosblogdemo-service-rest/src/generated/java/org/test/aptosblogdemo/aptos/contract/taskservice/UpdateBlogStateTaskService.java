@@ -36,4 +36,5 @@ public class UpdateBlogStateTaskService {
             blogEventService.updateStatusToProcessed(e);
         });
     }
+
 }
