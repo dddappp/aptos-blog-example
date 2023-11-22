@@ -253,11 +253,11 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
 
             e.setName(name);
             e.setIsEmergency(isEmergency);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -272,11 +272,11 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             AbstractBlogEvent.ArticleAddedToBlog e = new AbstractBlogEvent.ArticleAddedToBlog();
 
             e.setArticleId(articleId);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -291,11 +291,11 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             AbstractBlogEvent.ArticleRemovedFromBlog e = new AbstractBlogEvent.ArticleRemovedFromBlog();
 
             e.setArticleId(articleId);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -312,11 +312,11 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             e.setName(name);
             e.setArticles(articles);
             e.setIsEmergency(isEmergency);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -330,11 +330,11 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
             AbstractBlogEvent.BlogDeleted e = new AbstractBlogEvent.BlogDeleted();
 
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
