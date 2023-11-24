@@ -146,7 +146,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     public abstract String getEventClass();
 
-    public static class BlogClobEvent extends  AbstractBlogEvent {
+    public static class BlogClobEvent extends AbstractBlogEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -182,7 +182,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class BlogCreated extends BlogClobEvent {
+    public static class BlogCreated extends BlogClobEvent implements BlogEvent.BlogCreated {
 
         @Override
         public String getEventClass() {
@@ -215,7 +215,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class ArticleAddedToBlog extends BlogClobEvent {
+    public static class ArticleAddedToBlog extends BlogClobEvent implements BlogEvent.ArticleAddedToBlog {
 
         @Override
         public String getEventClass() {
@@ -236,7 +236,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class ArticleRemovedFromBlog extends BlogClobEvent {
+    public static class ArticleRemovedFromBlog extends BlogClobEvent implements BlogEvent.ArticleRemovedFromBlog {
 
         @Override
         public String getEventClass() {
@@ -257,7 +257,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class DonationReceived extends BlogClobEvent {
+    public static class DonationReceived extends BlogClobEvent implements BlogEvent.DonationReceived {
 
         @Override
         public String getEventClass() {
@@ -278,7 +278,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class VaultWithdrawn extends BlogClobEvent {
+    public static class VaultWithdrawn extends BlogClobEvent implements BlogEvent.VaultWithdrawn {
 
         @Override
         public String getEventClass() {
@@ -299,7 +299,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class BlogUpdated extends BlogClobEvent {
+    public static class BlogUpdated extends BlogClobEvent implements BlogEvent.BlogUpdated {
 
         @Override
         public String getEventClass() {
@@ -344,7 +344,7 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
-    public static class BlogDeleted extends BlogClobEvent {
+    public static class BlogDeleted extends BlogClobEvent implements BlogEvent.BlogDeleted {
 
         @Override
         public String getEventClass() {
