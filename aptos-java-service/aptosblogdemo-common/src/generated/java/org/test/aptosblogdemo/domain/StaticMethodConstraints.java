@@ -21,104 +21,104 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.CreateLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new String[]{"_", "title", "body", "owner"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "title", "body", "owner"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.UpdateLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new String[]{"_", "title", "body", "owner"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "title", "body", "owner"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.DeleteLogic",
                     "verify",
-                    new Class[]{ArticleState.class, VerificationContext.class},
-                    new String[]{"_"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.AddCommentLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new String[]{"_", "commenter", "body", "owner"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "commenter", "body", "owner"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.UpdateCommentLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
-                    new String[]{"_", "commentSeqId", "commenter", "body", "owner"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "commentSeqId", "commenter", "body", "owner"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "commentSeqId"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "commentSeqId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.CreateLogic",
                     "verify",
-                    new Class[]{BlogState.class, String.class, Boolean.class, VerificationContext.class},
-                    new String[]{"_", "name", "isEmergency"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, Boolean.class, VerificationContext.class},
+                    new String[]{"_", "_", "name", "isEmergency"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.AddArticleLogic",
                     "verify",
-                    new Class[]{BlogState.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "articleId"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "articleId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.RemoveArticleLogic",
                     "verify",
-                    new Class[]{BlogState.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "articleId"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "articleId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.DonateLogic",
                     "verify",
-                    new Class[]{BlogState.class, VerificationContext.class},
-                    new String[]{"_"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.WithdrawLogic",
                     "verify",
-                    new Class[]{BlogState.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "amount"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "amount"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.UpdateLogic",
                     "verify",
-                    new Class[]{BlogState.class, String.class, BigInteger[].class, Boolean.class, VerificationContext.class},
-                    new String[]{"_", "name", "articles", "isEmergency"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, BigInteger[].class, Boolean.class, VerificationContext.class},
+                    new String[]{"_", "_", "name", "articles", "isEmergency"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.DeleteLogic",
                     "verify",
-                    new Class[]{BlogState.class, VerificationContext.class},
-                    new String[]{"_"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
             );
 
 

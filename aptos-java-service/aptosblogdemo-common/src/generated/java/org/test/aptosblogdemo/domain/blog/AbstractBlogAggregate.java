@@ -48,202 +48,214 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
 
         @Override
         public void create(String name, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Create c) {
+            java.util.function.Supplier<BlogEvent.BlogCreated> eventFactory = () -> newBlogCreated(name, isEmergency, offChainVersion, commandId, requesterId);
+            BlogEvent.BlogCreated e;
             try {
-                verifyCreate(name, isEmergency, c);
+                e = verifyCreate(eventFactory, name, isEmergency, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newBlogCreated(name, isEmergency, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void addArticle(BigInteger articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.AddArticle c) {
+            java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory = () -> newArticleAddedToBlog(articleId, offChainVersion, commandId, requesterId);
+            BlogEvent.ArticleAddedToBlog e;
             try {
-                verifyAddArticle(articleId, c);
+                e = verifyAddArticle(eventFactory, articleId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newArticleAddedToBlog(articleId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeArticle(BigInteger articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.RemoveArticle c) {
+            java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory = () -> newArticleRemovedFromBlog(articleId, offChainVersion, commandId, requesterId);
+            BlogEvent.ArticleRemovedFromBlog e;
             try {
-                verifyRemoveArticle(articleId, c);
+                e = verifyRemoveArticle(eventFactory, articleId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newArticleRemovedFromBlog(articleId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void update(String name, BigInteger[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c) {
+            java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory = () -> newBlogUpdated(name, articles, isEmergency, offChainVersion, commandId, requesterId);
+            BlogEvent.BlogUpdated e;
             try {
-                verifyUpdate(name, articles, isEmergency, c);
+                e = verifyUpdate(eventFactory, name, articles, isEmergency, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newBlogUpdated(name, articles, isEmergency, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, BlogCommands.Delete c) {
+            java.util.function.Supplier<BlogEvent.BlogDeleted> eventFactory = () -> newBlogDeleted(offChainVersion, commandId, requesterId);
+            BlogEvent.BlogDeleted e;
             try {
-                verifyDelete(c);
+                e = verifyDelete(eventFactory, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newBlogDeleted(offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String name, Boolean isEmergency, BlogCommands.Create c) {
+        protected BlogEvent.BlogCreated verifyCreate(java.util.function.Supplier<BlogEvent.BlogCreated> eventFactory, String name, Boolean isEmergency, BlogCommands.Create c) {
             String Name = name;
             Boolean IsEmergency = isEmergency;
 
-            ReflectUtils.invokeStaticMethod(
+            BlogEvent.BlogCreated e = (BlogEvent.BlogCreated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.CreateLogic",
                     "verify",
-                    new Class[]{BlogState.class, String.class, Boolean.class, VerificationContext.class},
-                    new Object[]{getState(), name, isEmergency, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, Boolean.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), name, isEmergency, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class CreateLogic {
-//    public static void verify(BlogState blogState, String name, Boolean isEmergency, VerificationContext verificationContext) {
+//    public static BlogEvent.BlogCreated verify(java.util.function.Supplier<BlogEvent.BlogCreated> eventFactory, BlogState blogState, String name, Boolean isEmergency, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyAddArticle(BigInteger articleId, BlogCommands.AddArticle c) {
+        protected BlogEvent.ArticleAddedToBlog verifyAddArticle(java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory, BigInteger articleId, BlogCommands.AddArticle c) {
             BigInteger ArticleId = articleId;
 
-            ReflectUtils.invokeStaticMethod(
+            BlogEvent.ArticleAddedToBlog e = (BlogEvent.ArticleAddedToBlog) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.AddArticleLogic",
                     "verify",
-                    new Class[]{BlogState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), articleId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), articleId, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class AddArticleLogic {
-//    public static void verify(BlogState blogState, BigInteger articleId, VerificationContext verificationContext) {
+//    public static BlogEvent.ArticleAddedToBlog verify(java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory, BlogState blogState, BigInteger articleId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveArticle(BigInteger articleId, BlogCommands.RemoveArticle c) {
+        protected BlogEvent.ArticleRemovedFromBlog verifyRemoveArticle(java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory, BigInteger articleId, BlogCommands.RemoveArticle c) {
             BigInteger ArticleId = articleId;
 
-            ReflectUtils.invokeStaticMethod(
+            BlogEvent.ArticleRemovedFromBlog e = (BlogEvent.ArticleRemovedFromBlog) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.RemoveArticleLogic",
                     "verify",
-                    new Class[]{BlogState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), articleId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), articleId, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class RemoveArticleLogic {
-//    public static void verify(BlogState blogState, BigInteger articleId, VerificationContext verificationContext) {
+//    public static BlogEvent.ArticleRemovedFromBlog verify(java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory, BlogState blogState, BigInteger articleId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDonate(BlogCommands.Donate c) {
+        protected BlogEvent.DonationReceived verifyDonate(java.util.function.Supplier<BlogEvent.DonationReceived> eventFactory, BlogCommands.Donate c) {
 
-            ReflectUtils.invokeStaticMethod(
+            BlogEvent.DonationReceived e = (BlogEvent.DonationReceived) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.DonateLogic",
                     "verify",
-                    new Class[]{BlogState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class DonateLogic {
-//    public static void verify(BlogState blogState, VerificationContext verificationContext) {
+//    public static BlogEvent.DonationReceived verify(java.util.function.Supplier<BlogEvent.DonationReceived> eventFactory, BlogState blogState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyWithdraw(BigInteger amount, BlogCommands.Withdraw c) {
+        protected BlogEvent.VaultWithdrawn verifyWithdraw(java.util.function.Supplier<BlogEvent.VaultWithdrawn> eventFactory, BigInteger amount, BlogCommands.Withdraw c) {
             BigInteger Amount = amount;
 
-            ReflectUtils.invokeStaticMethod(
+            BlogEvent.VaultWithdrawn e = (BlogEvent.VaultWithdrawn) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.WithdrawLogic",
                     "verify",
-                    new Class[]{BlogState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), amount, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), amount, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class WithdrawLogic {
-//    public static void verify(BlogState blogState, BigInteger amount, VerificationContext verificationContext) {
+//    public static BlogEvent.VaultWithdrawn verify(java.util.function.Supplier<BlogEvent.VaultWithdrawn> eventFactory, BlogState blogState, BigInteger amount, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdate(String name, BigInteger[] articles, Boolean isEmergency, BlogCommands.Update c) {
+        protected BlogEvent.BlogUpdated verifyUpdate(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, String name, BigInteger[] articles, Boolean isEmergency, BlogCommands.Update c) {
             String Name = name;
             BigInteger[] Articles = articles;
             Boolean IsEmergency = isEmergency;
 
-            ReflectUtils.invokeStaticMethod(
+            BlogEvent.BlogUpdated e = (BlogEvent.BlogUpdated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.UpdateLogic",
                     "verify",
-                    new Class[]{BlogState.class, String.class, BigInteger[].class, Boolean.class, VerificationContext.class},
-                    new Object[]{getState(), name, articles, isEmergency, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, BigInteger[].class, Boolean.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), name, articles, isEmergency, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class UpdateLogic {
-//    public static void verify(BlogState blogState, String name, BigInteger[] articles, Boolean isEmergency, VerificationContext verificationContext) {
+//    public static BlogEvent.BlogUpdated verify(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, BlogState blogState, String name, BigInteger[] articles, Boolean isEmergency, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDelete(BlogCommands.Delete c) {
+        protected BlogEvent.BlogDeleted verifyDelete(java.util.function.Supplier<BlogEvent.BlogDeleted> eventFactory, BlogCommands.Delete c) {
 
-            ReflectUtils.invokeStaticMethod(
+            BlogEvent.BlogDeleted e = (BlogEvent.BlogDeleted) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.DeleteLogic",
                     "verify",
-                    new Class[]{BlogState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class DeleteLogic {
-//    public static void verify(BlogState blogState, VerificationContext verificationContext) {
+//    public static BlogEvent.BlogDeleted verify(java.util.function.Supplier<BlogEvent.BlogDeleted> eventFactory, BlogState blogState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
