@@ -219,7 +219,7 @@ public abstract class AbstractCommentState implements CommentState.SqlCommentSta
         }
     }
 
-    protected void merge(CommentState s) {
+    public void merge(CommentState s) {
         if (s == this) {
             return;
         }

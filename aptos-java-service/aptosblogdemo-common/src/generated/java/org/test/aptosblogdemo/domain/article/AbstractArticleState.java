@@ -228,16 +228,16 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             when((AbstractArticleEvent.ArticleDeleted)e);
         } else if (e instanceof AbstractArticleEvent.CommentAdded) {
             when((AbstractArticleEvent.CommentAdded)e);
-        } else if (e instanceof AbstractArticleEvent.CommentRemoved) {
-            when((AbstractArticleEvent.CommentRemoved)e);
         } else if (e instanceof AbstractArticleEvent.CommentUpdated) {
             when((AbstractArticleEvent.CommentUpdated)e);
+        } else if (e instanceof AbstractArticleEvent.CommentRemoved) {
+            when((AbstractArticleEvent.CommentRemoved)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
     }
 
-    protected void merge(ArticleState s) {
+    public void merge(ArticleState s) {
         if (s == this) {
             return;
         }
@@ -256,17 +256,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             }
             if (iterable != null) {
                 for (CommentState ss : iterable) {
-                    CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAdd(ss.getCommentSeqId());
+                    CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
                     ((AbstractCommentState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getComments() != null) {
-            if (s.getComments() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getComments()).getRemovedStates() != null) {
-                    for (CommentState ss : ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)s.getComments()).getRemovedStates()) {
-                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAdd(ss.getCommentSeqId());
-                        this.getComments().remove(thisInnerState);
+            if (s.getComments() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
+                if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getComments()).getRemovedStates() != null) {
+                    for (CommentState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<BigInteger, CommentState>)s.getComments()).getRemovedStates()) {
+                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -274,9 +274,11 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
                     Set<BigInteger> removedStateIds = new HashSet<>(this.getComments().stream().map(i -> i.getCommentSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getComments().forEach(i -> removedStateIds.remove(i.getCommentSeqId()));
                     for (BigInteger i : removedStateIds) {
-                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAdd(i);
-                        this.getComments().remove(thisInnerState);
+                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(i);
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(thisInnerState);
                     }
+                } else {
+                    throw new UnsupportedOperationException();
                 }
             }
         }
@@ -466,49 +468,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
     }
 
-    public void when(AbstractArticleEvent.CommentRemoved e) {
-        throwOnWrongEvent(e);
-
-        BigInteger commentSeqId = e.getCommentSeqId();
-        BigInteger CommentSeqId = commentSeqId;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
-
-        if (this.getCreatedBy() == null){
-            this.setCreatedBy(e.getCreatedBy());
-        }
-        if (this.getCreatedAt() == null){
-            this.setCreatedAt(e.getCreatedAt());
-        }
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, commentSeqId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class RemoveCommentLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
-
-        if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
-
-    }
-
     public void when(AbstractArticleEvent.CommentUpdated e) {
         throwOnWrongEvent(e);
 
@@ -558,6 +517,49 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
     }
 
+    public void when(AbstractArticleEvent.CommentRemoved e) {
+        throwOnWrongEvent(e);
+
+        BigInteger commentSeqId = e.getCommentSeqId();
+        BigInteger CommentSeqId = commentSeqId;
+        BigInteger aptosEventVersion = e.getAptosEventVersion();
+        BigInteger AptosEventVersion = aptosEventVersion;
+        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
+        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
+        String aptosEventType = e.getAptosEventType();
+        String AptosEventType = aptosEventType;
+        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
+        AptosEventGuid AptosEventGuid = aptosEventGuid;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
+                    "mutate",
+                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new Object[]{this, commentSeqId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.test.aptosblogdemo.domain.article;
+//
+//public class RemoveCommentLogic {
+//    public static ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
+
+    }
+
     public void save() {
         if (comments instanceof Saveable) {
             ((Saveable)comments).save();
@@ -595,7 +597,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
     }
 
 
-    class SimpleCommentStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState> {
+    class SimpleCommentStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>, Collection<CommentState> {
 
         @Override
         public CommentState get(BigInteger commentSeqId) {
@@ -620,12 +622,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         }
 
         @Override
-        public Collection<CommentState> getRemovedStates() {
-            return null;
-        }
-
-        @Override
-        public CommentState getOrAdd(BigInteger commentSeqId) {
+        public CommentState getOrAddDefault(BigInteger commentSeqId) {
             CommentState s = get(commentSeqId);
             if (s == null) {
                 ArticleCommentId globalId = new ArticleCommentId(getArticleId(), commentSeqId);
@@ -658,6 +655,11 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         }
 
         @Override
+        public java.util.stream.Stream<CommentState> stream() {
+            return protectedComments.stream();
+        }
+
+        @Override
         public Object[] toArray() {
             return protectedComments.toArray();
         }
@@ -683,6 +685,11 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
                 s.setProtectedArticleState(null);
             }
             return protectedComments.remove(o);
+        }
+
+        @Override
+        public boolean removeState(CommentState s) {
+            return remove(s);
         }
 
         @Override

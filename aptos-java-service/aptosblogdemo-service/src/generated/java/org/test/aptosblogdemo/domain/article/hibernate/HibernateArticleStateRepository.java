@@ -79,7 +79,7 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
         ArticleState persistent = getCurrentSession().get(AbstractArticleState.SimpleArticleState.class, detached.getArticleId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().merge(detached);
+            getCurrentSession().save(persistent);
         } else {
             getCurrentSession().save(detached);
         }
@@ -87,31 +87,7 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
     }
 
     private void merge(ArticleState persistent, ArticleState detached) {
-        ((ArticleState.MutableArticleState) detached).setOffChainVersion(persistent.getOffChainVersion());
-        if (detached.getComments() != null) {
-            removeNonExistentComments(persistent.getComments(), detached.getComments());
-            for (CommentState d : detached.getComments()) {
-                CommentState p = persistent.getComments().get(d.getCommentSeqId());
-                if (p == null)
-                    getCurrentSession().save(d);
-                else
-                    merge(p, d);
-            }
-        }
-    }
-
-    private void merge(CommentState persistent, CommentState detached) {
-        ((CommentState.MutableCommentState) detached).setOffChainVersion(persistent.getOffChainVersion());
-    }
-
-    private void removeNonExistentComments(EntityStateCollection<BigInteger, CommentState> persistentCollection, EntityStateCollection<BigInteger, CommentState> detachedCollection) {
-        Set<BigInteger> removedIds = persistentCollection.stream().map(i -> i.getCommentSeqId()).collect(java.util.stream.Collectors.toSet());
-        detachedCollection.forEach(i -> removedIds.remove(i.getCommentSeqId()));
-        for (BigInteger i : removedIds) {
-            CommentState s = persistentCollection.get(i);
-            persistentCollection.remove(s);
-            getCurrentSession().delete(s);
-        }
+        ((AbstractArticleState) persistent).merge(detached);
     }
 
 }

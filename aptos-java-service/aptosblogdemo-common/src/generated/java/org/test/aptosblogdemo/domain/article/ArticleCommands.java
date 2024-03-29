@@ -283,57 +283,6 @@ public class ArticleCommands {
 
     }
 
-    public static class RemoveComment extends AbstractArticleCommand implements ArticleCommand {
-
-        public String getCommandType() {
-            return "RemoveComment";
-        }
-
-        public void setCommandType(String commandType) {
-            //do nothing
-        }
-
-        /**
-         * Article Id
-         */
-        private BigInteger articleId;
-
-        public BigInteger getArticleId() {
-            return this.articleId;
-        }
-
-        public void setArticleId(BigInteger articleId) {
-            this.articleId = articleId;
-        }
-
-        /**
-         * Comment Seq Id
-         */
-        private BigInteger commentSeqId;
-
-        public BigInteger getCommentSeqId() {
-            return this.commentSeqId;
-        }
-
-        public void setCommentSeqId(BigInteger commentSeqId) {
-            this.commentSeqId = commentSeqId;
-        }
-
-        /**
-         * Off Chain Version
-         */
-        private Long offChainVersion;
-
-        public Long getOffChainVersion() {
-            return this.offChainVersion;
-        }
-
-        public void setOffChainVersion(Long offChainVersion) {
-            this.offChainVersion = offChainVersion;
-        }
-
-    }
-
     public static class UpdateComment extends AbstractArticleCommand implements ArticleCommand {
 
         public String getCommandType() {
@@ -407,6 +356,57 @@ public class ArticleCommands {
 
         public void setOwner(String owner) {
             this.owner = owner;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
+    public static class RemoveComment extends AbstractArticleCommand implements ArticleCommand {
+
+        public String getCommandType() {
+            return "RemoveComment";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Article Id
+         */
+        private BigInteger articleId;
+
+        public BigInteger getArticleId() {
+            return this.articleId;
+        }
+
+        public void setArticleId(BigInteger articleId) {
+            this.articleId = articleId;
+        }
+
+        /**
+         * Comment Seq Id
+         */
+        private BigInteger commentSeqId;
+
+        public BigInteger getCommentSeqId() {
+            return this.commentSeqId;
+        }
+
+        public void setCommentSeqId(BigInteger commentSeqId) {
+            this.commentSeqId = commentSeqId;
         }
 
         /**

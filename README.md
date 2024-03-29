@@ -269,11 +269,13 @@ Use `aptos move run` command to submit a transaction and initialize the contract
 
 ```shell
 aptos move run --function-id 'default::aptos_blog_demo_init::initialize' --assume-yes
+#aptos move run --function-id 'default::blog_aggregate::create' --args 'string:MyBlog' 'bool:false' --assume-yes
 ```
 
 ### CRUD Articles
 
-Note that `{ACCOUNT_ADDRESS}`, `{RESOURCE_ACCOUNT_ADDRESS}` and `{ARTICLE_TABLE_HANDLE}` in the command lines below are placeholders, please replace them with the actual values before executing the commands.
+Note that `{ACCOUNT_ADDRESS}`, `{RESOURCE_ACCOUNT_ADDRESS}` and `{ARTICLE_TABLE_HANDLE}` in the command lines below are placeholders, 
+please replace them with the actual values before executing the commands.
 
 #### Create Articles
 
@@ -368,7 +370,7 @@ aptos move run --function-id 'default::article_aggregate::delete' \
 --assume-yes
 ```
 
-Query the article again and it should now return a message like this:
+Query the article again, and it should now return a message like this:
 
 ```json
 {"message":"Table Item not found by Table handle({ARTICLE_TABLE_HANDLE}), Table key(\"1\") and Ledger version(15756815)","error_code":"table_item_not_found","vm_error_code":null}
@@ -384,6 +386,10 @@ You can add a comment like this:
 aptos move run --function-id 'default::article_aggregate::add_comment' \
 --args u128:2 u64:1 'string:ATestComment1' 'string:body' address:{ACCOUNT_ADDRESS} \
 --assume-yes
+
+#aptos move run --function-id 'default::article_aggregate::add_comment' \
+#--args u128:1 'string:ATestComment1' 'string:body' address:0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738 \
+#--assume-yes
 ```
 
 Add more comment like this:
@@ -453,10 +459,10 @@ It can pull application events and entity states on the chain into the off-chain
 
 #### Creating and Initialize Database for Off-Chain Service
 
-Use a MySQL client to connect to the local MySQL server and execute the following script to create an empty database (assuming the name is `test2`):
+Use a MySQL client to connect to the local MySQL server and execute the following script to create an empty database (assuming the name is `test8`):
 
 ```sql
-CREATE SCHEMA `test2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE SCHEMA `test8` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 ```
 
 Go to the `aptos-java-service` directory and package the Java project:
@@ -468,7 +474,7 @@ mvn package
 Then, run a command-line tool to initialize the database:
 
 ```shell
-java -jar ./aptosblogdemo-service-cli/target/aptosblogdemo-service-cli-0.0.1-SNAPSHOT.jar ddl -d "./scripts" -c "jdbc:mysql://127.0.0.1:3306/test2?enabledTLSProtocols=TLSv1.2&characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false" -u root -p 123456
+java -jar ./aptosblogdemo-service-cli/target/aptosblogdemo-service-cli-0.0.1-SNAPSHOT.jar ddl -d "./scripts" -c "jdbc:mysql://127.0.0.1:3306/test8?enabledTLSProtocols=TLSv1.2&characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false" -u root -p 123456
 ```
 
 
@@ -499,7 +505,7 @@ mvn -pl aptosblogdemo-service-rest -am spring-boot:run
 You can use the following command to query article list:
 
 ```shell
-curl http://localhost:1023/api/Articles
+curl http://localhost:1028/api/Articles
 ```
 
 [TBD]

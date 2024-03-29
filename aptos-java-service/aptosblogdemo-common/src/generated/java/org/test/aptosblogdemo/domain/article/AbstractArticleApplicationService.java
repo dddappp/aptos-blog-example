@@ -66,12 +66,12 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         update(c, ar -> ar.addComment(c.getCommenter(), c.getBody(), c.getOwner(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
-    public void when(ArticleCommands.RemoveComment c) {
-        update(c, ar -> ar.removeComment(c.getCommentSeqId(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
-    }
-
     public void when(ArticleCommands.UpdateComment c) {
         update(c, ar -> ar.updateComment(c.getCommentSeqId(), c.getCommenter(), c.getBody(), c.getOwner(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
+    public void when(ArticleCommands.RemoveComment c) {
+        update(c, ar -> ar.removeComment(c.getCommentSeqId(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public ArticleState get(BigInteger id) {

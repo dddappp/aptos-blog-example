@@ -23,9 +23,9 @@ public interface ArticleApplicationService {
 
     void when(ArticleCommands.AddComment c);
 
-    void when(ArticleCommands.RemoveComment c);
-
     void when(ArticleCommands.UpdateComment c);
+
+    void when(ArticleCommands.RemoveComment c);
 
     ArticleState get(BigInteger id);
 

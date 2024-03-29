@@ -12,7 +12,7 @@ import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 import org.test.aptosblogdemo.domain.AbstractEvent;
 
-public abstract class AbstractCommentEvent extends AbstractEvent implements CommentEvent.SqlCommentEvent, AptosEvent.MutableAptosEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractCommentEvent extends AbstractEvent implements CommentEvent.SqlCommentEvent {
     private CommentEventId commentEventId = new CommentEventId();
 
     public CommentEventId getCommentEventId() {

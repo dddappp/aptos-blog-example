@@ -172,7 +172,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     public abstract String getEventClass();
 
-    public static class ArticleClobEvent extends  AbstractArticleEvent {
+    public static class ArticleClobEvent extends AbstractArticleEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -208,7 +208,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class ArticleCreated extends ArticleClobEvent {
+    public static class ArticleCreated extends ArticleClobEvent implements ArticleEvent.ArticleCreated {
 
         @Override
         public String getEventClass() {
@@ -253,7 +253,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class ArticleUpdated extends ArticleClobEvent {
+    public static class ArticleUpdated extends ArticleClobEvent implements ArticleEvent.ArticleUpdated {
 
         @Override
         public String getEventClass() {
@@ -298,7 +298,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class ArticleDeleted extends ArticleClobEvent {
+    public static class ArticleDeleted extends ArticleClobEvent implements ArticleEvent.ArticleDeleted {
 
         @Override
         public String getEventClass() {
@@ -307,7 +307,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class CommentAdded extends ArticleClobEvent {
+    public static class CommentAdded extends ArticleClobEvent implements ArticleEvent.CommentAdded {
 
         @Override
         public String getEventClass() {
@@ -364,28 +364,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class CommentRemoved extends ArticleClobEvent {
-
-        @Override
-        public String getEventClass() {
-            return "CommentRemoved";
-        }
-
-        public BigInteger getCommentSeqId() {
-            Object val = getDynamicProperties().get("commentSeqId");
-            if (val instanceof BigInteger) {
-                return (BigInteger) val;
-            }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
-        }
-
-        public void setCommentSeqId(BigInteger value) {
-            getDynamicProperties().put("commentSeqId", value);
-        }
-
-    }
-
-    public static class CommentUpdated extends ArticleClobEvent {
+    public static class CommentUpdated extends ArticleClobEvent implements ArticleEvent.CommentUpdated {
 
         @Override
         public String getEventClass() {
@@ -438,6 +417,27 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
         public void setOwner(String value) {
             getDynamicProperties().put("owner", value);
+        }
+
+    }
+
+    public static class CommentRemoved extends ArticleClobEvent implements ArticleEvent.CommentRemoved {
+
+        @Override
+        public String getEventClass() {
+            return "CommentRemoved";
+        }
+
+        public BigInteger getCommentSeqId() {
+            Object val = getDynamicProperties().get("commentSeqId");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setCommentSeqId(BigInteger value) {
+            getDynamicProperties().put("commentSeqId", value);
         }
 
     }

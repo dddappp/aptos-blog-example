@@ -5,6 +5,8 @@ version = "0.0.1"
 [addresses]
 aptos_blog_demo = "_"
 admin_addr = "_"
+#aptos move compile --named-addresses aptos_blog_demo=default,admin_addr=default
+#aptos move publish --named-addresses aptos_blog_demo=default,admin_addr=default --assume-yes
 
 [dependencies]
-AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "aptos-cli-v1.0.11" }
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "main" }

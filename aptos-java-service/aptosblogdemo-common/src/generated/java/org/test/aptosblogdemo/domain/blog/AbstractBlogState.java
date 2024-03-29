@@ -224,7 +224,7 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         }
     }
 
-    protected void merge(BlogState s) {
+    public void merge(BlogState s) {
         if (s == this) {
             return;
         }

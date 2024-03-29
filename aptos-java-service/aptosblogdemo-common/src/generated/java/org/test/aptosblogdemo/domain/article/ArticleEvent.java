@@ -21,6 +21,84 @@ public interface ArticleEvent extends Event, AptosEvent, HasStatus {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface ArticleCreated extends ArticleEvent {
+        String getTitle();
+
+        void setTitle(String value);
+
+        String getBody();
+
+        void setBody(String value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface ArticleUpdated extends ArticleEvent {
+        String getTitle();
+
+        void setTitle(String value);
+
+        String getBody();
+
+        void setBody(String value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface ArticleDeleted extends ArticleEvent {
+    }
+
+    interface CommentAdded extends ArticleEvent {
+        BigInteger getCommentSeqId();
+
+        void setCommentSeqId(BigInteger value);
+
+        String getCommenter();
+
+        void setCommenter(String value);
+
+        String getBody();
+
+        void setBody(String value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface CommentUpdated extends ArticleEvent {
+        BigInteger getCommentSeqId();
+
+        void setCommentSeqId(BigInteger value);
+
+        String getCommenter();
+
+        void setCommenter(String value);
+
+        String getBody();
+
+        void setBody(String value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface CommentRemoved extends ArticleEvent {
+        BigInteger getCommentSeqId();
+
+        void setCommentSeqId(BigInteger value);
+
+    }
+
     BigInteger getArticleId();
 
     //void setArticleId(BigInteger articleId);

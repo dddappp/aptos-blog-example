@@ -71,6 +71,14 @@ module aptos_blog_demo::blog {
         blog.name = name;
     }
 
+    public fun borrow_articles(blog: &Blog): &vector<u128> {
+        &blog.articles
+    }
+
+    public(friend) fun borrow_mut_articles(blog: &mut Blog): &mut vector<u128> {
+        &mut blog.articles
+    }
+
     public fun articles(blog: &Blog): vector<u128> {
         blog.articles
     }
@@ -79,7 +87,7 @@ module aptos_blog_demo::blog {
         blog.articles = articles;
     }
 
-    public(friend) fun borrow_vault(blog: &Blog): &Coin<AptosCoin> {
+    public fun borrow_vault(blog: &Blog): &Coin<AptosCoin> {
         &blog.vault
     }
 

@@ -23,8 +23,13 @@ module aptos_blog_demo::article {
     const EIdAlreadyExists: u64 = 101;
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
-    const EIdNotFound: u64 = 106;
     const ENotInitialized: u64 = 110;
+    const EIdNotFound: u64 = 111;
+
+    struct ArticleIdGenerator has key {
+        sequence: u128,
+    }
+
 
     struct Events has key {
         // article_id_generator_created_handle: event::EventHandle<ArticleIdGeneratorCreated>,
@@ -51,11 +56,6 @@ module aptos_blog_demo::article {
     struct Tables has key {
         article_table: Table<u128, Article>,
     }
-
-    struct ArticleIdGenerator has key {
-        sequence: u128,
-    }
-
 
     public fun initialize(account: &signer) {
         genesis_account::assert_genesis_account(account);

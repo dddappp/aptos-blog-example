@@ -79,7 +79,7 @@ public class HibernateBlogStateRepository implements BlogStateRepository {
         BlogState persistent = getCurrentSession().get(AbstractBlogState.SimpleBlogState.class, detached.getAccountAddress());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().merge(detached);
+            getCurrentSession().save(persistent);
         } else {
             getCurrentSession().save(detached);
         }
@@ -87,7 +87,7 @@ public class HibernateBlogStateRepository implements BlogStateRepository {
     }
 
     private void merge(BlogState persistent, BlogState detached) {
-        ((BlogState.MutableBlogState) detached).setOffChainVersion(persistent.getOffChainVersion());
+        ((AbstractBlogState) persistent).merge(detached);
     }
 
 }

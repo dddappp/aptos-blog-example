@@ -25,9 +25,9 @@ public interface ArticleAggregate {
 
     void addComment(String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.AddComment c);
 
-    void removeComment(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId, ArticleCommands.RemoveComment c);
-
     void updateComment(BigInteger commentSeqId, String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.UpdateComment c);
+
+    void removeComment(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId, ArticleCommands.RemoveComment c);
 
     void throwOnInvalidStateTransition(Command c);
 }

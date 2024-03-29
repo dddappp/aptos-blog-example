@@ -91,7 +91,7 @@ public class AptosArticleStateRetriever {
             String commentTableHandle = article.getComments().getInner().getHandle();
             List<Comment> comments = getComments(commentTableHandle, commentCommentSeqIdsGetter.getCommentCommentSeqIds(articleState.getArticleId()));
             for (Comment i : comments) {
-                articleState.getComments().add(toCommentState(articleState, i));
+                ((EntityStateCollection.ModifiableEntityStateCollection)articleState.getComments()).add(toCommentState(articleState, i));
             }
         }
 

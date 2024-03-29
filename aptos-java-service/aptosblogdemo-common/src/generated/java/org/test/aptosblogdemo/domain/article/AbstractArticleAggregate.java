@@ -48,201 +48,213 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Create c) {
+            java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory = () -> newArticleCreated(title, body, owner, offChainVersion, commandId, requesterId);
+            ArticleEvent.ArticleCreated e;
             try {
-                verifyCreate(title, body, owner, c);
+                e = verifyCreate(eventFactory, title, body, owner, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newArticleCreated(title, body, owner, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void update(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Update c) {
+            java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory = () -> newArticleUpdated(title, body, owner, offChainVersion, commandId, requesterId);
+            ArticleEvent.ArticleUpdated e;
             try {
-                verifyUpdate(title, body, owner, c);
+                e = verifyUpdate(eventFactory, title, body, owner, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newArticleUpdated(title, body, owner, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, ArticleCommands.Delete c) {
+            java.util.function.Supplier<ArticleEvent.ArticleDeleted> eventFactory = () -> newArticleDeleted(offChainVersion, commandId, requesterId);
+            ArticleEvent.ArticleDeleted e;
             try {
-                verifyDelete(c);
+                e = verifyDelete(eventFactory, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newArticleDeleted(offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void addComment(String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.AddComment c) {
+            java.util.function.Supplier<ArticleEvent.CommentAdded> eventFactory = () -> newCommentAdded(commenter, body, owner, offChainVersion, commandId, requesterId);
+            ArticleEvent.CommentAdded e;
             try {
-                verifyAddComment(commenter, body, owner, c);
+                e = verifyAddComment(eventFactory, commenter, body, owner, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newCommentAdded(commenter, body, owner, offChainVersion, commandId, requesterId);
-            apply(e);
-        }
-
-        @Override
-        public void removeComment(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId, ArticleCommands.RemoveComment c) {
-            try {
-                verifyRemoveComment(commentSeqId, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
-            Event e = newCommentRemoved(commentSeqId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void updateComment(BigInteger commentSeqId, String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.UpdateComment c) {
+            java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory = () -> newCommentUpdated(commentSeqId, commenter, body, owner, offChainVersion, commandId, requesterId);
+            ArticleEvent.CommentUpdated e;
             try {
-                verifyUpdateComment(commentSeqId, commenter, body, owner, c);
+                e = verifyUpdateComment(eventFactory, commentSeqId, commenter, body, owner, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newCommentUpdated(commentSeqId, commenter, body, owner, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String title, String body, String owner, ArticleCommands.Create c) {
+        @Override
+        public void removeComment(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId, ArticleCommands.RemoveComment c) {
+            java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory = () -> newCommentRemoved(commentSeqId, offChainVersion, commandId, requesterId);
+            ArticleEvent.CommentRemoved e;
+            try {
+                e = verifyRemoveComment(eventFactory, commentSeqId, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        protected ArticleEvent.ArticleCreated verifyCreate(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, String title, String body, String owner, ArticleCommands.Create c) {
             String Title = title;
             String Body = body;
             String Owner = owner;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.ArticleCreated e = (ArticleEvent.ArticleCreated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.article.CreateLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), title, body, owner, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), title, body, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.article;
 //
 //public class CreateLogic {
-//    public static void verify(ArticleState articleState, String title, String body, String owner, VerificationContext verificationContext) {
+//    public static ArticleEvent.ArticleCreated verify(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, ArticleState articleState, String title, String body, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdate(String title, String body, String owner, ArticleCommands.Update c) {
+        protected ArticleEvent.ArticleUpdated verifyUpdate(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, String title, String body, String owner, ArticleCommands.Update c) {
             String Title = title;
             String Body = body;
             String Owner = owner;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.ArticleUpdated e = (ArticleEvent.ArticleUpdated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.article.UpdateLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), title, body, owner, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), title, body, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.article;
 //
 //public class UpdateLogic {
-//    public static void verify(ArticleState articleState, String title, String body, String owner, VerificationContext verificationContext) {
+//    public static ArticleEvent.ArticleUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, ArticleState articleState, String title, String body, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDelete(ArticleCommands.Delete c) {
+        protected ArticleEvent.ArticleDeleted verifyDelete(java.util.function.Supplier<ArticleEvent.ArticleDeleted> eventFactory, ArticleCommands.Delete c) {
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.ArticleDeleted e = (ArticleEvent.ArticleDeleted) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.article.DeleteLogic",
                     "verify",
-                    new Class[]{ArticleState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.article;
 //
 //public class DeleteLogic {
-//    public static void verify(ArticleState articleState, VerificationContext verificationContext) {
+//    public static ArticleEvent.ArticleDeleted verify(java.util.function.Supplier<ArticleEvent.ArticleDeleted> eventFactory, ArticleState articleState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyAddComment(String commenter, String body, String owner, ArticleCommands.AddComment c) {
+        protected ArticleEvent.CommentAdded verifyAddComment(java.util.function.Supplier<ArticleEvent.CommentAdded> eventFactory, String commenter, String body, String owner, ArticleCommands.AddComment c) {
             String Commenter = commenter;
             String Body = body;
             String Owner = owner;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.CommentAdded e = (ArticleEvent.CommentAdded) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.article.AddCommentLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), commenter, body, owner, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), commenter, body, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.article;
 //
 //public class AddCommentLogic {
-//    public static void verify(ArticleState articleState, String commenter, String body, String owner, VerificationContext verificationContext) {
+//    public static ArticleEvent.CommentAdded verify(java.util.function.Supplier<ArticleEvent.CommentAdded> eventFactory, ArticleState articleState, String commenter, String body, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveComment(BigInteger commentSeqId, ArticleCommands.RemoveComment c) {
-            BigInteger CommentSeqId = commentSeqId;
-
-            ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
-                    "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), commentSeqId, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class RemoveCommentLogic {
-//    public static void verify(ArticleState articleState, BigInteger commentSeqId, VerificationContext verificationContext) {
-//    }
-//}
-
-        }
-           
-
-        protected void verifyUpdateComment(BigInteger commentSeqId, String commenter, String body, String owner, ArticleCommands.UpdateComment c) {
+        protected ArticleEvent.CommentUpdated verifyUpdateComment(java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory, BigInteger commentSeqId, String commenter, String body, String owner, ArticleCommands.UpdateComment c) {
             BigInteger CommentSeqId = commentSeqId;
             String Commenter = commenter;
             String Body = body;
             String Owner = owner;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.CommentUpdated e = (ArticleEvent.CommentUpdated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.article.UpdateCommentLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), commentSeqId, commenter, body, owner, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), commentSeqId, commenter, body, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.article;
 //
 //public class UpdateCommentLogic {
-//    public static void verify(ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, VerificationContext verificationContext) {
+//    public static ArticleEvent.CommentUpdated verify(java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory, ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
+        }
+           
+
+        protected ArticleEvent.CommentRemoved verifyRemoveComment(java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory, BigInteger commentSeqId, ArticleCommands.RemoveComment c) {
+            BigInteger CommentSeqId = commentSeqId;
+
+            ArticleEvent.CommentRemoved e = (ArticleEvent.CommentRemoved) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), commentSeqId, VerificationContext.forCommand(c)}
+            );
+
+//package org.test.aptosblogdemo.domain.article;
+//
+//public class RemoveCommentLogic {
+//    public static ArticleEvent.CommentRemoved verify(java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory, ArticleState articleState, BigInteger commentSeqId, VerificationContext verificationContext) {
+//    }
+//}
+
+            return e;
         }
            
 
@@ -253,11 +265,11 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setTitle(title);
             e.setBody(body);
             e.setOwner(owner);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -274,11 +286,11 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setTitle(title);
             e.setBody(body);
             e.setOwner(owner);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -292,11 +304,11 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
             AbstractArticleEvent.ArticleDeleted e = new AbstractArticleEvent.ArticleDeleted();
 
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -310,34 +322,15 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
             AbstractArticleEvent.CommentAdded e = new AbstractArticleEvent.CommentAdded();
 
-            e.setCommentSeqId(null); // todo Need to update 'verify' method to return event properties.
+            e.setCommentSeqId(null);
             e.setCommenter(commenter);
             e.setBody(body);
             e.setOwner(owner);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
-
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-            e.setArticleEventId(eventId);
-            return e;
-        }
-
-        protected AbstractArticleEvent.CommentRemoved newCommentRemoved(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId) {
-            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
-            AbstractArticleEvent.CommentRemoved e = new AbstractArticleEvent.CommentRemoved();
-
-            e.setCommentSeqId(commentSeqId);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -355,11 +348,30 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setCommenter(commenter);
             e.setBody(body);
             e.setOwner(owner);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setArticleEventId(eventId);
+            return e;
+        }
+
+        protected AbstractArticleEvent.CommentRemoved newCommentRemoved(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId) {
+            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
+            AbstractArticleEvent.CommentRemoved e = new AbstractArticleEvent.CommentRemoved();
+
+            e.setCommentSeqId(commentSeqId);
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
