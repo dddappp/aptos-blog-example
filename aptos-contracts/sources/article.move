@@ -64,7 +64,8 @@ module aptos_blog_demo::article {
 
     }
 
-    struct Article has key, store {
+    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+    struct Article has key {
         version: u64,
         title: String,
         body: String,

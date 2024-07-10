@@ -194,7 +194,7 @@ Confirm that Aptos CLI is installed and enter the directory `aptos-contracts`, t
 ```shell
 aptos init
 # Press Enter to confirm using the default values:
-aptos account fund-with-faucet --account default --amount 50000000000
+aptos account fund-with-faucet --account default --amount 1000000000
 # View Aptos Profiles:
 aptos config show-profiles
 ```
@@ -269,6 +269,7 @@ Use `aptos move run` command to submit a transaction and initialize the contract
 
 ```shell
 aptos move run --function-id 'default::aptos_blog_demo_init::initialize' --assume-yes
+# If you're testing the current version in the repository, you'll also need this:
 #aptos move run --function-id 'default::blog_aggregate::create' --args 'string:MyBlog' 'bool:false' --assume-yes
 ```
 
@@ -356,6 +357,16 @@ You can update an article like this: (Note that the first argument after --args 
 aptos move run --function-id 'default::article_aggregate::update' \
 --args u128:1 'string:foo' 'string:bar' address:{ACCOUNT_ADDRESS} \
 --assume-yes
+
+# If you're testing the current version in the repository, you need to do like this:
+#aptos move run --function-id 'default::article_aggregate::update' \
+#--args address:0xcf73c1a4dce2d7bbdabc7fd7da5ae8101e0a39815ee1ddd5af530c4f2eb08e16 'string:foo' 'string:bar' address:8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738 \
+#--assume-yes
+
+# View the updated article object information
+#curl --request GET \
+#  --url https://fullnode.devnet.aptoslabs.com/v1/accounts/0xcf73c1a4dce2d7bbdabc7fd7da5ae8101e0a39815ee1ddd5af530c4f2eb08e16/resources \
+#  --header 'Accept: application/json, application/x-bcs'
 ```
 
 Then re-query the article's information to see if it has been updated successfully:
@@ -387,8 +398,9 @@ aptos move run --function-id 'default::article_aggregate::add_comment' \
 --args u128:2 u64:1 'string:ATestComment1' 'string:body' address:{ACCOUNT_ADDRESS} \
 --assume-yes
 
+# If you're testing the current version in the repository, you need to do like this:
 #aptos move run --function-id 'default::article_aggregate::add_comment' \
-#--args u128:1 'string:ATestComment1' 'string:body' address:0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738 \
+#--args address:0xb761562e360c04f1b408ab8c9168e14a81991f2fd903905dbda5a93f28a257f1 'string:ATestComment1' 'string:body' address:0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738 \
 #--assume-yes
 ```
 
@@ -428,6 +440,12 @@ curl --request POST \
 --header 'Content-Type: application/json' \
 --url https://fullnode.devnet.aptoslabs.com/v1/tables/{COMMENT_TABLE_HANDLE}/item \
 --data '{"key_type":"u64","value_type":"{ACCOUNT_ADDRESS}::comment::Comment","key":"1"}'
+
+# For example:
+#curl --request POST \
+#--header 'Content-Type: application/json' \
+#--url https://fullnode.devnet.aptoslabs.com/v1/tables/0xfa16370a4cce745d3e251f20a30746dfe7d46ec753b8dab088a3f250a434b4d2/item \
+#--data '{"key_type":"u64","value_type":"0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738::comment::Comment","key":"1"}'
 ```
 
 #### Update Comments
