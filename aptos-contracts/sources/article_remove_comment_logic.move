@@ -24,10 +24,11 @@ module aptos_blog_demo::article_remove_comment_logic {
         _account: &signer,
         comment_removed: &article::CommentRemoved,
         _id: address,
-        article: &mut article::Article,
-    ) {
+        article: article::Article,
+    ): article::Article {
         let comment_seq_id = comment_removed::comment_seq_id(comment_removed);
-        article::remove_comment(article, comment_seq_id);
+        article::remove_comment(&mut article, comment_seq_id);
+        article
     }
 
 }

@@ -20,10 +20,11 @@ module aptos_blog_demo::article_delete_logic {
         _account: &signer,
         article_deleted: &article::ArticleDeleted,
         id: address,
-        _article: &mut article::Article,
-    ) {
+        article: article::Article,
+    ): article::Article {
         let _ = article_deleted;
         blog_aggregate::remove_article(id);
+        article
     }
 
 }

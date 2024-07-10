@@ -27,14 +27,15 @@ module aptos_blog_demo::article_update_logic {
         _account: &signer,
         article_updated: &article::ArticleUpdated,
         _id: address,
-        article: &mut article::Article,
-    ) {
+        article: article::Article,
+    ): article::Article {
         let title = article_updated::title(article_updated);
         let body = article_updated::body(article_updated);
         let owner = article_updated::owner(article_updated);
-        article::set_title(article, title);
-        article::set_body(article, body);
-        article::set_owner(article, owner);
+        article::set_title(&mut article, title);
+        article::set_body(&mut article, body);
+        article::set_owner(&mut article, owner);
+        article
     }
 
 }

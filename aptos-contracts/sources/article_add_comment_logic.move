@@ -30,9 +30,9 @@ module aptos_blog_demo::article_add_comment_logic {
         _account: &signer,
         comment_added: &article::CommentAdded,
         id: address,
-        article: &mut article::Article,
-    ) {
-        let comment_seq_id = article::next_comment_seq_id(article);
+        article: article::Article,
+    ): article::Article {
+        let comment_seq_id = article::next_comment_seq_id(&mut article);
         let commenter = comment_added::commenter(comment_added);
         let body = comment_added::body(comment_added);
         let owner = comment_added::owner(comment_added);
@@ -42,7 +42,8 @@ module aptos_blog_demo::article_add_comment_logic {
             body,
             owner,
         );
-        article::add_comment(id, article, comment);
+        article::add_comment(id, &mut article, comment);
+        article
     }
 
 }

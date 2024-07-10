@@ -34,6 +34,7 @@ module aptos_blog_demo::article_aggregate {
         let extend_ref = object::generate_extend_ref(&constructor_ref);
         let delete_ref = object::generate_delete_ref(&constructor_ref);
         let transfer_ref = object::generate_transfer_ref(&constructor_ref);
+        object::disable_ungated_transfer(&transfer_ref);
         let id = object::address_from_constructor_ref(&constructor_ref);
         let article = article_create_logic::mutate(
             account,
@@ -68,13 +69,13 @@ module aptos_blog_demo::article_aggregate {
             id,
             &article,
         );
-        article_update_logic::mutate(
+        let updated_article = article_update_logic::mutate(
             account,
             &article_updated,
             id,
-            &mut article,
+            article,
         );
-        article::update_version_and_add(id, article);
+        article::update_version_and_add(id, updated_article);
         article::emit_article_updated(article_updated);
     }
 
@@ -89,13 +90,13 @@ module aptos_blog_demo::article_aggregate {
             id,
             &mut article,
         );
-        article_delete_logic::mutate(
+        let updated_article = article_delete_logic::mutate(
             account,
             &article_deleted,
             id,
-            &mut article,
+            article,
         );
-        article::drop_article(article);
+        article::drop_article(updated_article);
         article::delete_article(id);
         article::emit_article_deleted(article_deleted);
     }
@@ -118,13 +119,13 @@ module aptos_blog_demo::article_aggregate {
             id,
             &article,
         );
-        article_add_comment_logic::mutate(
+        let updated_article = article_add_comment_logic::mutate(
             account,
             &comment_added,
             id,
-            &mut article,
+            article,
         );
-        article::update_version_and_add(id, article);
+        article::update_version_and_add(id, updated_article);
         article::emit_comment_added(comment_added);
     }
 
@@ -148,13 +149,13 @@ module aptos_blog_demo::article_aggregate {
             id,
             &article,
         );
-        article_update_comment_logic::mutate(
+        let updated_article = article_update_comment_logic::mutate(
             account,
             &comment_updated,
             id,
-            &mut article,
+            article,
         );
-        article::update_version_and_add(id, article);
+        article::update_version_and_add(id, updated_article);
         article::emit_comment_updated(comment_updated);
     }
 
@@ -172,13 +173,13 @@ module aptos_blog_demo::article_aggregate {
             id,
             &article,
         );
-        article_remove_comment_logic::mutate(
+        let updated_article = article_remove_comment_logic::mutate(
             account,
             &comment_removed,
             id,
-            &mut article,
+            article,
         );
-        article::update_version_and_add(id, article);
+        article::update_version_and_add(id, updated_article);
         article::emit_comment_removed(comment_removed);
     }
 
