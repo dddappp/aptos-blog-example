@@ -7,7 +7,7 @@ module aptos_blog_demo::article_added_to_blog {
 
     use aptos_blog_demo::blog::{Self, ArticleAddedToBlog};
 
-    public fun article_id(article_added_to_blog: &ArticleAddedToBlog): u128 {
+    public fun article_id(article_added_to_blog: &ArticleAddedToBlog): address {
         blog::article_added_to_blog_article_id(article_added_to_blog)
     }
 

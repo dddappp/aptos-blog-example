@@ -5,11 +5,12 @@
 
 module aptos_blog_demo::article_created {
 
+    use std::option;
     use aptos_blog_demo::article::{Self, ArticleCreated};
     use std::string::String;
 
-    public fun article_id(article_created: &ArticleCreated): u128 {
-        article::article_created_article_id(article_created)
+    public fun id(article_created: &ArticleCreated): option::Option<address> {
+        article::article_created_id(article_created)
     }
 
     public fun title(article_created: &ArticleCreated): String {

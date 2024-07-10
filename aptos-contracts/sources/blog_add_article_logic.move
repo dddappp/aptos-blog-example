@@ -7,7 +7,7 @@ module aptos_blog_demo::blog_add_article_logic {
     friend aptos_blog_demo::blog_aggregate;
 
     public(friend) fun verify(
-        article_id: u128,
+        article_id: address,
         blog: &blog::Blog,
     ): blog::ArticleAddedToBlog {
         blog::new_article_added_to_blog(

@@ -8,8 +8,8 @@ module aptos_blog_demo::article_updated {
     use aptos_blog_demo::article::{Self, ArticleUpdated};
     use std::string::String;
 
-    public fun article_id(article_updated: &ArticleUpdated): u128 {
-        article::article_updated_article_id(article_updated)
+    public fun id(article_updated: &ArticleUpdated): address {
+        article::article_updated_id(article_updated)
     }
 
     public fun title(article_updated: &ArticleUpdated): String {

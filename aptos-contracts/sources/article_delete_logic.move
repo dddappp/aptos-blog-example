@@ -6,10 +6,12 @@ module aptos_blog_demo::article_delete_logic {
 
     public(friend) fun verify(
         account: &signer,
+        id: address,
         article: &article::Article,
     ): article::ArticleDeleted {
         let _ = account;
         article::new_article_deleted(
+            id,
             article,
         )
     }
@@ -17,13 +19,11 @@ module aptos_blog_demo::article_delete_logic {
     public(friend) fun mutate(
         _account: &signer,
         article_deleted: &article::ArticleDeleted,
-        article: article::Article,
-    ): article::Article {
-        let article_id = article::article_id(&article);
-        let _ = article_id;
+        id: address,
+        _article: &mut article::Article,
+    ) {
         let _ = article_deleted;
-        blog_aggregate::remove_article(article::article_id(&article));
-        article
+        blog_aggregate::remove_article(id);
     }
 
 }

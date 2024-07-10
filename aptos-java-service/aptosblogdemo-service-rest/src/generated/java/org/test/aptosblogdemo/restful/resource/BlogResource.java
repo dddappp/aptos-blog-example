@@ -289,7 +289,7 @@ public class BlogResource {
  
     public static class BlogResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(String accountAddress, BlogCommand value) {
+        public static void setNullIdOrThrowOnInconsistentIds(String accountAddress, org.test.aptosblogdemo.domain.blog.BlogCommand value) {
             String idObj = accountAddress;
             if (value.getAccountAddress() == null) {
                 value.setAccountAddress(idObj);

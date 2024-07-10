@@ -405,7 +405,7 @@ public class ArticleResource {
  
     public static class ArticleResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(BigInteger articleId, ArticleCommand value) {
+        public static void setNullIdOrThrowOnInconsistentIds(BigInteger articleId, org.test.aptosblogdemo.domain.article.ArticleCommand value) {
             BigInteger idObj = articleId;
             if (value.getArticleId() == null) {
                 value.setArticleId(idObj);

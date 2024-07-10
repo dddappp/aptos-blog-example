@@ -38,7 +38,7 @@ module aptos_blog_demo::blog_aggregate {
     }
 
     public(friend) fun add_article(
-        article_id: u128,
+        article_id: address,
     ) {
         let blog = blog::remove_blog();
         let article_added_to_blog = blog_add_article_logic::verify(
@@ -54,7 +54,7 @@ module aptos_blog_demo::blog_aggregate {
     }
 
     public(friend) fun remove_article(
-        article_id: u128,
+        article_id: address,
     ) {
         let blog = blog::remove_blog();
         let article_removed_from_blog = blog_remove_article_logic::verify(
@@ -112,7 +112,7 @@ module aptos_blog_demo::blog_aggregate {
     public entry fun update(
         account: &signer,
         name: String,
-        articles: vector<u128>,
+        articles: vector<address>,
         is_emergency: bool,
     ) {
         let blog = blog::remove_blog();

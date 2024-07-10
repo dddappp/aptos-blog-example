@@ -9,7 +9,7 @@ module aptos_blog_demo::blog_update_logic {
     public(friend) fun verify(
         account: &signer,
         name: String,
-        articles: vector<u128>,
+        articles: vector<address>,
         is_emergency: bool,
         blog: &blog::Blog,
     ): blog::BlogUpdated {

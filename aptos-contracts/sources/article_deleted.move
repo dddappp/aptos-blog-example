@@ -7,8 +7,8 @@ module aptos_blog_demo::article_deleted {
 
     use aptos_blog_demo::article::{Self, ArticleDeleted};
 
-    public fun article_id(article_deleted: &ArticleDeleted): u128 {
-        article::article_deleted_article_id(article_deleted)
+    public fun article_id(article_deleted: &ArticleDeleted): address {
+        article::article_deleted_id(article_deleted)
     }
 
 }

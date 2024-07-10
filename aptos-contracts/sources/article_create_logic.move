@@ -22,17 +22,18 @@ module aptos_blog_demo::article_create_logic {
 
     public(friend) fun mutate(
         _account: &signer,
+        id: address,
         article_created: &article::ArticleCreated,
     ): article::Article {
         let title = article_created::title(article_created);
         let body = article_created::body(article_created);
         let owner = article_created::owner(article_created);
-        let article = article::create_article(
+        let article = article::new_article(
             title,
             body,
             owner,
         );
-        blog_aggregate::add_article(article::article_id(&article));
+        blog_aggregate::add_article(id);
         article
     }
 

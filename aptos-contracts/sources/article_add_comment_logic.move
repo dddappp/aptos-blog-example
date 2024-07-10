@@ -11,11 +11,13 @@ module aptos_blog_demo::article_add_comment_logic {
         commenter: String,
         body: String,
         owner: address,
+        id: address,
         article: &article::Article,
     ): article::CommentAdded {
         let _ = account;
         let comment_seq_id = article::current_comment_seq_id(article) + 1;
         article::new_comment_added(
+            id,
             article,
             comment_seq_id,
             commenter,
@@ -27,22 +29,20 @@ module aptos_blog_demo::article_add_comment_logic {
     public(friend) fun mutate(
         _account: &signer,
         comment_added: &article::CommentAdded,
-        article: article::Article,
-    ): article::Article {
-        let comment_seq_id = article::next_comment_seq_id(&mut article);
+        id: address,
+        article: &mut article::Article,
+    ) {
+        let comment_seq_id = article::next_comment_seq_id(article);
         let commenter = comment_added::commenter(comment_added);
         let body = comment_added::body(comment_added);
         let owner = comment_added::owner(comment_added);
-        let article_id = article::article_id(&article);
-        let _ = article_id;
         let comment = comment::new_comment(
             comment_seq_id,
             commenter,
             body,
             owner,
         );
-        article::add_comment(&mut article, comment);
-        article
+        article::add_comment(id, article, comment);
     }
 
 }

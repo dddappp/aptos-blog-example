@@ -10,10 +10,12 @@ module aptos_blog_demo::article_update_logic {
         title: String,
         body: String,
         owner: address,
+        id: address,
         article: &article::Article,
     ): article::ArticleUpdated {
         let _ = account;
         article::new_article_updated(
+            id,
             article,
             title,
             body,
@@ -24,17 +26,15 @@ module aptos_blog_demo::article_update_logic {
     public(friend) fun mutate(
         _account: &signer,
         article_updated: &article::ArticleUpdated,
-        article: article::Article,
-    ): article::Article {
+        _id: address,
+        article: &mut article::Article,
+    ) {
         let title = article_updated::title(article_updated);
         let body = article_updated::body(article_updated);
         let owner = article_updated::owner(article_updated);
-        let article_id = article::article_id(&article);
-        let _ = article_id;
-        article::set_title(&mut article, title);
-        article::set_body(&mut article, body);
-        article::set_owner(&mut article, owner);
-        article
+        article::set_title(article, title);
+        article::set_body(article, body);
+        article::set_owner(article, owner);
     }
 
 }

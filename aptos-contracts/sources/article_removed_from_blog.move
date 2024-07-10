@@ -7,7 +7,7 @@ module aptos_blog_demo::article_removed_from_blog {
 
     use aptos_blog_demo::blog::{Self, ArticleRemovedFromBlog};
 
-    public fun article_id(article_removed_from_blog: &ArticleRemovedFromBlog): u128 {
+    public fun article_id(article_removed_from_blog: &ArticleRemovedFromBlog): address {
         blog::article_removed_from_blog_article_id(article_removed_from_blog)
     }
 

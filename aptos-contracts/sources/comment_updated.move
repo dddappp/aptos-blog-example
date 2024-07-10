@@ -8,8 +8,8 @@ module aptos_blog_demo::comment_updated {
     use aptos_blog_demo::article::{Self, CommentUpdated};
     use std::string::String;
 
-    public fun article_id(comment_updated: &CommentUpdated): u128 {
-        article::comment_updated_article_id(comment_updated)
+    public fun id(comment_updated: &CommentUpdated): address {
+        article::comment_updated_id(comment_updated)
     }
 
     public fun comment_seq_id(comment_updated: &CommentUpdated): u64 {

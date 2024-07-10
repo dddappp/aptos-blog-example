@@ -7,12 +7,14 @@ module aptos_blog_demo::article_remove_comment_logic {
     public(friend) fun verify(
         account: &signer,
         comment_seq_id: u64,
+        id: address,
         article: &article::Article,
     ): article::CommentRemoved {
         let _ = account;
         let comment = article::borrow_comment(article, comment_seq_id);
         let _ = comment;
         article::new_comment_removed(
+            id,
             article,
             comment_seq_id,
         )
@@ -21,13 +23,11 @@ module aptos_blog_demo::article_remove_comment_logic {
     public(friend) fun mutate(
         _account: &signer,
         comment_removed: &article::CommentRemoved,
-        article: article::Article,
-    ): article::Article {
+        _id: address,
+        article: &mut article::Article,
+    ) {
         let comment_seq_id = comment_removed::comment_seq_id(comment_removed);
-        let article_id = article::article_id(&article);
-        let _ = article_id;
-        article::remove_comment(&mut article, comment_seq_id);
-        article
+        article::remove_comment(article, comment_seq_id);
     }
 
 }

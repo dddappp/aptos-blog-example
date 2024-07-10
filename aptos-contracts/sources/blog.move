@@ -53,7 +53,7 @@ module aptos_blog_demo::blog {
     struct Blog has key, store {
         version: u64,
         name: String,
-        articles: vector<u128>,
+        articles: vector<address>,
         vault: Coin<AptosCoin>,
         is_emergency: bool,
     }
@@ -71,19 +71,19 @@ module aptos_blog_demo::blog {
         blog.name = name;
     }
 
-    public fun borrow_articles(blog: &Blog): &vector<u128> {
+    public fun borrow_articles(blog: &Blog): &vector<address> {
         &blog.articles
     }
 
-    public(friend) fun borrow_mut_articles(blog: &mut Blog): &mut vector<u128> {
+    public(friend) fun borrow_mut_articles(blog: &mut Blog): &mut vector<address> {
         &mut blog.articles
     }
 
-    public fun articles(blog: &Blog): vector<u128> {
+    public fun articles(blog: &Blog): vector<address> {
         blog.articles
     }
 
-    public(friend) fun set_articles(blog: &mut Blog, articles: vector<u128>) {
+    public(friend) fun set_articles(blog: &mut Blog, articles: vector<address>) {
         blog.articles = articles;
     }
 
@@ -105,7 +105,7 @@ module aptos_blog_demo::blog {
 
     public(friend) fun new_blog(
         name: String,
-        articles: vector<u128>,
+        articles: vector<address>,
         is_emergency: bool,
     ): Blog {
         assert!(std::string::length(&name) <= 200, EDataTooLong);
@@ -143,16 +143,16 @@ module aptos_blog_demo::blog {
 
     struct ArticleAddedToBlog has store, drop {
         version: u64,
-        article_id: u128,
+        article_id: address,
     }
 
-    public fun article_added_to_blog_article_id(article_added_to_blog: &ArticleAddedToBlog): u128 {
+    public fun article_added_to_blog_article_id(article_added_to_blog: &ArticleAddedToBlog): address {
         article_added_to_blog.article_id
     }
 
     public(friend) fun new_article_added_to_blog(
         blog: &Blog,
-        article_id: u128,
+        article_id: address,
     ): ArticleAddedToBlog {
         ArticleAddedToBlog {
             version: version(blog),
@@ -162,16 +162,16 @@ module aptos_blog_demo::blog {
 
     struct ArticleRemovedFromBlog has store, drop {
         version: u64,
-        article_id: u128,
+        article_id: address,
     }
 
-    public fun article_removed_from_blog_article_id(article_removed_from_blog: &ArticleRemovedFromBlog): u128 {
+    public fun article_removed_from_blog_article_id(article_removed_from_blog: &ArticleRemovedFromBlog): address {
         article_removed_from_blog.article_id
     }
 
     public(friend) fun new_article_removed_from_blog(
         blog: &Blog,
-        article_id: u128,
+        article_id: address,
     ): ArticleRemovedFromBlog {
         ArticleRemovedFromBlog {
             version: version(blog),
@@ -220,7 +220,7 @@ module aptos_blog_demo::blog {
     struct BlogUpdated has store, drop {
         version: u64,
         name: String,
-        articles: vector<u128>,
+        articles: vector<address>,
         is_emergency: bool,
     }
 
@@ -228,7 +228,7 @@ module aptos_blog_demo::blog {
         blog_updated.name
     }
 
-    public fun blog_updated_articles(blog_updated: &BlogUpdated): vector<u128> {
+    public fun blog_updated_articles(blog_updated: &BlogUpdated): vector<address> {
         blog_updated.articles
     }
 
@@ -239,7 +239,7 @@ module aptos_blog_demo::blog {
     public(friend) fun new_blog_updated(
         blog: &Blog,
         name: String,
-        articles: vector<u128>,
+        articles: vector<address>,
         is_emergency: bool,
     ): BlogUpdated {
         BlogUpdated {
@@ -293,7 +293,7 @@ module aptos_blog_demo::blog {
         blog.name
     }
 
-    public fun singleton_articles(): vector<u128> acquires Blog {
+    public fun singleton_articles(): vector<address> acquires Blog {
         let blog = borrow_global<Blog>(genesis_account::resource_account_address());
         blog.articles
     }

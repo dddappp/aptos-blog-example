@@ -7,8 +7,8 @@ module aptos_blog_demo::comment_removed {
 
     use aptos_blog_demo::article::{Self, CommentRemoved};
 
-    public fun article_id(comment_removed: &CommentRemoved): u128 {
-        article::comment_removed_article_id(comment_removed)
+    public fun id(comment_removed: &CommentRemoved): address {
+        article::comment_removed_id(comment_removed)
     }
 
     public fun comment_seq_id(comment_removed: &CommentRemoved): u64 {

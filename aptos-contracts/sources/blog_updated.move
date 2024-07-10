@@ -12,7 +12,7 @@ module aptos_blog_demo::blog_updated {
         blog::blog_updated_name(blog_updated)
     }
 
-    public fun articles(blog_updated: &BlogUpdated): vector<u128> {
+    public fun articles(blog_updated: &BlogUpdated): vector<address> {
         blog::blog_updated_articles(blog_updated)
     }
 
