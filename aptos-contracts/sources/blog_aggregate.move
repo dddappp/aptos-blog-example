@@ -19,6 +19,8 @@ module aptos_blog_demo::blog_aggregate {
     friend aptos_blog_demo::article_create_logic;
     friend aptos_blog_demo::article_delete_logic;
 
+    const ENotPublisher: u64 = 50;
+
     public entry fun create(
         account: &signer,
         name: String,
@@ -93,6 +95,7 @@ module aptos_blog_demo::blog_aggregate {
         account: &signer,
         amount: u64,
     ): Coin<AptosCoin> {
+        assert!(std::signer::address_of(account) == @aptos_blog_demo, ENotPublisher);
         let blog = blog::remove_blog();
         let vault_withdrawn = blog_withdraw_logic::verify(
             account,

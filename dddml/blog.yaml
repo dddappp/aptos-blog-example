@@ -93,6 +93,7 @@ singletonObjects:
               type: u64
       Withdraw:
         #shouldCallByReference: true
+        requiredPermission: "__Publisher__"
         parameters:
           Amount:
             type: u64
