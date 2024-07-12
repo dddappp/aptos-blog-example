@@ -4,7 +4,7 @@ version = "0.0.1"
 
 [addresses]
 aptos_blog_demo = "_"
-admin_addr = "_"
+#admin_addr = "_"
 #aptos move compile --named-addresses aptos_blog_demo=default,admin_addr=default
 #aptos move publish --named-addresses aptos_blog_demo=default,admin_addr=default --assume-yes
 
