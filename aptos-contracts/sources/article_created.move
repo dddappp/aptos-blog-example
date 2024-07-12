@@ -5,8 +5,8 @@
 
 module aptos_blog_demo::article_created {
 
-    use std::option;
     use aptos_blog_demo::article::{Self, ArticleCreated};
+    use std::option;
     use std::string::String;
 
     public fun id(article_created: &ArticleCreated): option::Option<address> {
