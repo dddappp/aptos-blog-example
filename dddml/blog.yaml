@@ -3,11 +3,10 @@ aggregates:
     metadata:
       Preprocessors: [ "MOVE_CRUD_IT" ]
     id:
-      name: ArticleId
-      type: u128
-      generator:
-        class: sequence
-        structName: ArticleIdGenerator
+      name: Id
+      type: AptosObjectID
+      #generator:
+      #  class: AptosObject
     properties:
       Title:
         type: String
@@ -49,7 +48,7 @@ singletonObjects:
         type: String
         length: 200
       Articles:
-        itemType: u128
+        itemType: address
       Vault:
         type: "Coin<APT>"
       IsEmergency:
@@ -71,7 +70,7 @@ singletonObjects:
           name: ArticleAddedToBlog
         parameters:
           ArticleId:
-            type: u128
+            type: address
       RemoveArticle:
         isInternal: true
         metadata:
@@ -80,7 +79,7 @@ singletonObjects:
           name: ArticleRemovedFromBlog
         parameters:
           ArticleId:
-            type: u128
+            type: address
 
       Donate:
         #shouldCallByReference: true

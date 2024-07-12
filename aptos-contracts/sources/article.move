@@ -38,7 +38,7 @@ module aptos_blog_demo::article {
     }
 
     struct CommentTableItemAdded has store, drop {
-        id: address,
+        article_id: address,
         comment_seq_id: u64,
     }
 
@@ -150,7 +150,7 @@ module aptos_blog_demo::article {
         assert!(!table_with_length::contains(&article.comments, comment_seq_id), EIdAlreadyExists);
         table_with_length::add(&mut article.comments, comment_seq_id, comment);
         emit_comment_table_item_added(CommentTableItemAdded {
-            id,
+            article_id: id,
             comment_seq_id,
         });
     }
