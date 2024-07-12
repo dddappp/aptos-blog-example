@@ -27,7 +27,7 @@ public interface ArticleApplicationService {
 
     void when(ArticleCommands.RemoveComment c);
 
-    ArticleState get(BigInteger id);
+    ArticleState get(String id);
 
     Iterable<ArticleState> getAll(Integer firstResult, Integer maxResults);
 
@@ -41,13 +41,13 @@ public interface ArticleApplicationService {
 
     long getCount(Criterion filter);
 
-    ArticleEvent getEvent(BigInteger articleId, long version);
+    ArticleEvent getEvent(String id, long version);
 
-    ArticleState getHistoryState(BigInteger articleId, long version);
+    ArticleState getHistoryState(String id, long version);
 
-    CommentState getComment(BigInteger articleId, BigInteger commentSeqId);
+    CommentState getComment(String articleId, BigInteger commentSeqId);
 
-    Iterable<CommentState> getComments(BigInteger articleId, Criterion filter, List<String> orders);
+    Iterable<CommentState> getComments(String articleId, Criterion filter, List<String> orders);
 
 }
 

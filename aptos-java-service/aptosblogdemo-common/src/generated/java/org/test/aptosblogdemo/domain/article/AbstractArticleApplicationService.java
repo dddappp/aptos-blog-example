@@ -74,7 +74,7 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         update(c, ar -> ar.removeComment(c.getCommentSeqId(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
-    public ArticleState get(BigInteger id) {
+    public ArticleState get(String id) {
         ArticleState state = getStateRepository().get(id, true);
         return state;
     }
@@ -103,26 +103,26 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         return getStateQueryRepository().getCount(filter);
     }
 
-    public ArticleEvent getEvent(BigInteger articleId, long version) {
-        ArticleEvent e = (ArticleEvent)getEventStore().getEvent(toEventStoreAggregateId(articleId), version);
+    public ArticleEvent getEvent(String id, long version) {
+        ArticleEvent e = (ArticleEvent)getEventStore().getEvent(toEventStoreAggregateId(id), version);
         if (e != null) {
             ((ArticleEvent.SqlArticleEvent)e).setEventReadOnly(true); 
         } else if (version == -1) {
-            return getEvent(articleId, 0);
+            return getEvent(id, 0);
         }
         return e;
     }
 
-    public ArticleState getHistoryState(BigInteger articleId, long version) {
-        EventStream eventStream = getEventStore().loadEventStream(AbstractArticleEvent.class, toEventStoreAggregateId(articleId), version - 1);
+    public ArticleState getHistoryState(String id, long version) {
+        EventStream eventStream = getEventStore().loadEventStream(AbstractArticleEvent.class, toEventStoreAggregateId(id), version - 1);
         return new AbstractArticleState.SimpleArticleState(eventStream.getEvents());
     }
 
-    public CommentState getComment(BigInteger articleId, BigInteger commentSeqId) {
+    public CommentState getComment(String articleId, BigInteger commentSeqId) {
         return getStateQueryRepository().getComment(articleId, commentSeqId);
     }
 
-    public Iterable<CommentState> getComments(BigInteger articleId, Criterion filter, List<String> orders) {
+    public Iterable<CommentState> getComments(String articleId, Criterion filter, List<String> orders) {
         return getStateQueryRepository().getComments(articleId, filter, orders);
     }
 
@@ -131,12 +131,12 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         return new AbstractArticleAggregate.SimpleArticleAggregate(state);
     }
 
-    public EventStoreAggregateId toEventStoreAggregateId(BigInteger aggregateId) {
+    public EventStoreAggregateId toEventStoreAggregateId(String aggregateId) {
         return new EventStoreAggregateId.SimpleEventStoreAggregateId(aggregateId);
     }
 
     protected void update(ArticleCommand c, Consumer<ArticleAggregate> action) {
-        BigInteger aggregateId = c.getArticleId();
+        String aggregateId = c.getId();
         EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
         ArticleState state = getStateRepository().get(aggregateId, false);
         boolean duplicate = isDuplicateCommand(c, eventStoreAggregateId, state);

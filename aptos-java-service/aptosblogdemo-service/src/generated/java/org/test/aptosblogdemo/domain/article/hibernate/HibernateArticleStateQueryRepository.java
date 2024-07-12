@@ -31,7 +31,7 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
         return this.sessionFactory.getCurrentSession();
     }
     
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ArticleId", "Title", "Body", "Owner", "Comments", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("Id", "Title", "Body", "Owner", "Comments", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -44,7 +44,7 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public ArticleState get(BigInteger id) {
+    public ArticleState get(String id) {
 
         ArticleState state = (ArticleState)getCurrentSession().get(AbstractArticleState.SimpleArticleState.class, id);
         if (getReadOnlyProxyGenerator() != null && state != null) {
@@ -131,13 +131,13 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public CommentState getComment(BigInteger articleId, BigInteger commentSeqId) {
+    public CommentState getComment(String articleId, BigInteger commentSeqId) {
         ArticleCommentId entityId = new ArticleCommentId(articleId, commentSeqId);
         return (CommentState) getCurrentSession().get(AbstractCommentState.SimpleCommentState.class, entityId);
     }
 
     @Transactional(readOnly = true)
-    public Iterable<CommentState> getComments(BigInteger articleId, org.dddml.support.criterion.Criterion filter, List<String> orders) {
+    public Iterable<CommentState> getComments(String articleId, org.dddml.support.criterion.Criterion filter, List<String> orders) {
         Criteria criteria = getCurrentSession().createCriteria(AbstractCommentState.SimpleCommentState.class);
         org.hibernate.criterion.Junction partIdCondition = org.hibernate.criterion.Restrictions.conjunction()
             .add(org.hibernate.criterion.Restrictions.eq("articleCommentId.articleId", articleId))

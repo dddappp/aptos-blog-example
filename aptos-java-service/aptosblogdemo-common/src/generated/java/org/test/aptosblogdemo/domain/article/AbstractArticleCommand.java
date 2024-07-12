@@ -13,16 +13,16 @@ import org.test.aptosblogdemo.domain.AbstractCommand;
 
 public abstract class AbstractArticleCommand extends AbstractCommand implements ArticleCommand {
 
-    private BigInteger articleId;
+    private String id;
 
-    public BigInteger getArticleId()
+    public String getId()
     {
-        return this.articleId;
+        return this.id;
     }
 
-    public void setArticleId(BigInteger articleId)
+    public void setId(String id)
     {
-        this.articleId = articleId;
+        this.id = id;
     }
 
     private Long offChainVersion;

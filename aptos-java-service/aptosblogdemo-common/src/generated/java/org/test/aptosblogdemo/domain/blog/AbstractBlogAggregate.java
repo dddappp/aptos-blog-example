@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 
@@ -60,7 +60,7 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
 
         @Override
-        public void addArticle(BigInteger articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.AddArticle c) {
+        public void addArticle(String articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.AddArticle c) {
             java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory = () -> newArticleAddedToBlog(articleId, offChainVersion, commandId, requesterId);
             BlogEvent.ArticleAddedToBlog e;
             try {
@@ -73,7 +73,7 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
 
         @Override
-        public void removeArticle(BigInteger articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.RemoveArticle c) {
+        public void removeArticle(String articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.RemoveArticle c) {
             java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory = () -> newArticleRemovedFromBlog(articleId, offChainVersion, commandId, requesterId);
             BlogEvent.ArticleRemovedFromBlog e;
             try {
@@ -86,7 +86,7 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
 
         @Override
-        public void update(String name, BigInteger[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c) {
+        public void update(String name, String[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c) {
             java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory = () -> newBlogUpdated(name, articles, isEmergency, offChainVersion, commandId, requesterId);
             BlogEvent.BlogUpdated e;
             try {
@@ -133,20 +133,20 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
            
 
-        protected BlogEvent.ArticleAddedToBlog verifyAddArticle(java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory, BigInteger articleId, BlogCommands.AddArticle c) {
-            BigInteger ArticleId = articleId;
+        protected BlogEvent.ArticleAddedToBlog verifyAddArticle(java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory, String articleId, BlogCommands.AddArticle c) {
+            String ArticleId = articleId;
 
             BlogEvent.ArticleAddedToBlog e = (BlogEvent.ArticleAddedToBlog) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.AddArticleLogic",
                     "verify",
-                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, VerificationContext.class},
                     new Object[]{eventFactory, getState(), articleId, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class AddArticleLogic {
-//    public static BlogEvent.ArticleAddedToBlog verify(java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory, BlogState blogState, BigInteger articleId, VerificationContext verificationContext) {
+//    public static BlogEvent.ArticleAddedToBlog verify(java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory, BlogState blogState, String articleId, VerificationContext verificationContext) {
 //    }
 //}
 
@@ -154,20 +154,20 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
            
 
-        protected BlogEvent.ArticleRemovedFromBlog verifyRemoveArticle(java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory, BigInteger articleId, BlogCommands.RemoveArticle c) {
-            BigInteger ArticleId = articleId;
+        protected BlogEvent.ArticleRemovedFromBlog verifyRemoveArticle(java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory, String articleId, BlogCommands.RemoveArticle c) {
+            String ArticleId = articleId;
 
             BlogEvent.ArticleRemovedFromBlog e = (BlogEvent.ArticleRemovedFromBlog) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.RemoveArticleLogic",
                     "verify",
-                    new Class[]{java.util.function.Supplier.class, BlogState.class, BigInteger.class, VerificationContext.class},
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, VerificationContext.class},
                     new Object[]{eventFactory, getState(), articleId, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class RemoveArticleLogic {
-//    public static BlogEvent.ArticleRemovedFromBlog verify(java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory, BlogState blogState, BigInteger articleId, VerificationContext verificationContext) {
+//    public static BlogEvent.ArticleRemovedFromBlog verify(java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory, BlogState blogState, String articleId, VerificationContext verificationContext) {
 //    }
 //}
 
@@ -216,22 +216,22 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
            
 
-        protected BlogEvent.BlogUpdated verifyUpdate(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, String name, BigInteger[] articles, Boolean isEmergency, BlogCommands.Update c) {
+        protected BlogEvent.BlogUpdated verifyUpdate(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, String name, String[] articles, Boolean isEmergency, BlogCommands.Update c) {
             String Name = name;
-            BigInteger[] Articles = articles;
+            String[] Articles = articles;
             Boolean IsEmergency = isEmergency;
 
             BlogEvent.BlogUpdated e = (BlogEvent.BlogUpdated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.UpdateLogic",
                     "verify",
-                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, BigInteger[].class, Boolean.class, VerificationContext.class},
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, String[].class, Boolean.class, VerificationContext.class},
                     new Object[]{eventFactory, getState(), name, articles, isEmergency, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class UpdateLogic {
-//    public static BlogEvent.BlogUpdated verify(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, BlogState blogState, String name, BigInteger[] articles, Boolean isEmergency, VerificationContext verificationContext) {
+//    public static BlogEvent.BlogUpdated verify(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, BlogState blogState, String name, String[] articles, Boolean isEmergency, VerificationContext verificationContext) {
 //    }
 //}
 
@@ -279,7 +279,7 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             return e;
         }
 
-        protected AbstractBlogEvent.ArticleAddedToBlog newArticleAddedToBlog(BigInteger articleId, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractBlogEvent.ArticleAddedToBlog newArticleAddedToBlog(String articleId, Long offChainVersion, String commandId, String requesterId) {
             BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
             AbstractBlogEvent.ArticleAddedToBlog e = new AbstractBlogEvent.ArticleAddedToBlog();
 
@@ -298,7 +298,7 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             return e;
         }
 
-        protected AbstractBlogEvent.ArticleRemovedFromBlog newArticleRemovedFromBlog(BigInteger articleId, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractBlogEvent.ArticleRemovedFromBlog newArticleRemovedFromBlog(String articleId, Long offChainVersion, String commandId, String requesterId) {
             BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
             AbstractBlogEvent.ArticleRemovedFromBlog e = new AbstractBlogEvent.ArticleRemovedFromBlog();
 
@@ -317,7 +317,7 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             return e;
         }
 
-        protected AbstractBlogEvent.BlogUpdated newBlogUpdated(String name, BigInteger[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractBlogEvent.BlogUpdated newBlogUpdated(String name, String[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId) {
             BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
             AbstractBlogEvent.BlogUpdated e = new AbstractBlogEvent.BlogUpdated();
 

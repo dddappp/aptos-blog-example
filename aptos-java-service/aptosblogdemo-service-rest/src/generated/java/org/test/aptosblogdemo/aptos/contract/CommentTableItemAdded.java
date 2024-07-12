@@ -15,15 +15,15 @@ import java.util.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentTableItemAdded {
 
-    private BigInteger articleId;
+    private String articleId;
 
     private BigInteger commentSeqId;
 
-    public BigInteger getArticleId() {
+    public String getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(BigInteger articleId) {
+    public void setArticleId(String articleId) {
         this.articleId = articleId;
     }
 
@@ -38,7 +38,7 @@ public class CommentTableItemAdded {
     @Override
     public String toString() {
         return "CommentTableItemAdded{" +
-                "articleId=" + articleId +
+                "articleId=" + '\'' + articleId + '\'' +
                 ", commentSeqId=" + commentSeqId +
                 '}';
     }

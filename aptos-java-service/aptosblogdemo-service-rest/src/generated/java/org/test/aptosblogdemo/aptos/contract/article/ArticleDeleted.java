@@ -16,16 +16,16 @@ import java.util.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ArticleDeleted {
 
-    private BigInteger articleId;
+    private String id;
 
     private BigInteger version;
 
-    public BigInteger getArticleId() {
-        return articleId;
+    public String getId() {
+        return id;
     }
 
-    public void setArticleId(BigInteger articleId) {
-        this.articleId = articleId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public BigInteger getVersion() {
@@ -39,7 +39,7 @@ public class ArticleDeleted {
     @Override
     public String toString() {
         return "ArticleDeleted{" +
-                "articleId=" + articleId +
+                "id=" + '\'' + id + '\'' +
                 ", version=" + version +
                 '}';
     }

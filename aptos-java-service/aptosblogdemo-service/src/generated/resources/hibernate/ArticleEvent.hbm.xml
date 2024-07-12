@@ -3,8 +3,8 @@
 <hibernate-mapping package="org.test.aptosblogdemo.domain.article">
   <class name="AbstractArticleEvent" table="article_event" abstract="true">
     <composite-id name="articleEventId" class="org.test.aptosblogdemo.domain.article.ArticleEventId">
-      <key-property name="articleId">
-        <column name="article_id" sql-type="DECIMAL(20,0)" />
+      <key-property name="id">
+        <column name="id" sql-type="VARCHAR(66)" />
       </key-property>
       <key-property name="version">
         <column name="version" sql-type="DECIMAL(20,0)" />

@@ -22,7 +22,7 @@ public class Blog {
 
     private String name;
 
-    private BigInteger[] articles;
+    private String[] articles;
 
     private Coin vault;
 
@@ -54,11 +54,11 @@ public class Blog {
         this.name = name;
     }
 
-    public BigInteger[] getArticles() {
+    public String[] getArticles() {
         return articles;
     }
 
-    public void setArticles(BigInteger[] articles) {
+    public void setArticles(String[] articles) {
         this.articles = articles;
     }
 

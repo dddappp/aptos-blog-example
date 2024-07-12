@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 import org.test.aptosblogdemo.domain.AbstractEvent;
@@ -222,15 +222,15 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
             return "ArticleAddedToBlog";
         }
 
-        public BigInteger getArticleId() {
+        public String getArticleId() {
             Object val = getDynamicProperties().get("articleId");
-            if (val instanceof BigInteger) {
-                return (BigInteger) val;
+            if (val instanceof String) {
+                return (String) val;
             }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public void setArticleId(BigInteger value) {
+        public void setArticleId(String value) {
             getDynamicProperties().put("articleId", value);
         }
 
@@ -243,15 +243,15 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
             return "ArticleRemovedFromBlog";
         }
 
-        public BigInteger getArticleId() {
+        public String getArticleId() {
             Object val = getDynamicProperties().get("articleId");
-            if (val instanceof BigInteger) {
-                return (BigInteger) val;
+            if (val instanceof String) {
+                return (String) val;
             }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public void setArticleId(BigInteger value) {
+        public void setArticleId(String value) {
             getDynamicProperties().put("articleId", value);
         }
 
@@ -318,15 +318,15 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
             getDynamicProperties().put("name", value);
         }
 
-        public BigInteger[] getArticles() {
+        public String[] getArticles() {
             Object val = getDynamicProperties().get("articles");
-            if (val instanceof BigInteger[]) {
-                return (BigInteger[]) val;
+            if (val instanceof String[]) {
+                return (String[]) val;
             }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger[].class);
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String[].class);
         }
 
-        public void setArticles(BigInteger[] value) {
+        public void setArticles(String[] value) {
             getDynamicProperties().put("articles", value);
         }
 

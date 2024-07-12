@@ -14,9 +14,9 @@ import org.test.aptosblogdemo.specialization.DomainError;
 
 public interface ArticleCommand extends Command {
 
-    BigInteger getArticleId();
+    String getId();
 
-    void setArticleId(BigInteger articleId);
+    void setId(String id);
 
     Long getOffChainVersion();
 

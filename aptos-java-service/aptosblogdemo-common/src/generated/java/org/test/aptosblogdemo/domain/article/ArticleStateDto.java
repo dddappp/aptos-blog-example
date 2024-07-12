@@ -15,16 +15,16 @@ import org.test.aptosblogdemo.specialization.*;
 
 public class ArticleStateDto {
 
-    private BigInteger articleId;
+    private String id;
 
-    public BigInteger getArticleId()
+    public String getId()
     {
-        return this.articleId;
+        return this.id;
     }
 
-    public void setArticleId(BigInteger articleId)
+    public void setId(String id)
     {
-        this.articleId = articleId;
+        this.id = id;
     }
 
     private String title;
@@ -188,8 +188,8 @@ public class ArticleStateDto {
                 return null;
             }
             ArticleStateDto dto = new ArticleStateDto();
-            if (returnedFieldsContains("ArticleId")) {
-                dto.setArticleId(state.getArticleId());
+            if (returnedFieldsContains("Id")) {
+                dto.setId(state.getId());
             }
             if (returnedFieldsContains("Title")) {
                 dto.setTitle(state.getTitle());

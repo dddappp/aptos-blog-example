@@ -52,7 +52,7 @@ public class ContractConstants {
 
     public static final String ARTICLE_MODULE_ARTICLE = "article::Article";
 
-    public static final String ARTICLE_ID_TYPE = "u128";
+    public static final String ARTICLE_ID_TYPE = "AptosObjectID";
 
     public static final String COMMENT_MODULE_COMMENT = "comment::Comment";
 

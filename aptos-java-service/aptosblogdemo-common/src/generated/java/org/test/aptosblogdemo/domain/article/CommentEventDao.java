@@ -5,8 +5,8 @@
 
 package org.test.aptosblogdemo.domain.article;
 
-import java.util.Date;
 import java.math.BigInteger;
+import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 
 public interface CommentEventDao {

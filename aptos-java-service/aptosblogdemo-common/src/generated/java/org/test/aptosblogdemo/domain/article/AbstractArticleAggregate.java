@@ -259,7 +259,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
            
 
         protected AbstractArticleEvent.ArticleCreated newArticleCreated(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId) {
-            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
+            ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.ArticleCreated e = new AbstractArticleEvent.ArticleCreated();
 
             e.setTitle(title);
@@ -280,7 +280,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
 
         protected AbstractArticleEvent.ArticleUpdated newArticleUpdated(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId) {
-            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
+            ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.ArticleUpdated e = new AbstractArticleEvent.ArticleUpdated();
 
             e.setTitle(title);
@@ -301,7 +301,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
 
         protected AbstractArticleEvent.ArticleDeleted newArticleDeleted(Long offChainVersion, String commandId, String requesterId) {
-            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
+            ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.ArticleDeleted e = new AbstractArticleEvent.ArticleDeleted();
 
             e.setAptosEventVersion(null);
@@ -319,7 +319,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
 
         protected AbstractArticleEvent.CommentAdded newCommentAdded(String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId) {
-            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
+            ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.CommentAdded e = new AbstractArticleEvent.CommentAdded();
 
             e.setCommentSeqId(null);
@@ -341,7 +341,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
 
         protected AbstractArticleEvent.CommentUpdated newCommentUpdated(BigInteger commentSeqId, String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId) {
-            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
+            ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.CommentUpdated e = new AbstractArticleEvent.CommentUpdated();
 
             e.setCommentSeqId(commentSeqId);
@@ -363,7 +363,7 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
 
         protected AbstractArticleEvent.CommentRemoved newCommentRemoved(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId) {
-            ArticleEventId eventId = new ArticleEventId(getState().getArticleId(), null);
+            ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.CommentRemoved e = new AbstractArticleEvent.CommentRemoved();
 
             e.setCommentSeqId(commentSeqId);

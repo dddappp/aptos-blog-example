@@ -10,16 +10,16 @@ import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 
 public class ArticleEventId implements Serializable {
-    private BigInteger articleId;
+    private String id;
 
-    public BigInteger getArticleId()
+    public String getId()
     {
-        return this.articleId;
+        return this.id;
     }
 
-    public void setArticleId(BigInteger articleId)
+    public void setId(String id)
     {
-        this.articleId = articleId;
+        this.id = id;
     }
 
     private BigInteger version;
@@ -38,9 +38,9 @@ public class ArticleEventId implements Serializable {
     {
     }
 
-    public ArticleEventId(BigInteger articleId, BigInteger version)
+    public ArticleEventId(String id, BigInteger version)
     {
-        this.articleId = articleId;
+        this.id = id;
         this.version = version;
     }
 
@@ -56,7 +56,7 @@ public class ArticleEventId implements Serializable {
 
         ArticleEventId other = (ArticleEventId)obj;
         return true 
-            && (articleId == other.articleId || (articleId != null && articleId.equals(other.articleId)))
+            && (id == other.id || (id != null && id.equals(other.id)))
             && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
@@ -65,8 +65,8 @@ public class ArticleEventId implements Serializable {
     public int hashCode()
     {
         int hash = 0;
-        if (this.articleId != null) {
-            hash += 13 * this.articleId.hashCode();
+        if (this.id != null) {
+            hash += 13 * this.id.hashCode();
         }
         if (this.version != null) {
             hash += 13 * this.version.hashCode();
@@ -77,18 +77,18 @@ public class ArticleEventId implements Serializable {
     @Override
     public String toString() {
         return "ArticleEventId{" +
-                "articleId=" + articleId +
+                "id=" + '\'' + id + '\'' +
                 ", version=" + version +
                 '}';
     }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
-            "articleId",
+            "id",
             "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
-            "BigInteger",
+            "String",
             "BigInteger",
     };
 

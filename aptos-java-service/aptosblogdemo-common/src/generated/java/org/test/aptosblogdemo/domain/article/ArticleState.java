@@ -18,7 +18,7 @@ public interface ArticleState extends VersionedAptosMoveObject
 
     Long VERSION_NULL = VERSION_ZERO - 1;
 
-    BigInteger getArticleId();
+    String getId();
 
     String getTitle();
 
@@ -43,7 +43,7 @@ public interface ArticleState extends VersionedAptosMoveObject
     EntityStateCollection<BigInteger, CommentState> getComments();
 
     interface MutableArticleState extends ArticleState, VersionedAptosMoveObject.MutableVersionedAptosMoveObject {
-        void setArticleId(BigInteger articleId);
+        void setId(String id);
 
         void setTitle(String title);
 

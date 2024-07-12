@@ -104,7 +104,7 @@ In repository root directory, run:
 ```shell
 docker run \
 -v .:/myapp \
-wubuku/dddappp-aptos:0.0.1 \
+wubuku/dddappp-aptos:master \
 --dddmlDirectoryPath /myapp/dddml \
 --boundedContextName Test.AptosBlogDemo \
 --aptosMoveProjectDirectoryPath /myapp/aptos-contracts \

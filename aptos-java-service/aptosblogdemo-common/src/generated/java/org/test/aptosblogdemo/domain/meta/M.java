@@ -110,6 +110,7 @@ public class M {
         clsMap.put("id-long-ne", String.class);
         clsMap.put("id-vlong-ne", String.class);
         clsMap.put("tel-number", String.class);
+        clsMap.put("AptosObjectID", String.class);
         clsMap.put("address", String.class);
         CLASS_MAP = clsMap;
     }
@@ -133,10 +134,10 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
-    public static final Class ID_CLASS = java.math.BigInteger.class;
+    public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
-            "articleId",
+            "id",
             "title",
             "body",
             "owner",
@@ -151,7 +152,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
-            "BigInteger",
+            "String",
             "String",
             "String",
             "String",
@@ -177,8 +178,8 @@ public class M {
     }
 
     private static  void initAliasMap() {
-        aliasMap.put("articleId", "articleId");
-        aliasMap.put("ArticleId", "articleId");
+        aliasMap.put("id", "id");
+        aliasMap.put("Id", "id");
         aliasMap.put("title", "title");
         aliasMap.put("Title", "title");
         aliasMap.put("body", "body");
@@ -255,8 +256,8 @@ public class M {
             "Date",
             "Boolean",
             "Boolean",
-            "BigInteger",
-            "BigInteger",
+            "String",
+            "String",
             "BigInteger",
     };
 

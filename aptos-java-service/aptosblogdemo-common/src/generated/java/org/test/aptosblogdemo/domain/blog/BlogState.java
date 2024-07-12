@@ -7,8 +7,8 @@ package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
 import java.math.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.Event;
 
@@ -40,7 +40,7 @@ public interface BlogState extends VersionedAptosMoveObject
 
     Boolean getDeleted();
 
-    Set<BigInteger> getArticles();
+    Set<String> getArticles();
 
     interface MutableBlogState extends BlogState, VersionedAptosMoveObject.MutableVersionedAptosMoveObject {
         void setAccountAddress(String accountAddress);
@@ -65,7 +65,7 @@ public interface BlogState extends VersionedAptosMoveObject
 
         void setDeleted(Boolean deleted);
 
-        void setArticles(Set<BigInteger> articles);
+        void setArticles(Set<String> articles);
 
 
         void mutate(Event e);

@@ -23,12 +23,12 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
         this.articleEventId = eventId;
     }
     
-    public BigInteger getArticleId() {
-        return getArticleEventId().getArticleId();
+    public String getId() {
+        return getArticleEventId().getId();
     }
 
-    public void setArticleId(BigInteger articleId) {
-        getArticleEventId().setArticleId(articleId);
+    public void setId(String id) {
+        getArticleEventId().setId(id);
     }
 
     private boolean eventReadOnly;
@@ -149,7 +149,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     protected CommentEventId newCommentEventId(BigInteger commentSeqId)
     {
-        CommentEventId eventId = new CommentEventId(this.getArticleEventId().getArticleId(), 
+        CommentEventId eventId = new CommentEventId(this.getArticleEventId().getId(), 
             commentSeqId, 
             this.getArticleEventId().getVersion());
         return eventId;
@@ -162,10 +162,10 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     public static void throwOnInconsistentEventIds(ArticleEvent.SqlArticleEvent oe, CommentEvent.SqlCommentEvent e)
     {
-        if (!oe.getArticleEventId().getArticleId().equals(e.getCommentEventId().getArticleId()))
+        if (!oe.getArticleEventId().getId().equals(e.getCommentEventId().getArticleId()))
         { 
-            throw DomainError.named("inconsistentEventIds", "Outer Id ArticleId %1$s but inner id ArticleId %2$s", 
-                oe.getArticleEventId().getArticleId(), e.getCommentEventId().getArticleId());
+            throw DomainError.named("inconsistentEventIds", "Outer Id Id %1$s but inner id ArticleId %2$s", 
+                oe.getArticleEventId().getId(), e.getCommentEventId().getArticleId());
         }
     }
 

@@ -23,6 +23,6 @@ public interface CommentTableItemAddedRepository extends JpaRepository<CommentTa
     CommentTableItemAdded findFirstByOrderByAptosEventSequenceNumber();
 
     @Transactional(readOnly = true)
-    List<CommentTableItemAdded> findByArticleCommentId_ArticleId(BigInteger articleId);
+    List<CommentTableItemAdded> findByArticleCommentId_ArticleId(String articleId);
 
 }

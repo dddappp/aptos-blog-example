@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 
 public class BlogCommands {
@@ -104,13 +104,13 @@ public class BlogCommands {
         /**
          * Article Id
          */
-        private BigInteger articleId;
+        private String articleId;
 
-        public BigInteger getArticleId() {
+        public String getArticleId() {
             return this.articleId;
         }
 
-        public void setArticleId(BigInteger articleId) {
+        public void setArticleId(String articleId) {
             this.articleId = articleId;
         }
 
@@ -155,13 +155,13 @@ public class BlogCommands {
         /**
          * Article Id
          */
-        private BigInteger articleId;
+        private String articleId;
 
-        public BigInteger getArticleId() {
+        public String getArticleId() {
             return this.articleId;
         }
 
-        public void setArticleId(BigInteger articleId) {
+        public void setArticleId(String articleId) {
             this.articleId = articleId;
         }
 
@@ -308,13 +308,13 @@ public class BlogCommands {
         /**
          * Articles
          */
-        private BigInteger[] articles;
+        private String[] articles;
 
-        public BigInteger[] getArticles() {
+        public String[] getArticles() {
             return this.articles;
         }
 
-        public void setArticles(BigInteger[] articles) {
+        public void setArticles(String[] articles) {
             this.articles = articles;
         }
 

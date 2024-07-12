@@ -7,8 +7,8 @@ package org.test.aptosblogdemo.domain.blog.hibernate;
 
 import java.io.Serializable;
 import java.util.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 import org.test.aptosblogdemo.specialization.hibernate.AbstractHibernateEventStore;

@@ -7,8 +7,8 @@ package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
 import java.math.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 
@@ -147,13 +147,13 @@ public class BlogStateDto {
         this.updatedAt = updatedAt;
     }
 
-    private BigInteger[] articles;
+    private String[] articles;
 
-    public BigInteger[] getArticles() {
+    public String[] getArticles() {
         return this.articles;
     }
 
-    public void setArticles(BigInteger[] articles) {
+    public void setArticles(String[] articles) {
         this.articles = articles;
     }
 
@@ -220,13 +220,13 @@ public class BlogStateDto {
                 dto.setUpdatedAt(state.getUpdatedAt());
             }
             if (returnedFieldsContains("Articles")) {
-                ArrayList<BigInteger> arrayList = new ArrayList();
+                ArrayList<String> arrayList = new ArrayList();
                 if (state.getArticles() != null) {
-                    for (BigInteger s : state.getArticles()) {
+                    for (String s : state.getArticles()) {
                         arrayList.add(s);
                     }
                 }
-                dto.setArticles(arrayList.toArray(new BigInteger[0]));
+                dto.setArticles(arrayList.toArray(new String[0]));
             }
             return dto;
         }

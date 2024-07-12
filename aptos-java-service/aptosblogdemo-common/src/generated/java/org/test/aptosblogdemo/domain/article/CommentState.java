@@ -7,8 +7,8 @@ package org.test.aptosblogdemo.domain.article;
 
 import java.util.*;
 import java.math.*;
-import java.util.Date;
 import java.math.BigInteger;
+import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.Event;
 
@@ -40,7 +40,7 @@ public interface CommentState
 
     Boolean getDeleted();
 
-    BigInteger getArticleId();
+    String getArticleId();
 
     interface MutableCommentState extends CommentState {
         void setCommentSeqId(BigInteger commentSeqId);
@@ -65,7 +65,7 @@ public interface CommentState
 
         void setDeleted(Boolean deleted);
 
-        void setArticleId(BigInteger articleId);
+        void setArticleId(String articleId);
 
 
         void mutate(Event e);

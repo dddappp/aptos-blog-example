@@ -12,7 +12,7 @@ import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 
 public interface ArticleStateRepository {
-    ArticleState get(BigInteger id, boolean nullAllowed);
+    ArticleState get(String id, boolean nullAllowed);
 
     void save(ArticleState state);
 

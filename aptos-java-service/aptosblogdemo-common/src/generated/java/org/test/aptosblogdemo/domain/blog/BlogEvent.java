@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.Event;
 
@@ -33,16 +33,16 @@ public interface BlogEvent extends Event, AptosEvent, HasStatus {
     }
 
     interface ArticleAddedToBlog extends BlogEvent {
-        BigInteger getArticleId();
+        String getArticleId();
 
-        void setArticleId(BigInteger value);
+        void setArticleId(String value);
 
     }
 
     interface ArticleRemovedFromBlog extends BlogEvent {
-        BigInteger getArticleId();
+        String getArticleId();
 
-        void setArticleId(BigInteger value);
+        void setArticleId(String value);
 
     }
 
@@ -65,9 +65,9 @@ public interface BlogEvent extends Event, AptosEvent, HasStatus {
 
         void setName(String value);
 
-        BigInteger[] getArticles();
+        String[] getArticles();
 
-        void setArticles(BigInteger[] value);
+        void setArticles(String[] value);
 
         Boolean getIsEmergency();
 

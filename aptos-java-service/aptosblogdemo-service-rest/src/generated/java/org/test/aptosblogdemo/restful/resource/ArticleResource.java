@@ -129,11 +129,11 @@ public class ArticleResource {
      * Retrieve.
      * Retrieves Article with the specified ID.
      */
-    @GetMapping("{articleId}")
+    @GetMapping("{id}")
     @Transactional(readOnly = true)
-    public ArticleStateDto get(@PathVariable("articleId") BigInteger articleId, @RequestParam(value = "fields", required = false) String fields) {
+    public ArticleStateDto get(@PathVariable("id") String id, @RequestParam(value = "fields", required = false) String fields) {
         try {
-            BigInteger idObj = articleId;
+            String idObj = id;
             ArticleState state = articleApplicationService.get(idObj);
             if (state == null) { return null; }
 
@@ -171,16 +171,16 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/Create")
-    public void create(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.Create content) {
+    @PutMapping("{id}/_commands/Create")
+    public void create(@PathVariable("id") String id, @RequestBody ArticleCommands.Create content) {
         try {
 
             ArticleCommands.Create cmd = content;//.toCreate();
-            BigInteger idObj = articleId;
-            if (cmd.getArticleId() == null) {
-                cmd.setArticleId(idObj);
-            } else if (!cmd.getArticleId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, cmd.getArticleId());
+            String idObj = id;
+            if (cmd.getId() == null) {
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
@@ -189,16 +189,16 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/Update")
-    public void update(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.Update content) {
+    @PutMapping("{id}/_commands/Update")
+    public void update(@PathVariable("id") String id, @RequestBody ArticleCommands.Update content) {
         try {
 
             ArticleCommands.Update cmd = content;//.toUpdate();
-            BigInteger idObj = articleId;
-            if (cmd.getArticleId() == null) {
-                cmd.setArticleId(idObj);
-            } else if (!cmd.getArticleId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, cmd.getArticleId());
+            String idObj = id;
+            if (cmd.getId() == null) {
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
@@ -207,16 +207,16 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/Delete")
-    public void delete(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.Delete content) {
+    @PutMapping("{id}/_commands/Delete")
+    public void delete(@PathVariable("id") String id, @RequestBody ArticleCommands.Delete content) {
         try {
 
             ArticleCommands.Delete cmd = content;//.toDelete();
-            BigInteger idObj = articleId;
-            if (cmd.getArticleId() == null) {
-                cmd.setArticleId(idObj);
-            } else if (!cmd.getArticleId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, cmd.getArticleId());
+            String idObj = id;
+            if (cmd.getId() == null) {
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
@@ -225,16 +225,16 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/AddComment")
-    public void addComment(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.AddComment content) {
+    @PutMapping("{id}/_commands/AddComment")
+    public void addComment(@PathVariable("id") String id, @RequestBody ArticleCommands.AddComment content) {
         try {
 
             ArticleCommands.AddComment cmd = content;//.toAddComment();
-            BigInteger idObj = articleId;
-            if (cmd.getArticleId() == null) {
-                cmd.setArticleId(idObj);
-            } else if (!cmd.getArticleId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, cmd.getArticleId());
+            String idObj = id;
+            if (cmd.getId() == null) {
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
@@ -243,16 +243,16 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/UpdateComment")
-    public void updateComment(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.UpdateComment content) {
+    @PutMapping("{id}/_commands/UpdateComment")
+    public void updateComment(@PathVariable("id") String id, @RequestBody ArticleCommands.UpdateComment content) {
         try {
 
             ArticleCommands.UpdateComment cmd = content;//.toUpdateComment();
-            BigInteger idObj = articleId;
-            if (cmd.getArticleId() == null) {
-                cmd.setArticleId(idObj);
-            } else if (!cmd.getArticleId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, cmd.getArticleId());
+            String idObj = id;
+            if (cmd.getId() == null) {
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
@@ -261,16 +261,16 @@ public class ArticleResource {
     }
 
 
-    @PutMapping("{articleId}/_commands/RemoveComment")
-    public void removeComment(@PathVariable("articleId") BigInteger articleId, @RequestBody ArticleCommands.RemoveComment content) {
+    @PutMapping("{id}/_commands/RemoveComment")
+    public void removeComment(@PathVariable("id") String id, @RequestBody ArticleCommands.RemoveComment content) {
         try {
 
             ArticleCommands.RemoveComment cmd = content;//.toRemoveComment();
-            BigInteger idObj = articleId;
-            if (cmd.getArticleId() == null) {
-                cmd.setArticleId(idObj);
-            } else if (!cmd.getArticleId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, cmd.getArticleId());
+            String idObj = id;
+            if (cmd.getId() == null) {
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
             }
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             articleApplicationService.when(cmd);
@@ -291,24 +291,24 @@ public class ArticleResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @GetMapping("{articleId}/_events/{version}")
+    @GetMapping("{id}/_events/{version}")
     @Transactional(readOnly = true)
-    public ArticleEvent getEvent(@PathVariable("articleId") BigInteger articleId, @PathVariable("version") long version) {
+    public ArticleEvent getEvent(@PathVariable("id") String id, @PathVariable("version") long version) {
         try {
 
-            BigInteger idObj = articleId;
+            String idObj = id;
             //ArticleStateEventDtoConverter dtoConverter = getArticleStateEventDtoConverter();
             return articleApplicationService.getEvent(idObj, version);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
-    @GetMapping("{articleId}/_historyStates/{version}")
+    @GetMapping("{id}/_historyStates/{version}")
     @Transactional(readOnly = true)
-    public ArticleStateDto getHistoryState(@PathVariable("articleId") BigInteger articleId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
+    public ArticleStateDto getHistoryState(@PathVariable("id") String id, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 
-            BigInteger idObj = articleId;
+            String idObj = id;
             ArticleStateDto.DtoConverter dtoConverter = new ArticleStateDto.DtoConverter();
             if (StringHelper.isNullOrEmpty(fields)) {
                 dtoConverter.setAllFieldsReturned(true);
@@ -324,12 +324,12 @@ public class ArticleResource {
      * Retrieve.
      * Retrieves Comment with the specified CommentSeqId.
      */
-    @GetMapping("{articleId}/Comments/{commentSeqId}")
+    @GetMapping("{id}/Comments/{commentSeqId}")
     @Transactional(readOnly = true)
-    public CommentStateDto getComment(@PathVariable("articleId") BigInteger articleId, @PathVariable("commentSeqId") BigInteger commentSeqId) {
+    public CommentStateDto getComment(@PathVariable("id") String id, @PathVariable("commentSeqId") BigInteger commentSeqId) {
         try {
 
-            CommentState state = articleApplicationService.getComment(articleId, commentSeqId);
+            CommentState state = articleApplicationService.getComment(id, commentSeqId);
             if (state == null) { return null; }
             CommentStateDto.DtoConverter dtoConverter = new CommentStateDto.DtoConverter();
             CommentStateDto stateDto = dtoConverter.toCommentStateDto(state);
@@ -342,9 +342,9 @@ public class ArticleResource {
     /**
      * Comment List
      */
-    @GetMapping("{articleId}/Comments")
+    @GetMapping("{id}/Comments")
     @Transactional(readOnly = true)
-    public CommentStateDto[] getComments(@PathVariable("articleId") BigInteger articleId,
+    public CommentStateDto[] getComments(@PathVariable("id") String id,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "filter", required = false) String filter,
@@ -360,7 +360,7 @@ public class ArticleResource {
             }
             Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
                 n -> (CommentMetadata.aliasMap.containsKey(n) ? CommentMetadata.aliasMap.get(n) : n));
-            Iterable<CommentState> states = articleApplicationService.getComments(articleId, c,
+            Iterable<CommentState> states = articleApplicationService.getComments(id, c,
                     ArticleResourceUtils.getCommentQuerySorts(request.getParameterMap()));
             if (states == null) { return null; }
             CommentStateDto.DtoConverter dtoConverter = new CommentStateDto.DtoConverter();
@@ -405,12 +405,12 @@ public class ArticleResource {
  
     public static class ArticleResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(BigInteger articleId, org.test.aptosblogdemo.domain.article.ArticleCommand value) {
-            BigInteger idObj = articleId;
-            if (value.getArticleId() == null) {
-                value.setArticleId(idObj);
-            } else if (!value.getArticleId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", articleId, value.getArticleId());
+        public static void setNullIdOrThrowOnInconsistentIds(String id, org.test.aptosblogdemo.domain.article.ArticleCommand value) {
+            String idObj = id;
+            if (value.getId() == null) {
+                value.setId(idObj);
+            } else if (!value.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, value.getId());
             }
         }
     
@@ -510,11 +510,11 @@ public class ArticleResource {
             return filter.entrySet();
         }
 
-        public static ArticleStateDto[] toArticleStateDtoArray(Iterable<BigInteger> ids) {
+        public static ArticleStateDto[] toArticleStateDtoArray(Iterable<String> ids) {
             List<ArticleStateDto> states = new ArrayList<>();
             ids.forEach(i -> {
                 ArticleStateDto dto = new ArticleStateDto();
-                dto.setArticleId(i);
+                dto.setId(i);
                 states.add(dto);
             });
             return states.toArray(new ArticleStateDto[0]);

@@ -13,18 +13,18 @@ import org.test.aptosblogdemo.domain.AbstractCommand;
 public abstract class AbstractArticleCommandDto extends AbstractCommand {
 
     /**
-     * Article Id
+     * Id
      */
-    private BigInteger articleId;
+    private String id;
 
-    public BigInteger getArticleId()
+    public String getId()
     {
-        return this.articleId;
+        return this.id;
     }
 
-    public void setArticleId(BigInteger articleId)
+    public void setId(String id)
     {
-        this.articleId = articleId;
+        this.id = id;
     }
 
     /**
@@ -44,7 +44,7 @@ public abstract class AbstractArticleCommandDto extends AbstractCommand {
 
 
     public void copyTo(ArticleCommand command) {
-        command.setArticleId(this.getArticleId());
+        command.setId(this.getId());
         command.setOffChainVersion(this.getOffChainVersion());
         
         command.setRequesterId(this.getRequesterId());

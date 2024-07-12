@@ -15,14 +15,14 @@ import org.test.aptosblogdemo.domain.article.ArticleEvent.*;
 
 public abstract class AbstractArticleState implements ArticleState.SqlArticleState, Saveable {
 
-    private BigInteger articleId;
+    private String id;
 
-    public BigInteger getArticleId() {
-        return this.articleId;
+    public String getId() {
+        return this.id;
     }
 
-    public void setArticleId(BigInteger articleId) {
-        this.articleId = articleId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     private String title;
@@ -178,7 +178,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
     public AbstractArticleState(List<Event> events) {
         initializeForReapplying();
         if (events != null && events.size() > 0) {
-            this.setArticleId(((ArticleEvent.SqlArticleEvent) events.get(0)).getArticleEventId().getArticleId());
+            this.setId(((ArticleEvent.SqlArticleEvent) events.get(0)).getArticleEventId().getId());
             for (Event e : events) {
                 mutate(e);
                 this.setOffChainVersion((this.getOffChainVersion() == null ? ArticleState.VERSION_NULL : this.getOffChainVersion()) + 1);
@@ -203,14 +203,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
     @Override
     public int hashCode() {
-        return getArticleId().hashCode();
+        return getId().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (obj instanceof ArticleState) {
-            return Objects.equals(this.getArticleId(), ((ArticleState)obj).getArticleId());
+            return Objects.equals(this.getId(), ((ArticleState)obj).getId());
         }
         return false;
     }
@@ -567,8 +567,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
     }
 
     protected void throwOnWrongEvent(ArticleEvent event) {
-        BigInteger stateEntityId = this.getArticleId(); // Aggregate Id
-        BigInteger eventEntityId = ((ArticleEvent.SqlArticleEvent)event).getArticleEventId().getArticleId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
+        String stateEntityId = this.getId(); // Aggregate Id
+        String eventEntityId = ((ArticleEvent.SqlArticleEvent)event).getArticleEventId().getId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
         if (!stateEntityId.equals(eventEntityId)) {
             throw DomainError.named("mutateWrongEntity", "Entity Id %1$s in state but entity id %2$s in event", stateEntityId, eventEntityId);
         }
@@ -625,7 +625,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         public CommentState getOrAddDefault(BigInteger commentSeqId) {
             CommentState s = get(commentSeqId);
             if (s == null) {
-                ArticleCommentId globalId = new ArticleCommentId(getArticleId(), commentSeqId);
+                ArticleCommentId globalId = new ArticleCommentId(getId(), commentSeqId);
                 AbstractCommentState state = new AbstractCommentState.SimpleCommentState();
                 state.setArticleCommentId(globalId);
                 add(state);

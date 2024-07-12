@@ -29,9 +29,9 @@ public class UpdateArticleStateTaskService {
     public void updateArticleStates() {
         articleEventRepository.findByStatusIsNull().forEach(e -> {
             if (ArticleEventService.isDeletionCommand(e)) {
-                aptosArticleService.deleteArticle(e.getArticleId());
+                aptosArticleService.deleteArticle(e.getId());
             } else {
-                aptosArticleService.updateArticleState(e.getArticleId());
+                aptosArticleService.updateArticleState(e.getId());
             }
             articleEventService.updateStatusToProcessed(e);
         });

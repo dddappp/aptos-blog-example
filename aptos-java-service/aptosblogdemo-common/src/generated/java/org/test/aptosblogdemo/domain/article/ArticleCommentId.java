@@ -10,14 +10,14 @@ import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 
 public class ArticleCommentId implements Serializable {
-    private BigInteger articleId;
+    private String articleId;
 
-    public BigInteger getArticleId()
+    public String getArticleId()
     {
         return this.articleId;
     }
 
-    public void setArticleId(BigInteger articleId)
+    public void setArticleId(String articleId)
     {
         this.articleId = articleId;
     }
@@ -38,7 +38,7 @@ public class ArticleCommentId implements Serializable {
     {
     }
 
-    public ArticleCommentId(BigInteger articleId, BigInteger commentSeqId)
+    public ArticleCommentId(String articleId, BigInteger commentSeqId)
     {
         this.articleId = articleId;
         this.commentSeqId = commentSeqId;
@@ -77,7 +77,7 @@ public class ArticleCommentId implements Serializable {
     @Override
     public String toString() {
         return "ArticleCommentId{" +
-                "articleId=" + articleId +
+                "articleId=" + '\'' + articleId + '\'' +
                 ", commentSeqId=" + commentSeqId +
                 '}';
     }
@@ -88,7 +88,7 @@ public class ArticleCommentId implements Serializable {
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
-            "BigInteger",
+            "String",
             "BigInteger",
     };
 

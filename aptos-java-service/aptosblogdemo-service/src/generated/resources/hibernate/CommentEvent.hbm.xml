@@ -4,7 +4,7 @@
   <class name="AbstractCommentEvent" table="comment_event" abstract="true">
     <composite-id name="commentEventId" class="org.test.aptosblogdemo.domain.article.CommentEventId">
       <key-property name="articleId">
-        <column name="article_comment_id_article_id" sql-type="DECIMAL(20,0)" />
+        <column name="article_comment_id_article_id" sql-type="VARCHAR(66)" />
       </key-property>
       <key-property name="commentSeqId">
         <column name="article_comment_id_comment_seq_id" sql-type="DECIMAL(20,0)" />

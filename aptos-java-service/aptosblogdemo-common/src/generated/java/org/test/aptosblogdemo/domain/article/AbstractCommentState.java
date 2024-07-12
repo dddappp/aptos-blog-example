@@ -7,8 +7,8 @@ package org.test.aptosblogdemo.domain.article;
 
 import java.util.*;
 import java.math.*;
-import java.util.Date;
 import java.math.BigInteger;
+import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 import org.test.aptosblogdemo.domain.article.CommentEvent.*;
@@ -45,11 +45,11 @@ public abstract class AbstractCommentState implements CommentState.SqlCommentSta
         this.protectedArticleState = protectedArticleState;
     }
 
-    public BigInteger getArticleId() {
+    public String getArticleId() {
         return this.getArticleCommentId().getArticleId();
     }
         
-    public void setArticleId(BigInteger articleId) {
+    public void setArticleId(String articleId) {
         this.getArticleCommentId().setArticleId(articleId);
     }
 
@@ -233,8 +233,8 @@ public abstract class AbstractCommentState implements CommentState.SqlCommentSta
     }
 
     protected void throwOnWrongEvent(CommentEvent event) {
-        BigInteger stateEntityIdArticleId = this.getArticleCommentId().getArticleId();
-        BigInteger eventEntityIdArticleId = ((CommentEvent.SqlCommentEvent)event).getCommentEventId().getArticleId();
+        String stateEntityIdArticleId = this.getArticleCommentId().getArticleId();
+        String eventEntityIdArticleId = ((CommentEvent.SqlCommentEvent)event).getCommentEventId().getArticleId();
         if (!stateEntityIdArticleId.equals(eventEntityIdArticleId)) {
             throw DomainError.named("mutateWrongEntity", "Entity Id ArticleId %1$s in state but entity id ArticleId %2$s in event", stateEntityIdArticleId, eventEntityIdArticleId);
         }

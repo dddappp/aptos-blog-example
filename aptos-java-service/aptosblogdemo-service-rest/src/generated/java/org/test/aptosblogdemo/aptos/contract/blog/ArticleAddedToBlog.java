@@ -20,7 +20,7 @@ public class ArticleAddedToBlog {
 
     private BigInteger version;
 
-    private BigInteger articleId;
+    private String articleId;
 
     public String getAccountAddress() {
         return accountAddress;
@@ -38,11 +38,11 @@ public class ArticleAddedToBlog {
         this.version = version;
     }
 
-    public BigInteger getArticleId() {
+    public String getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(BigInteger articleId) {
+    public void setArticleId(String articleId) {
         this.articleId = articleId;
     }
 
@@ -51,7 +51,7 @@ public class ArticleAddedToBlog {
         return "ArticleAddedToBlog{" +
                 "accountAddress=" + '\'' + accountAddress + '\'' +
                 ", version=" + version +
-                ", articleId=" + articleId +
+                ", articleId=" + '\'' + articleId + '\'' +
                 '}';
     }
 

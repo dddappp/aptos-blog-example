@@ -7,8 +7,8 @@ package org.test.aptosblogdemo.domain.article;
 
 import java.util.*;
 import java.math.*;
-import java.util.Date;
 import java.math.BigInteger;
+import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 
@@ -87,14 +87,14 @@ public class CommentStateDto {
         this.offChainVersion = offChainVersion;
     }
 
-    private BigInteger articleId;
+    private String articleId;
 
-    public BigInteger getArticleId()
+    public String getArticleId()
     {
         return this.articleId;
     }
 
-    public void setArticleId(BigInteger articleId)
+    public void setArticleId(String articleId)
     {
         this.articleId = articleId;
     }

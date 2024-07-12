@@ -99,9 +99,9 @@ public interface ArticleEvent extends Event, AptosEvent, HasStatus {
 
     }
 
-    BigInteger getArticleId();
+    String getId();
 
-    //void setArticleId(BigInteger articleId);
+    //void setId(String id);
 
     BigInteger getVersion();
     

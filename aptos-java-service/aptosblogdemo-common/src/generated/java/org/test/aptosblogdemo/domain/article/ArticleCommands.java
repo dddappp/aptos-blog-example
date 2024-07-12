@@ -25,16 +25,16 @@ public class ArticleCommands {
         }
 
         /**
-         * Article Id
+         * Id
          */
-        private BigInteger articleId;
+        private String id;
 
-        public BigInteger getArticleId() {
-            return this.articleId;
+        public String getId() {
+            return this.id;
         }
 
-        public void setArticleId(BigInteger articleId) {
-            this.articleId = articleId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         /**
@@ -102,16 +102,16 @@ public class ArticleCommands {
         }
 
         /**
-         * Article Id
+         * Id
          */
-        private BigInteger articleId;
+        private String id;
 
-        public BigInteger getArticleId() {
-            return this.articleId;
+        public String getId() {
+            return this.id;
         }
 
-        public void setArticleId(BigInteger articleId) {
-            this.articleId = articleId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         /**
@@ -179,16 +179,16 @@ public class ArticleCommands {
         }
 
         /**
-         * Article Id
+         * Id
          */
-        private BigInteger articleId;
+        private String id;
 
-        public BigInteger getArticleId() {
-            return this.articleId;
+        public String getId() {
+            return this.id;
         }
 
-        public void setArticleId(BigInteger articleId) {
-            this.articleId = articleId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         /**
@@ -217,16 +217,16 @@ public class ArticleCommands {
         }
 
         /**
-         * Article Id
+         * Id
          */
-        private BigInteger articleId;
+        private String id;
 
-        public BigInteger getArticleId() {
-            return this.articleId;
+        public String getId() {
+            return this.id;
         }
 
-        public void setArticleId(BigInteger articleId) {
-            this.articleId = articleId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         /**
@@ -294,16 +294,16 @@ public class ArticleCommands {
         }
 
         /**
-         * Article Id
+         * Id
          */
-        private BigInteger articleId;
+        private String id;
 
-        public BigInteger getArticleId() {
-            return this.articleId;
+        public String getId() {
+            return this.id;
         }
 
-        public void setArticleId(BigInteger articleId) {
-            this.articleId = articleId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         /**
@@ -384,16 +384,16 @@ public class ArticleCommands {
         }
 
         /**
-         * Article Id
+         * Id
          */
-        private BigInteger articleId;
+        private String id;
 
-        public BigInteger getArticleId() {
-            return this.articleId;
+        public String getId() {
+            return this.id;
         }
 
-        public void setArticleId(BigInteger articleId) {
-            this.articleId = articleId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         /**

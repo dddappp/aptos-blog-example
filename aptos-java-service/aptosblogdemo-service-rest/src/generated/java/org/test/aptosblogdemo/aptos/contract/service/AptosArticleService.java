@@ -43,9 +43,9 @@ public class AptosArticleService {
                 aptosNodeApiClient,
                 aptosContractAddress,
                 aptosAccountRepository,
-                articleId -> {
+                id -> {
                     ArticleState.MutableArticleState s = new AbstractArticleState.SimpleArticleState();
-                    s.setArticleId(articleId);
+                    s.setId(id);
                     return s;
                 },
                 (articleState, commentSeqId) -> (CommentState.MutableCommentState)
@@ -59,8 +59,8 @@ public class AptosArticleService {
     }
 
     @Transactional
-    public void updateArticleState(BigInteger articleId) {
-        ArticleState articleState = aptosArticleStateRetriever.retrieveArticleState(articleId);
+    public void updateArticleState(String id) {
+        ArticleState articleState = aptosArticleStateRetriever.retrieveArticleState(id);
         if (articleState == null) {
             return;
         }
@@ -68,8 +68,8 @@ public class AptosArticleService {
     }
 
     @Transactional
-    public void deleteArticle(BigInteger articleId) {
-        ArticleState.MutableArticleState s = (ArticleState.MutableArticleState) articleStateRepository.get(articleId, true);
+    public void deleteArticle(String id) {
+        ArticleState.MutableArticleState s = (ArticleState.MutableArticleState) articleStateRepository.get(id, true);
         if (s != null) {
             s.setDeleted(true);
             articleStateRepository.merge(s);

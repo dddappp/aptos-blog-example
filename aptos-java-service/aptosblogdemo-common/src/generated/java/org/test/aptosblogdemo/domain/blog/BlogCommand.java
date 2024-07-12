@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.domain.Command;
 import org.test.aptosblogdemo.specialization.DomainError;

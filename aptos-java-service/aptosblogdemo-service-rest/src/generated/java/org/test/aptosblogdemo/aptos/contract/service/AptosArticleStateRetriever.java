@@ -31,7 +31,7 @@ public class AptosArticleStateRetriever {
 
     private AptosAccountRepository aptosAccountRepository;
 
-    private Function<BigInteger, ArticleState.MutableArticleState> articleStateFactory;
+    private Function<String, ArticleState.MutableArticleState> articleStateFactory;
 
     private BiFunction<ArticleState, BigInteger, CommentState.MutableCommentState> commentStateFactory;
 
@@ -41,7 +41,7 @@ public class AptosArticleStateRetriever {
     public AptosArticleStateRetriever(NodeApiClient aptosNodeApiClient,
                                     String aptosContractAddress,
                                     AptosAccountRepository aptosAccountRepository,
-                                    Function<BigInteger, ArticleState.MutableArticleState> articleStateFactory,
+                                    Function<String, ArticleState.MutableArticleState> articleStateFactory,
                                     BiFunction<ArticleState, BigInteger, CommentState.MutableCommentState> commentStateFactory,
                                     CommentCommentSeqIdsGetter commentCommentSeqIdsGetter
     ) {
@@ -53,7 +53,7 @@ public class AptosArticleStateRetriever {
         this.commentCommentSeqIdsGetter = commentCommentSeqIdsGetter;
     }
 
-    public ArticleState retrieveArticleState(BigInteger articleId) {
+    public ArticleState retrieveArticleState(String id) {
         String resourceAccountAddress = getResourceAccountAddress();
         AccountResource<Article.Tables> accountResource;
         try {
@@ -71,7 +71,7 @@ public class AptosArticleStateRetriever {
                     tableHandle,
                     ContractConstants.toNumericalAddressType(ContractConstants.ARTICLE_ID_TYPE, this.aptosContractAddress),
                     this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_ARTICLE,
-                    articleId.toString(),
+                    id,
                     Article.class,
                     null
             );
@@ -82,14 +82,14 @@ public class AptosArticleStateRetriever {
     }
 
     private ArticleState toArticleState(Article article) {
-        ArticleState.MutableArticleState articleState = articleStateFactory.apply(article.getArticleId());
+        ArticleState.MutableArticleState articleState = articleStateFactory.apply(article.getId());
         articleState.setVersion(article.getVersion());
         articleState.setTitle(article.getTitle());
         articleState.setBody(article.getBody());
         articleState.setOwner(article.getOwner());
         if (article.getComments() != null) {
             String commentTableHandle = article.getComments().getInner().getHandle();
-            List<Comment> comments = getComments(commentTableHandle, commentCommentSeqIdsGetter.getCommentCommentSeqIds(articleState.getArticleId()));
+            List<Comment> comments = getComments(commentTableHandle, commentCommentSeqIdsGetter.getCommentCommentSeqIds(articleState.getId()));
             for (Comment i : comments) {
                 ((EntityStateCollection.ModifiableEntityStateCollection)articleState.getComments()).add(toCommentState(articleState, i));
             }
@@ -137,7 +137,7 @@ public class AptosArticleStateRetriever {
     }
 
     public interface CommentCommentSeqIdsGetter {
-        List<BigInteger> getCommentCommentSeqIds(BigInteger articleId);
+        List<BigInteger> getCommentCommentSeqIds(String articleId);
     }
 
 }

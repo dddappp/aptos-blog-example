@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.domain.article;
 
 import java.util.*;
-import java.util.Date;
 import java.math.BigInteger;
+import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.domain.AbstractCommand;
 
@@ -25,14 +25,14 @@ public abstract class AbstractCommentCommand extends AbstractCommand implements 
         this.commentSeqId = commentSeqId;
     }
 
-    private BigInteger articleId;
+    private String articleId;
 
-    public BigInteger getArticleId()
+    public String getArticleId()
     {
         return this.articleId;
     }
 
-    public void setArticleId(BigInteger articleId)
+    public void setArticleId(String articleId)
     {
         this.articleId = articleId;
     }

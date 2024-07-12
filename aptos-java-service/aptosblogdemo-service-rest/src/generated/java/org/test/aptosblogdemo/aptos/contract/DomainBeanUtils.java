@@ -48,7 +48,7 @@ public class DomainBeanUtils {
         ArticleCreated contractEvent = eventEnvelope.getData();
 
         AbstractArticleEvent.ArticleCreated articleCreated = new AbstractArticleEvent.ArticleCreated();
-        articleCreated.setArticleId(contractEvent.getArticleId());
+        articleCreated.setId(contractEvent.getId());
         articleCreated.setTitle(contractEvent.getTitle());
         articleCreated.setBody(contractEvent.getBody());
         articleCreated.setOwner(contractEvent.getOwner());
@@ -63,7 +63,7 @@ public class DomainBeanUtils {
         ArticleUpdated contractEvent = eventEnvelope.getData();
 
         AbstractArticleEvent.ArticleUpdated articleUpdated = new AbstractArticleEvent.ArticleUpdated();
-        articleUpdated.setArticleId(contractEvent.getArticleId());
+        articleUpdated.setId(contractEvent.getId());
         articleUpdated.setTitle(contractEvent.getTitle());
         articleUpdated.setBody(contractEvent.getBody());
         articleUpdated.setOwner(contractEvent.getOwner());
@@ -78,7 +78,7 @@ public class DomainBeanUtils {
         ArticleDeleted contractEvent = eventEnvelope.getData();
 
         AbstractArticleEvent.ArticleDeleted articleDeleted = new AbstractArticleEvent.ArticleDeleted();
-        articleDeleted.setArticleId(contractEvent.getArticleId());
+        articleDeleted.setId(contractEvent.getId());
         articleDeleted.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(articleDeleted, eventEnvelope);
@@ -90,7 +90,7 @@ public class DomainBeanUtils {
         CommentAdded contractEvent = eventEnvelope.getData();
 
         AbstractArticleEvent.CommentAdded commentAdded = new AbstractArticleEvent.CommentAdded();
-        commentAdded.setArticleId(contractEvent.getArticleId());
+        commentAdded.setId(contractEvent.getId());
         commentAdded.setCommentSeqId(contractEvent.getCommentSeqId());
         commentAdded.setCommenter(contractEvent.getCommenter());
         commentAdded.setBody(contractEvent.getBody());
@@ -106,7 +106,7 @@ public class DomainBeanUtils {
         CommentUpdated contractEvent = eventEnvelope.getData();
 
         AbstractArticleEvent.CommentUpdated commentUpdated = new AbstractArticleEvent.CommentUpdated();
-        commentUpdated.setArticleId(contractEvent.getArticleId());
+        commentUpdated.setId(contractEvent.getId());
         commentUpdated.setCommentSeqId(contractEvent.getCommentSeqId());
         commentUpdated.setCommenter(contractEvent.getCommenter());
         commentUpdated.setBody(contractEvent.getBody());
@@ -122,7 +122,7 @@ public class DomainBeanUtils {
         CommentRemoved contractEvent = eventEnvelope.getData();
 
         AbstractArticleEvent.CommentRemoved commentRemoved = new AbstractArticleEvent.CommentRemoved();
-        commentRemoved.setArticleId(contractEvent.getArticleId());
+        commentRemoved.setId(contractEvent.getId());
         commentRemoved.setCommentSeqId(contractEvent.getCommentSeqId());
         commentRemoved.setVersion(contractEvent.getVersion());
 

@@ -5,8 +5,8 @@
 
 package org.test.aptosblogdemo.domain.article.hibernate;
 
-import java.util.Date;
 import java.math.BigInteger;
+import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
@@ -43,7 +43,7 @@ public class HibernateCommentEventDao implements CommentEventDao {
     {
         Criteria criteria = getCurrentSession().createCriteria(AbstractCommentEvent.class);
         Junction partIdCondition = Restrictions.conjunction()
-            .add(Restrictions.eq("commentEventId.articleId", articleEventId.getArticleId()))
+            .add(Restrictions.eq("commentEventId.articleId", articleEventId.getId()))
             .add(Restrictions.eq("commentEventId.version", articleEventId.getVersion()))
             ;
         return criteria.add(partIdCondition).list();

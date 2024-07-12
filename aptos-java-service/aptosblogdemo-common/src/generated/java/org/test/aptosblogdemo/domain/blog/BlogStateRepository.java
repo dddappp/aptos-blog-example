@@ -7,8 +7,8 @@ package org.test.aptosblogdemo.domain.blog;
 
 import java.util.*;
 import org.dddml.support.criterion.Criterion;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 import org.test.aptosblogdemo.domain.*;
 
 public interface BlogStateRepository {

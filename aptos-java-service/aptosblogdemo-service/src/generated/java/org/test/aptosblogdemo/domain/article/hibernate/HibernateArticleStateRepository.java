@@ -31,7 +31,7 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
         return this.sessionFactory.getCurrentSession();
     }
     
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ArticleId", "Title", "Body", "Owner", "Comments", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("Id", "Title", "Body", "Owner", "Comments", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -44,11 +44,11 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
     }
 
     @Transactional(readOnly = true)
-    public ArticleState get(BigInteger id, boolean nullAllowed) {
+    public ArticleState get(String id, boolean nullAllowed) {
         ArticleState.SqlArticleState state = (ArticleState.SqlArticleState)getCurrentSession().get(AbstractArticleState.SimpleArticleState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractArticleState.SimpleArticleState();
-            state.setArticleId(id);
+            state.setId(id);
         }
         if (getReadOnlyProxyGenerator() != null && state != null) {
             return (ArticleState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{ArticleState.SqlArticleState.class, Saveable.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
@@ -76,7 +76,7 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
     }
 
     public void merge(ArticleState detached) {
-        ArticleState persistent = getCurrentSession().get(AbstractArticleState.SimpleArticleState.class, detached.getArticleId());
+        ArticleState persistent = getCurrentSession().get(AbstractArticleState.SimpleArticleState.class, detached.getId());
         if (persistent != null) {
             merge(persistent, detached);
             getCurrentSession().save(persistent);

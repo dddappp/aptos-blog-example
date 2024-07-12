@@ -21,7 +21,7 @@ public class HibernateArticleEventStore extends AbstractHibernateEventStore {
     @Override
     protected Serializable getEventId(EventStoreAggregateId eventStoreAggregateId, long version)
     {
-        return new ArticleEventId((BigInteger) eventStoreAggregateId.getId(), BigInteger.valueOf(version));
+        return new ArticleEventId((String) eventStoreAggregateId.getId(), BigInteger.valueOf(version));
     }
 
     @Override
@@ -37,9 +37,9 @@ public class HibernateArticleEventStore extends AbstractHibernateEventStore {
         if (!eventType.isAssignableFrom(supportedEventType)) {
             throw new UnsupportedOperationException();
         }
-        BigInteger idObj = (BigInteger) eventStoreAggregateId.getId();
+        String idObj = (String) eventStoreAggregateId.getId();
         Criteria criteria = getCurrentSession().createCriteria(AbstractArticleEvent.class);
-        criteria.add(Restrictions.eq("articleEventId.articleId", idObj));
+        criteria.add(Restrictions.eq("articleEventId.id", idObj));
         criteria.add(Restrictions.le("articleEventId.offChainVersion", version));
         criteria.addOrder(Order.asc("articleEventId.offChainVersion"));
         List es = criteria.list();

@@ -16,7 +16,7 @@ import java.util.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ArticleUpdated {
 
-    private BigInteger articleId;
+    private String id;
 
     private BigInteger version;
 
@@ -26,12 +26,12 @@ public class ArticleUpdated {
 
     private String owner;
 
-    public BigInteger getArticleId() {
-        return articleId;
+    public String getId() {
+        return id;
     }
 
-    public void setArticleId(BigInteger articleId) {
-        this.articleId = articleId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public BigInteger getVersion() {
@@ -69,7 +69,7 @@ public class ArticleUpdated {
     @Override
     public String toString() {
         return "ArticleUpdated{" +
-                "articleId=" + articleId +
+                "id=" + '\'' + id + '\'' +
                 ", version=" + version +
                 ", title=" + '\'' + title + '\'' +
                 ", body=" + '\'' + body + '\'' +

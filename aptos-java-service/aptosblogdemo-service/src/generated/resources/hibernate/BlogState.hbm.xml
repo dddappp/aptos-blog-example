@@ -37,7 +37,7 @@
     <property name="updatedAt" column="updated_at" />
     <set name="articles" table="blog_articles" lazy="false">
       <key column="AccountAddress" />
-      <element column="articles_item" type="java.math.BigInteger" not-null="true" />
+      <element column="articles_item" type="string" not-null="true" />
     </set>
   </class>
 </hibernate-mapping>

@@ -13,7 +13,7 @@ import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 
 public interface ArticleStateQueryRepository {
-    ArticleState get(BigInteger id);
+    ArticleState get(String id);
 
     Iterable<ArticleState> getAll(Integer firstResult, Integer maxResults);
     
@@ -31,9 +31,9 @@ public interface ArticleStateQueryRepository {
 
     long getCount(Criterion filter);
 
-    CommentState getComment(BigInteger articleId, BigInteger commentSeqId);
+    CommentState getComment(String articleId, BigInteger commentSeqId);
 
-    Iterable<CommentState> getComments(BigInteger articleId, Criterion filter, List<String> orders);
+    Iterable<CommentState> getComments(String articleId, Criterion filter, List<String> orders);
 
 }
 

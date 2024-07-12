@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.domain.article;
 
 import java.util.*;
-import java.util.Date;
 import java.math.BigInteger;
+import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
 import org.test.aptosblogdemo.domain.AbstractEvent;
