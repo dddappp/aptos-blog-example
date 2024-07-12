@@ -31,13 +31,14 @@ module aptos_blog_demo::article_update_comment_logic {
     public(friend) fun mutate(
         _account: &signer,
         comment_updated: &article::CommentUpdated,
-        _id: address,
+        id: address,
         article: article::Article,
     ): article::Article {
         let comment_seq_id = comment_updated::comment_seq_id(comment_updated);
         let commenter = comment_updated::commenter(comment_updated);
         let body = comment_updated::body(comment_updated);
         let owner = comment_updated::owner(comment_updated);
+        let _ = id;
         let comment = article::borrow_mut_comment(&mut article, comment_seq_id);
         comment::set_commenter(comment, commenter);
         comment::set_body(comment, body);

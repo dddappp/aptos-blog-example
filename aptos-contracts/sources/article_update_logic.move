@@ -26,12 +26,13 @@ module aptos_blog_demo::article_update_logic {
     public(friend) fun mutate(
         _account: &signer,
         article_updated: &article::ArticleUpdated,
-        _id: address,
+        id: address,
         article: article::Article,
     ): article::Article {
         let title = article_updated::title(article_updated);
         let body = article_updated::body(article_updated);
         let owner = article_updated::owner(article_updated);
+        let _ = id;
         article::set_title(&mut article, title);
         article::set_body(&mut article, body);
         article::set_owner(&mut article, owner);

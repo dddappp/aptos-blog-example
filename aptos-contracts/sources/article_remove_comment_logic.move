@@ -23,10 +23,11 @@ module aptos_blog_demo::article_remove_comment_logic {
     public(friend) fun mutate(
         _account: &signer,
         comment_removed: &article::CommentRemoved,
-        _id: address,
+        id: address,
         article: article::Article,
     ): article::Article {
         let comment_seq_id = comment_removed::comment_seq_id(comment_removed);
+        let _ = id;
         article::remove_comment(&mut article, comment_seq_id);
         article
     }
