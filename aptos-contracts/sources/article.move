@@ -413,15 +413,20 @@ module aptos_blog_demo::article {
         article.version = article.version + 1;
         let extend_ref = &borrow_global<ObjectController>(id).extend_ref;
         let object_signer = object::generate_signer_for_extending(extend_ref);
-        add_article(&object_signer, article)
+        private_add_article(&object_signer, article)
     }
 
     public(friend) fun add_article(object_signer: &signer, article: Article) {
-        move_to(object_signer, article);
+        assert!(article.version == 0, EInappropriateVersion);
+        private_add_article(object_signer, article);
     }
 
     public(friend) fun remove_article(id: address): Article acquires Article {
         move_from<Article>(id)
+    }
+
+    fun private_add_article(object_signer: &signer, article: Article) {
+        move_to(object_signer, article);
     }
 
     public(friend) fun delete_article(id: address) acquires ObjectController {
@@ -442,7 +447,7 @@ module aptos_blog_demo::article {
 
     public fun return_article(object_signer: &signer, article_pass_obj: pass_object::PassObject<Article>) {
         let article = pass_object::extract(article_pass_obj);
-        add_article(object_signer, article);
+        private_add_article(object_signer, article);
     }
 
     public(friend) fun drop_article(article: Article) {
