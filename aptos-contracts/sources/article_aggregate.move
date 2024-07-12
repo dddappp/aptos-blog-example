@@ -37,8 +37,8 @@ module aptos_blog_demo::article_aggregate {
         let id = object::address_from_constructor_ref(&constructor_ref);
         let article = article_create_logic::mutate(
             account,
-            id,
             &article_created,
+            id,
         );
         article::add_article(&object_signer, article);
         article::save_object_controller(&object_signer,
@@ -59,7 +59,6 @@ module aptos_blog_demo::article_aggregate {
     ) {
         let id = object::object_address(&article_obj);
         let article = article::remove_article(id);
-        //let version = article::version(&article);
         let article_updated = article_update_logic::verify(
             account,
             title,
@@ -87,7 +86,7 @@ module aptos_blog_demo::article_aggregate {
         let article_deleted = article_delete_logic::verify(
             account,
             id,
-            &mut article,
+            &article,
         );
         let updated_article = article_delete_logic::mutate(
             account,
@@ -109,7 +108,6 @@ module aptos_blog_demo::article_aggregate {
     ) {
         let id = object::object_address(&article_obj);
         let article = article::remove_article(id);
-        //let version = article::version(&article);
         let comment_added = article_add_comment_logic::verify(
             account,
             commenter,
@@ -138,7 +136,6 @@ module aptos_blog_demo::article_aggregate {
     ) {
         let id = object::object_address(&article_obj);
         let article = article::remove_article(id);
-        //let version = article::version(&article);
         let comment_updated = article_update_comment_logic::verify(
             account,
             comment_seq_id,
@@ -165,7 +162,6 @@ module aptos_blog_demo::article_aggregate {
     ) {
         let id = object::object_address(&article_obj);
         let article = article::remove_article(id);
-        //let version = article::version(&article);
         let comment_removed = article_remove_comment_logic::verify(
             account,
             comment_seq_id,
