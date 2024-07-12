@@ -115,10 +115,6 @@ module aptos_blog_demo::article {
         article.version
     }
 
-    public(friend) fun set_version(article: &mut Article, version: u64) {
-        article.version = version;
-    }
-
     public fun title(article: &Article): String {
         article.title
     }
