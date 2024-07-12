@@ -36,6 +36,7 @@ module aptos_blog_demo::article_add_comment_logic {
         let commenter = comment_added::commenter(comment_added);
         let body = comment_added::body(comment_added);
         let owner = comment_added::owner(comment_added);
+        let _ = id;
         let comment = comment::new_comment(
             comment_seq_id,
             commenter,

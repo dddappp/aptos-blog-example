@@ -8,7 +8,7 @@
 
 ```shell
 aptos move run --function-id 'default::article_aggregate::create' \
---args address:id 'string:title' 'string:body' address:owner \
+--args 'string:title' 'string:body' address:owner \
 --assume-yes
 ```
 
