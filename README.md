@@ -300,7 +300,19 @@ Note that in the contract, we assign each article an incremental sequence number
 
 ---
 
+Get transaction information by hash:
+
+```shell
+curl --request GET \
+  --url https://fullnode.devnet.aptoslabs.com/v1/transactions/by_hash/{TXN_HASH} \
+  --header 'Accept: application/json, application/x-bcs'
+```
+
+---
+
 Before reading the article information, we need to do some preparatory operations: get the address of the resource account, and the handle of the article table.
+
+
 
 #### Get Resource Account Address
 
@@ -320,7 +332,31 @@ The output is similar to the following:
 
 In the location `{RESOURCE_ACCOUNT_ADDRESS}` above, the address of the resource account will be displayed.
 
+
+#### Getting Article Creation Events
+
+Execute the following command, noting the replacement of the placeholders `{RESOURCE_ACCOUNT_ADDRESS}` and `{ACCOUNT_ADDRESS}`:
+
+```shell
+curl --request GET \
+  --url 'https://fullnode.devent.aptoslabs.com/v1/accounts/{RESOURCE_ACCOUNT_ADDRESS}/events/{ACCOUNT_ADDRESS}::article::Events/article_created_handle?start=0&limit=10' \
+  --header 'Accept: application/json'
+```
+
+For example:
+
+```shell
+curl --request GET \
+  --url 'https://fullnode.devnet.aptoslabs.com/v1/accounts/0xd4c808929f57f1714177d79b4e738a40845b95bb97429afee39d4696828bdc8f/events/0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738::article::Events/article_created_handle?start=0&limit=10' \
+  --header 'Accept: application/json'
+```
+
+
 #### Get Article Table Handle
+
+> Tip:
+> If you are testing the version in the current repository where the Article entity is implemented as an Aptos Object,
+> the descriptions in this section do not apply.
 
 ```shell
 curl 'https://fullnode.devnet.aptoslabs.com/v1/accounts/{RESOURCE_ACCOUNT_ADDRESS}/resource/{ACCOUNT_ADDRESS}::article::Tables'
@@ -339,6 +375,10 @@ In the location `{ARTICLE_TABLE_HANDLE}` above, the article table handle will be
 Now, we can read the information of articles.
 
 #### Read Articles
+
+> Tip:
+> If you are testing the version in the current repository where the Article entity is implemented as an Aptos Object,
+> the descriptions in this section do not apply.
 
 You can read the information of an article like this, let's assume that the ID of the article to be read is `1` (note that replacing the placeholders with their actual values):
 
