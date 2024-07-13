@@ -5,11 +5,12 @@ aggregates:
     id:
       name: Id
       type: AptosObjectID
-      #generator:
-      #  class: AptosObject
-        #isNamedObject: true
-        #seed:
-        #  Move: "*std::string::bytes(&title)"
+#      generator:
+#        class: AptosObject
+#        isNamedObject: true
+#        creatorType: ResourceAccount
+#        seed:
+#          Move: "*std::string::bytes(&title)"
     properties:
       Title:
         type: String

@@ -11,7 +11,9 @@ module aptos_blog_demo::genesis_account {
     use std::signer;
 
     friend aptos_blog_demo::article;
+    friend aptos_blog_demo::article_aggregate;
     friend aptos_blog_demo::blog;
+    friend aptos_blog_demo::blog_aggregate;
 
     const ENotGenesisAccount: u64 = 100;
 
