@@ -7,6 +7,9 @@ aggregates:
       type: AptosObjectID
       #generator:
       #  class: AptosObject
+        #isNamedObject: true
+        #seed:
+        #  Move: "*std::string::bytes(&title)"
     properties:
       Title:
         type: String
