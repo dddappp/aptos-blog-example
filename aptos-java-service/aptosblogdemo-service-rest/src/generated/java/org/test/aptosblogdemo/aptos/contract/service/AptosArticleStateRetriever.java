@@ -57,7 +57,7 @@ public class AptosArticleStateRetriever {
         AccountResource<Article> accountResource;
         try {
             accountResource = aptosNodeApiClient.getAccountResource(id,
-                    this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_TABLES,
+                    this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_ARTICLE,
                     Article.class,
                     null);
         } catch (IOException e) {
