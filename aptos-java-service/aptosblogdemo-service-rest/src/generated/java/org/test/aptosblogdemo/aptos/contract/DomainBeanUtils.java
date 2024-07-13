@@ -48,7 +48,7 @@ public class DomainBeanUtils {
         ArticleCreated contractEvent = eventEnvelope.getData();
 
         AbstractArticleEvent.ArticleCreated articleCreated = new AbstractArticleEvent.ArticleCreated();
-        articleCreated.setId(contractEvent.getId());
+        articleCreated.setId(contractEvent.getId().getVec().get(0));
         articleCreated.setTitle(contractEvent.getTitle());
         articleCreated.setBody(contractEvent.getBody());
         articleCreated.setOwner(contractEvent.getOwner());

@@ -54,30 +54,21 @@ public class AptosArticleStateRetriever {
     }
 
     public ArticleState retrieveArticleState(String id) {
-        String resourceAccountAddress = getResourceAccountAddress();
-        AccountResource<Article.Tables> accountResource;
+        // The entity id here is the Aptos object address
+        AccountResource<Article> articleResource;
         try {
-            accountResource = aptosNodeApiClient.getAccountResource(resourceAccountAddress,
-                    this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_TABLES,
-                    Article.Tables.class,
+            articleResource = aptosNodeApiClient.getAccountResource(id,
+                    this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_ARTICLE,
+                    Article.class,
                     null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String tableHandle = accountResource.getData().getArticleTable().getHandle();
-        Article article;
-        try {
-            article = aptosNodeApiClient.getTableItem(
-                    tableHandle,
-                    ContractConstants.toNumericalAddressType(ContractConstants.ARTICLE_ID_TYPE, this.aptosContractAddress),
-                    this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_ARTICLE,
-                    id,
-                    Article.class,
-                    null
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        Article article = articleResource.getData();
+        if (article == null) {
+            return null;
         }
+        article.setId(id);
         return toArticleState(article);
     }
 

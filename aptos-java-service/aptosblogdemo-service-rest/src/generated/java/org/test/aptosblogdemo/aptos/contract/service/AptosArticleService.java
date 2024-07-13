@@ -62,6 +62,7 @@ public class AptosArticleService {
     public void updateArticleState(String id) {
         ArticleState articleState = aptosArticleStateRetriever.retrieveArticleState(id);
         if (articleState == null) {
+            // TODO: log it?
             return;
         }
         articleStateRepository.merge(articleState);

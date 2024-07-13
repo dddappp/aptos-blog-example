@@ -16,7 +16,7 @@ import java.util.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ArticleCreated {
 
-    private String id;
+    private com.github.wubuku.aptos.bean.Option<String> id;
 
     private String title;
 
@@ -24,11 +24,11 @@ public class ArticleCreated {
 
     private String owner;
 
-    public String getId() {
+    public com.github.wubuku.aptos.bean.Option<String> getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(com.github.wubuku.aptos.bean.Option<String> id) {
         this.id = id;
     }
 
