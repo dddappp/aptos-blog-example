@@ -11,6 +11,8 @@ import java.util.*;
 
 public interface BlogEventRepository extends JpaRepository<AbstractBlogEvent, BlogEventId> {
 
+    AbstractBlogEvent findFirstByStatusIsNull();
+
     List<AbstractBlogEvent> findByStatusIsNull();
 
     AbstractBlogEvent.BlogCreated findFirstBlogCreatedByOrderByAptosEventSequenceNumber();

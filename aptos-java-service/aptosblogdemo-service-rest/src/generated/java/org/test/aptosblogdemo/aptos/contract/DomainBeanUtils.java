@@ -18,6 +18,8 @@ import org.test.aptosblogdemo.aptos.contract.article.ArticleDeleted;
 import org.test.aptosblogdemo.aptos.contract.article.CommentAdded;
 import org.test.aptosblogdemo.aptos.contract.article.CommentUpdated;
 import org.test.aptosblogdemo.aptos.contract.article.CommentRemoved;
+import org.test.aptosblogdemo.domain.tag.AbstractTagEvent;
+import org.test.aptosblogdemo.aptos.contract.tag.TagCreated;
 import org.test.aptosblogdemo.domain.blog.AbstractBlogEvent;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogCreated;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleAddedToBlog;
@@ -129,6 +131,19 @@ public class DomainBeanUtils {
         setAptosEventProperties(commentRemoved, eventEnvelope);
 
         return commentRemoved;
+    }
+
+    public static AbstractTagEvent.TagCreated toTagCreated(Event<TagCreated> eventEnvelope) {
+        TagCreated contractEvent = eventEnvelope.getData();
+
+        AbstractTagEvent.TagCreated tagCreated = new AbstractTagEvent.TagCreated();
+        tagCreated.setTagId(contractEvent.getTagId().getVec().get(0));
+        tagCreated.setName(contractEvent.getName());
+        tagCreated.setVersion(BigInteger.valueOf(-1));
+
+        setAptosEventProperties(tagCreated, eventEnvelope);
+
+        return tagCreated;
     }
 
     public static AbstractBlogEvent.BlogCreated toBlogCreated(Event<BlogCreated> eventEnvelope) {

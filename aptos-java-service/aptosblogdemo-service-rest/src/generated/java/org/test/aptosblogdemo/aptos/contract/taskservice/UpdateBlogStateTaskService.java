@@ -5,6 +5,7 @@
 
 package org.test.aptosblogdemo.aptos.contract.taskservice;
 
+import org.test.aptosblogdemo.domain.blog.AbstractBlogEvent;
 import org.test.aptosblogdemo.aptos.contract.repository.*;
 import org.test.aptosblogdemo.aptos.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,15 @@ public class UpdateBlogStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-blog-states.fixed-delay:5000}")
     @Transactional
     public void updateBlogStates() {
-        blogEventRepository.findByStatusIsNull().forEach(e -> {
+        AbstractBlogEvent e = blogEventRepository.findFirstByStatusIsNull();
+        if (e != null) {
             if (BlogEventService.isDeletionCommand(e)) {
                 aptosBlogService.deleteBlog(e.getAccountAddress());
             } else {
                 aptosBlogService.updateBlogState(e.getAccountAddress());
             }
             blogEventService.updateStatusToProcessed(e);
-        });
+        }
     }
 
 }

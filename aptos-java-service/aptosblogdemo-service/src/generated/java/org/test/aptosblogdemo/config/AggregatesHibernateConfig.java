@@ -8,6 +8,9 @@ package org.test.aptosblogdemo.config;
 import org.test.aptosblogdemo.domain.article.*;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.domain.article.hibernate.*;
+import org.test.aptosblogdemo.domain.tag.*;
+import org.test.aptosblogdemo.domain.*;
+import org.test.aptosblogdemo.domain.tag.hibernate.*;
 import org.test.aptosblogdemo.domain.blog.*;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.domain.blog.hibernate.*;
@@ -70,6 +73,51 @@ public class AggregatesHibernateConfig {
                 articleEventStore,
                 articleStateRepository,
                 articleStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public TagStateRepository tagStateRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernateTagStateRepository repository = new HibernateTagStateRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public TagStateQueryRepository tagStateQueryRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernateTagStateQueryRepository repository = new HibernateTagStateQueryRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public HibernateTagEventStore tagEventStore(SessionFactory hibernateSessionFactory) {
+        HibernateTagEventStore eventStore = new HibernateTagEventStore();
+        eventStore.setSessionFactory(hibernateSessionFactory);
+        return eventStore;
+    }
+
+    @Bean
+    public AbstractTagApplicationService.SimpleTagApplicationService tagApplicationService(
+            @Qualifier("tagEventStore") EventStore tagEventStore,
+            TagStateRepository tagStateRepository,
+            TagStateQueryRepository tagStateQueryRepository
+    ) {
+        AbstractTagApplicationService.SimpleTagApplicationService applicationService = new AbstractTagApplicationService.SimpleTagApplicationService(
+                tagEventStore,
+                tagStateRepository,
+                tagStateQueryRepository
         );
         return applicationService;
     }

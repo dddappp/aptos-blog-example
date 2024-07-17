@@ -41,6 +41,25 @@ aggregates:
             length: 500
           Owner:
             type: address
+  Tag:
+    metadata:
+      Preprocessors: [ "MOVE_CRUD_IT" ]
+      CRUD_IT_NO_UPDATE: true
+      CRUD_IT_NO_DELETE: true
+    id:
+      name: TagId
+      type: AptosObjectID
+      generator:
+        class: AptosObject
+        isNamedObject: true
+        creatorType: ResourceAccount
+        seed:
+          "__Property__": "Name"
+    properties:
+      Name:
+        type: String
+        length: 50
+
 
 singletonObjects:
   Blog:

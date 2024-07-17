@@ -12,6 +12,7 @@ import org.test.aptosblogdemo.domain.article.*;
 import java.math.BigInteger;
 import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
+import org.test.aptosblogdemo.domain.tag.*;
 import org.test.aptosblogdemo.domain.blog.*;
 
 public class StaticMethodConstraints {
@@ -63,6 +64,14 @@ public class StaticMethodConstraints {
                     "verify",
                     new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, VerificationContext.class},
                     new String[]{"_", "_", "commentSeqId"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.tag.CreateLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, TagState.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "name"}
             );
 
 
@@ -167,6 +176,14 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
                     new String[]{"_", "commentSeqId", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.tag.CreateLogic",
+                    "mutate",
+                    new Class[]{TagState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
             );
 
 

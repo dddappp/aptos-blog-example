@@ -52,6 +52,16 @@ aptos move run --function-id 'default::article_aggregate::remove_comment' \
 --assume-yes
 ```
 
+## Tag aggregate
+
+### Create method
+
+```shell
+aptos move run --function-id 'default::tag_aggregate::create' \
+--args 'string:name' \
+--assume-yes
+```
+
 ## Blog singleton object
 
 ### Create method

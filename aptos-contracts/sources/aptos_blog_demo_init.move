@@ -7,10 +7,12 @@ module aptos_blog_demo::aptos_blog_demo_init {
     use aptos_blog_demo::article;
     use aptos_blog_demo::blog;
     use aptos_blog_demo::genesis_account;
+    use aptos_blog_demo::tag;
 
     public entry fun initialize(account: &signer) {
         genesis_account::initialize(account);
         article::initialize(account);
+        tag::initialize(account);
         blog::initialize(account);
     }
 

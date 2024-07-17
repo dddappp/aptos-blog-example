@@ -11,6 +11,8 @@ import java.util.*;
 
 public interface ArticleEventRepository extends JpaRepository<AbstractArticleEvent, ArticleEventId> {
 
+    AbstractArticleEvent findFirstByStatusIsNull();
+
     List<AbstractArticleEvent> findByStatusIsNull();
 
     AbstractArticleEvent.ArticleCreated findFirstArticleCreatedByOrderByAptosEventSequenceNumber();

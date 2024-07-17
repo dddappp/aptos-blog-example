@@ -12,6 +12,8 @@ module aptos_blog_demo::genesis_account {
 
     friend aptos_blog_demo::article;
     friend aptos_blog_demo::article_aggregate;
+    friend aptos_blog_demo::tag;
+    friend aptos_blog_demo::tag_aggregate;
     friend aptos_blog_demo::blog;
     friend aptos_blog_demo::blog_aggregate;
 

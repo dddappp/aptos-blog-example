@@ -2,3 +2,4 @@ aptos-contracts/.aptos
 aptos-contracts/build
 .idea
 aptos-java-service/scripts
+_temp_test_.move

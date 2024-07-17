@@ -6,6 +6,7 @@
 module aptos_blog_demo::pass_object {
 
     friend aptos_blog_demo::article;
+    friend aptos_blog_demo::tag;
     friend aptos_blog_demo::blog;
 
     /// read-only 'hot potato' wrapper.

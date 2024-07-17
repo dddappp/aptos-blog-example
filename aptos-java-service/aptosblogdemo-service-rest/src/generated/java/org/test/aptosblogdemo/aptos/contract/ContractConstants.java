@@ -29,6 +29,9 @@ public class ContractConstants {
     public static final String ARTICLE_MODULE_COMMENT_REMOVED = "article::CommentRemoved";
     public static final String ARTICLE_MODULE_COMMENT_REMOVED_HANDLE_FIELD = "comment_removed_handle";
 
+    public static final String TAG_MODULE_TAG_CREATED = "tag::TagCreated";
+    public static final String TAG_MODULE_TAG_CREATED_HANDLE_FIELD = "tag_created_handle";
+
     public static final String BLOG_MODULE_BLOG_CREATED = "blog::BlogCreated";
     public static final String BLOG_MODULE_BLOG_CREATED_HANDLE_FIELD = "blog_created_handle";
 
@@ -62,6 +65,10 @@ public class ContractConstants {
 
     public static final String COMMENT_TABLE_ITEM_ADDED_HANDLE_FIELD = "comment_table_item_added_handle";
 
+    public static final String TAG_MODULE_TAG = "tag::Tag";
+
+    public static final String TAG_ID_TYPE = "AptosObjectID";
+
     public static final String BLOG_MODULE_BLOG = "blog::Blog";
 
     public static final String BLOG_ID_TYPE = "address";
@@ -69,6 +76,10 @@ public class ContractConstants {
     public static final String ARTICLE_MODULE_TABLES = "article::Tables";
 
     public static final String ARTICLE_MODULE_EVENTS = "article::Events";
+
+    public static final String TAG_MODULE_TABLES = "tag::Tables";
+
+    public static final String TAG_MODULE_EVENTS = "tag::Events";
 
     public static final String BLOG_MODULE_EVENTS = "blog::Events";
 

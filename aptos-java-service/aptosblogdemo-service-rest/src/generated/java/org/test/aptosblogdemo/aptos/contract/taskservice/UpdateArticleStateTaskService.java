@@ -5,6 +5,7 @@
 
 package org.test.aptosblogdemo.aptos.contract.taskservice;
 
+import org.test.aptosblogdemo.domain.article.AbstractArticleEvent;
 import org.test.aptosblogdemo.aptos.contract.repository.*;
 import org.test.aptosblogdemo.aptos.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,15 @@ public class UpdateArticleStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-article-states.fixed-delay:5000}")
     @Transactional
     public void updateArticleStates() {
-        articleEventRepository.findByStatusIsNull().forEach(e -> {
+        AbstractArticleEvent e = articleEventRepository.findFirstByStatusIsNull();
+        if (e != null) {
             if (ArticleEventService.isDeletionCommand(e)) {
                 aptosArticleService.deleteArticle(e.getId());
             } else {
                 aptosArticleService.updateArticleState(e.getId());
             }
             articleEventService.updateStatusToProcessed(e);
-        });
+        }
     }
 
 }
