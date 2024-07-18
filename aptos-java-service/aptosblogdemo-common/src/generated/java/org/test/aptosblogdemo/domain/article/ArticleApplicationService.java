@@ -15,6 +15,8 @@ import org.test.aptosblogdemo.specialization.Event;
 import org.test.aptosblogdemo.domain.Command;
 
 public interface ArticleApplicationService {
+    void when(ArticleCommands.AddTag c);
+
     void when(ArticleCommands.Create c);
 
     void when(ArticleCommands.Update c);

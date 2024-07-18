@@ -171,6 +171,24 @@ public class ArticleResource {
     }
 
 
+    @PutMapping("{id}/_commands/AddTag")
+    public void addTag(@PathVariable("id") String id, @RequestBody ArticleCommands.AddTag content) {
+        try {
+
+            ArticleCommands.AddTag cmd = content;//.toAddTag();
+            String idObj = id;
+            if (cmd.getId() == null) {
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            articleApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+
     @PutMapping("{id}/_commands/Create")
     public void create(@PathVariable("id") String id, @RequestBody ArticleCommands.Create content) {
         try {

@@ -77,6 +77,7 @@ public class AptosArticleStateRetriever {
         articleState.setTitle(article.getTitle());
         articleState.setBody(article.getBody());
         articleState.setOwner(article.getOwner());
+        articleState.setTags(new HashSet<>(Arrays.asList(article.getTags().getVec().size() == 0 ? null : article.getTags().getVec().get(0))));
         if (article.getComments() != null) {
             String commentTableHandle = article.getComments().getInner().getHandle();
             List<Comment> comments = getComments(commentTableHandle, commentCommentSeqIdsGetter.getCommentCommentSeqIds(articleState.getId()));

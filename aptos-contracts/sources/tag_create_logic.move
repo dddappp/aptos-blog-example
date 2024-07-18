@@ -18,7 +18,7 @@ module aptos_blog_demo::tag_create_logic {
     public(friend) fun mutate(
         _account: &signer,
         tag_created: &tag::TagCreated,
-        tag_id: address,
+        _tag_id: address,
     ): tag::Tag {
         let name = tag_created::name(tag_created);
         tag::new_tag(

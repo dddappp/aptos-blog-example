@@ -17,9 +17,11 @@ public interface ArticleAggregate {
 
     List<Event> getChanges();
 
+    void addTag(String tag, Long offChainVersion, String commandId, String requesterId, ArticleCommands.AddTag c);
+
     void create(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Create c);
 
-    void update(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Update c);
+    void update(String title, String body, String owner, String[] tags, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Update c);
 
     void delete(Long offChainVersion, String commandId, String requesterId, ArticleCommands.Delete c);
 

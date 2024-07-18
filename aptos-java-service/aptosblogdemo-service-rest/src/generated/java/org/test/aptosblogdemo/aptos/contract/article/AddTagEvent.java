@@ -14,19 +14,13 @@ import java.math.*;
 import java.util.*;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ArticleUpdated {
+public class AddTagEvent {
 
     private String id;
 
     private BigInteger version;
 
-    private String title;
-
-    private String body;
-
-    private String owner;
-
-    private String[] tags;
+    private String tag;
 
     public String getId() {
         return id;
@@ -44,47 +38,20 @@ public class ArticleUpdated {
         this.version = version;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTag() {
+        return tag;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public String[] getTags() {
-        return tags;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     @Override
     public String toString() {
-        return "ArticleUpdated{" +
+        return "AddTagEvent{" +
                 "id=" + '\'' + id + '\'' +
                 ", version=" + version +
-                ", title=" + '\'' + title + '\'' +
-                ", body=" + '\'' + body + '\'' +
-                ", owner=" + '\'' + owner + '\'' +
-                ", tags=" + Arrays.toString(tags) +
+                ", tag=" + '\'' + tag + '\'' +
                 '}';
     }
 

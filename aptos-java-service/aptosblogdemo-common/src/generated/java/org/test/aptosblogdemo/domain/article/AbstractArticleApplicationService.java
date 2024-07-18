@@ -50,12 +50,16 @@ public abstract class AbstractArticleApplicationService implements ArticleApplic
         this.stateQueryRepository = stateQueryRepository;
     }
 
+    public void when(ArticleCommands.AddTag c) {
+        update(c, ar -> ar.addTag(c.getTag(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public void when(ArticleCommands.Create c) {
         update(c, ar -> ar.create(c.getTitle(), c.getBody(), c.getOwner(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(ArticleCommands.Update c) {
-        update(c, ar -> ar.update(c.getTitle(), c.getBody(), c.getOwner(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.update(c.getTitle(), c.getBody(), c.getOwner(), c.getTags(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(ArticleCommands.Delete c) {

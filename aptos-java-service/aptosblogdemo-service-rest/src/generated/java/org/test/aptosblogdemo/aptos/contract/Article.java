@@ -26,6 +26,8 @@ public class Article {
 
     private String owner;
 
+    private String[] tags;
+
     private BigInteger version;
 
     private TableWithLength comments;
@@ -70,6 +72,14 @@ public class Article {
         this.owner = owner;
     }
 
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
+
     public BigInteger getVersion() {
         return version;
     }
@@ -104,6 +114,7 @@ public class Article {
                 ", title=" + '\'' + title + '\'' +
                 ", body=" + '\'' + body + '\'' +
                 ", owner=" + '\'' + owner + '\'' +
+                ", tags=" + Arrays.toString(tags) +
                 ", version=" + version +
                 ", comments=" + comments +
                 '}';

@@ -16,6 +16,11 @@ public class PullArticleEventsTaskService {
     @Autowired
     private ArticleEventService articleEventService;
 
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.add-tag-event.fixed-delay:5000}")
+    public void pullAddTagEvents() {
+        articleEventService.pullAddTagEvents();
+    }
+
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-created.fixed-delay:5000}")
     public void pullArticleCreatedEvents() {
         articleEventService.pullArticleCreatedEvents();

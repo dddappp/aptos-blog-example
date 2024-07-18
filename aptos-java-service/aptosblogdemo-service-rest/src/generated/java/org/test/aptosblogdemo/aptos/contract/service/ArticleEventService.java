@@ -13,6 +13,7 @@ import org.test.aptosblogdemo.aptos.contract.ContractConstants;
 import org.test.aptosblogdemo.aptos.contract.DomainBeanUtils;
 import org.test.aptosblogdemo.aptos.contract.AptosAccount;
 
+import org.test.aptosblogdemo.aptos.contract.article.AddTagEvent;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleCreated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleUpdated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleDeleted;
@@ -68,6 +69,56 @@ public class ArticleEventService {
     public void updateStatusToProcessed(AbstractArticleEvent event) {
         event.setStatus("D");
         articleEventRepository.save(event);
+    }
+
+    @Transactional
+    public void pullAddTagEvents() {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getAddTagEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<AddTagEvent>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ARTICLE_MODULE_EVENTS,
+                        ContractConstants.ARTICLE_MODULE_ADD_TAG_EVENT_HANDLE_FIELD,
+                        AddTagEvent.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<AddTagEvent> eventEnvelope : eventPage) {
+                    saveAddTagEvent(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getAddTagEventNextCursor() {
+        AbstractArticleEvent.AddTagEvent lastEvent = articleEventRepository.findFirstAddTagEventByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveAddTagEvent(Event<AddTagEvent> eventEnvelope) {
+        AbstractArticleEvent.AddTagEvent addTagEvent = DomainBeanUtils.toAddTagEvent(eventEnvelope);
+        if (articleEventRepository.findById(addTagEvent.getArticleEventId()).isPresent()) {
+            return;
+        }
+        articleEventRepository.save(addTagEvent);
     }
 
     @Transactional

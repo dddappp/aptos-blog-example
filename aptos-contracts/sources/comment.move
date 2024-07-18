@@ -5,6 +5,7 @@
 
 module aptos_blog_demo::comment {
     use std::string::String;
+    friend aptos_blog_demo::article_add_tag_logic;
     friend aptos_blog_demo::article_create_logic;
     friend aptos_blog_demo::article_update_logic;
     friend aptos_blog_demo::article_delete_logic;

@@ -159,6 +159,16 @@ public class ArticleStateDto {
         this.comments = comments;
     }
 
+    private String[] tags;
+
+    public String[] getTags() {
+        return this.tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
+
 
     public static class DtoConverter extends AbstractStateDtoConverter
     {
@@ -220,6 +230,15 @@ public class ArticleStateDto {
             }
             if (returnedFieldsContains("UpdatedAt")) {
                 dto.setUpdatedAt(state.getUpdatedAt());
+            }
+            if (returnedFieldsContains("Tags")) {
+                ArrayList<String> arrayList = new ArrayList();
+                if (state.getTags() != null) {
+                    for (String s : state.getTags()) {
+                        arrayList.add(s);
+                    }
+                }
+                dto.setTags(arrayList.toArray(new String[0]));
             }
             if (returnedFieldsContains("Comments")) {
                 ArrayList<CommentStateDto> arrayList = new ArrayList();

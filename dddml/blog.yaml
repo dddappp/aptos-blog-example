@@ -22,6 +22,17 @@ aggregates:
         type: address
       Comments:
         itemType: Comment
+      Tags:
+        itemType: Object<Tag>
+        optional: true
+        defaultLogic:
+          Move: "std::option::none()"
+
+    methods:
+      AddTag:
+        parameters:
+          Tag:
+            type: Object<Tag>
     entities:
       Comment:
         metadata:

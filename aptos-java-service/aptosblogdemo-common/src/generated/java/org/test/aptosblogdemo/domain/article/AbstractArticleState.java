@@ -135,6 +135,16 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.deleted = deleted;
     }
 
+    private Set<String> tags;
+
+    public Set<String> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
     public boolean isStateUnsaved() {
         return this.getOffChainVersion() == null;
     }
@@ -220,6 +230,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         setStateReadOnly(false);
         if (false) { 
             ;
+        } else if (e instanceof AbstractArticleEvent.AddTagEvent) {
+            when((AbstractArticleEvent.AddTagEvent)e);
         } else if (e instanceof AbstractArticleEvent.ArticleCreated) {
             when((AbstractArticleEvent.ArticleCreated)e);
         } else if (e instanceof AbstractArticleEvent.ArticleUpdated) {
@@ -244,6 +256,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setTitle(s.getTitle());
         this.setBody(s.getBody());
         this.setOwner(s.getOwner());
+        this.setTags(s.getTags());
         this.setVersion(s.getVersion());
         this.setActive(s.getActive());
 
@@ -282,6 +295,49 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
                 }
             }
         }
+    }
+
+    public void when(AbstractArticleEvent.AddTagEvent e) {
+        throwOnWrongEvent(e);
+
+        String tag = e.getTag();
+        String Tag = tag;
+        BigInteger aptosEventVersion = e.getAptosEventVersion();
+        BigInteger AptosEventVersion = aptosEventVersion;
+        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
+        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
+        String aptosEventType = e.getAptosEventType();
+        String AptosEventType = aptosEventType;
+        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
+        AptosEventGuid AptosEventGuid = aptosEventGuid;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.article.AddTagLogic",
+                    "mutate",
+                    new Class[]{ArticleState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new Object[]{this, tag, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.test.aptosblogdemo.domain.article;
+//
+//public class AddTagLogic {
+//    public static ArticleState mutate(ArticleState articleState, String tag, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
+
     }
 
     public void when(AbstractArticleEvent.ArticleCreated e) {
@@ -340,6 +396,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String Body = body;
         String owner = e.getOwner();
         String Owner = owner;
+        String[] tags = e.getTags();
+        String[] Tags = tags;
         BigInteger aptosEventVersion = e.getAptosEventVersion();
         BigInteger AptosEventVersion = aptosEventVersion;
         BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
@@ -363,14 +421,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.article.UpdateLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, title, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ArticleState.class, String.class, String.class, String.class, String[].class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new Object[]{this, title, body, owner, tags, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.test.aptosblogdemo.domain.article;
 //
 //public class UpdateLogic {
-//    public static ArticleState mutate(ArticleState articleState, String title, String body, String owner, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+//    public static ArticleState mutate(ArticleState articleState, String title, String body, String owner, String[] tags, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
 //    }
 //}
 

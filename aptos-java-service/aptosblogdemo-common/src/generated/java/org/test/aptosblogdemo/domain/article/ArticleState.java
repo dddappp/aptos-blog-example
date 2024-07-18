@@ -40,6 +40,8 @@ public interface ArticleState extends VersionedAptosMoveObject
 
     Boolean getDeleted();
 
+    Set<String> getTags();
+
     EntityStateCollection<BigInteger, CommentState> getComments();
 
     interface MutableArticleState extends ArticleState, VersionedAptosMoveObject.MutableVersionedAptosMoveObject {
@@ -64,6 +66,8 @@ public interface ArticleState extends VersionedAptosMoveObject
         void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
+
+        void setTags(Set<String> tags);
 
 
         void mutate(Event e);

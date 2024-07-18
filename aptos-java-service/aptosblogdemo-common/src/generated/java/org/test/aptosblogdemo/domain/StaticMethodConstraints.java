@@ -20,6 +20,14 @@ public class StaticMethodConstraints {
     public static void assertStaticVerificationAndMutationMethods() {
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.article.AddTagLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "tag"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.CreateLogic",
                     "verify",
                     new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
@@ -30,8 +38,8 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.UpdateLogic",
                     "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new String[]{"_", "_", "title", "body", "owner"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, String[].class, VerificationContext.class},
+                    new String[]{"_", "_", "title", "body", "owner", "tags"}
             );
 
 
@@ -132,6 +140,14 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.article.AddTagLogic",
+                    "mutate",
+                    new Class[]{ArticleState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "tag", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.CreateLogic",
                     "mutate",
                     new Class[]{ArticleState.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
@@ -142,8 +158,8 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.article.UpdateLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "title", "body", "owner", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+                    new Class[]{ArticleState.class, String.class, String.class, String.class, String[].class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "title", "body", "owner", "tags", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
             );
 
 

@@ -12,6 +12,7 @@ import com.github.wubuku.aptos.bean.Option;
 import org.test.aptosblogdemo.domain.AptosEvent;
 import org.test.aptosblogdemo.domain.AptosEventGuid;
 import org.test.aptosblogdemo.domain.article.AbstractArticleEvent;
+import org.test.aptosblogdemo.aptos.contract.article.AddTagEvent;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleCreated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleUpdated;
 import org.test.aptosblogdemo.aptos.contract.article.ArticleDeleted;
@@ -46,6 +47,19 @@ public class DomainBeanUtils {
     }
 
 
+    public static AbstractArticleEvent.AddTagEvent toAddTagEvent(Event<AddTagEvent> eventEnvelope) {
+        AddTagEvent contractEvent = eventEnvelope.getData();
+
+        AbstractArticleEvent.AddTagEvent addTagEvent = new AbstractArticleEvent.AddTagEvent();
+        addTagEvent.setId(contractEvent.getId());
+        addTagEvent.setTag(contractEvent.getTag());
+        addTagEvent.setVersion(contractEvent.getVersion());
+
+        setAptosEventProperties(addTagEvent, eventEnvelope);
+
+        return addTagEvent;
+    }
+
     public static AbstractArticleEvent.ArticleCreated toArticleCreated(Event<ArticleCreated> eventEnvelope) {
         ArticleCreated contractEvent = eventEnvelope.getData();
 
@@ -69,6 +83,7 @@ public class DomainBeanUtils {
         articleUpdated.setTitle(contractEvent.getTitle());
         articleUpdated.setBody(contractEvent.getBody());
         articleUpdated.setOwner(contractEvent.getOwner());
+        articleUpdated.setTags(extractOptionalValue(contractEvent.getTags()));
         articleUpdated.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(articleUpdated, eventEnvelope);

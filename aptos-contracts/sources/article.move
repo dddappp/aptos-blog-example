@@ -6,12 +6,14 @@
 module aptos_blog_demo::article {
     use aptos_blog_demo::comment::{Self, Comment};
     use aptos_blog_demo::genesis_account;
+    use aptos_blog_demo::tag::Tag;
     use aptos_framework::account;
     use aptos_framework::event;
-    use aptos_framework::object;
+    use aptos_framework::object::{Self, Object};
     use aptos_std::table_with_length::{Self, TableWithLength};
-    use std::option;
+    use std::option::{Self, Option};
     use std::string::String;
+    friend aptos_blog_demo::article_add_tag_logic;
     friend aptos_blog_demo::article_create_logic;
     friend aptos_blog_demo::article_update_logic;
     friend aptos_blog_demo::article_delete_logic;
@@ -27,6 +29,7 @@ module aptos_blog_demo::article {
     const EIdNotFound: u64 = 111;
 
     struct Events has key {
+        add_tag_event_handle: event::EventHandle<AddTagEvent>,
         article_created_handle: event::EventHandle<ArticleCreated>,
         article_updated_handle: event::EventHandle<ArticleUpdated>,
         article_deleted_handle: event::EventHandle<ArticleDeleted>,
@@ -52,6 +55,7 @@ module aptos_blog_demo::article {
 
         let res_account = genesis_account::resource_account_signer();
         move_to(&res_account, Events {
+            add_tag_event_handle: account::new_event_handle<AddTagEvent>(&res_account),
             article_created_handle: account::new_event_handle<ArticleCreated>(&res_account),
             article_updated_handle: account::new_event_handle<ArticleUpdated>(&res_account),
             article_deleted_handle: account::new_event_handle<ArticleDeleted>(&res_account),
@@ -69,6 +73,7 @@ module aptos_blog_demo::article {
         title: String,
         body: String,
         owner: address,
+        tags: Option<vector<Object<Tag>>>,
         comments: TableWithLength<u64, Comment>,
         comment_seq_id_generator: CommentSeqIdGenerator,
     }
@@ -140,6 +145,22 @@ module aptos_blog_demo::article {
         article.owner = owner;
     }
 
+    public fun borrow_tags(article: &Article): &Option<vector<Object<Tag>>> {
+        &article.tags
+    }
+
+    public(friend) fun borrow_mut_tags(article: &mut Article): &mut Option<vector<Object<Tag>>> {
+        &mut article.tags
+    }
+
+    public fun tags(article: &Article): Option<vector<Object<Tag>>> {
+        article.tags
+    }
+
+    public(friend) fun set_tags(article: &mut Article, tags: Option<vector<Object<Tag>>>) {
+        article.tags = tags;
+    }
+
     public(friend) fun add_comment(id: address, article: &mut Article, comment: Comment) acquires Events {
         let comment_seq_id = comment::comment_seq_id(&comment);
         assert!(!table_with_length::contains(&article.comments, comment_seq_id), EIdAlreadyExists);
@@ -184,8 +205,35 @@ module aptos_blog_demo::article {
             title,
             body,
             owner,
+            tags: std::option::none(),
             comments: table_with_length::new<u64, Comment>(),
             comment_seq_id_generator: CommentSeqIdGenerator { sequence: 0, },
+        }
+    }
+
+    struct AddTagEvent has store, drop {
+        id: address,
+        version: u64,
+        tag: Object<Tag>,
+    }
+
+    public fun add_tag_event_id(add_tag_event: &AddTagEvent): address {
+        add_tag_event.id
+    }
+
+    public fun add_tag_event_tag(add_tag_event: &AddTagEvent): Object<Tag> {
+        add_tag_event.tag
+    }
+
+    public(friend) fun new_add_tag_event(
+        id: address,
+        article: &Article,
+        tag: Object<Tag>,
+    ): AddTagEvent {
+        AddTagEvent {
+            id,
+            version: version(article),
+            tag,
         }
     }
 
@@ -235,6 +283,7 @@ module aptos_blog_demo::article {
         title: String,
         body: String,
         owner: address,
+        tags: Option<vector<Object<Tag>>>,
     }
 
     public fun article_updated_id(article_updated: &ArticleUpdated): address {
@@ -253,12 +302,21 @@ module aptos_blog_demo::article {
         article_updated.owner
     }
 
+    public fun article_updated_tags(article_updated: &ArticleUpdated): Option<vector<Object<Tag>>> {
+        article_updated.tags
+    }
+
+    public(friend) fun set_article_updated_tags(article_updated: &mut ArticleUpdated, tags: Option<vector<Object<Tag>>>) {
+        article_updated.tags = tags;
+    }
+
     public(friend) fun new_article_updated(
         id: address,
         article: &Article,
         title: String,
         body: String,
         owner: address,
+        tags: Option<vector<Object<Tag>>>,
     ): ArticleUpdated {
         ArticleUpdated {
             id,
@@ -266,6 +324,7 @@ module aptos_blog_demo::article {
             title,
             body,
             owner,
+            tags,
         }
     }
 
@@ -457,6 +516,7 @@ module aptos_blog_demo::article {
             title: _title,
             body: _body,
             owner: _owner,
+            tags: _tags,
             comments,
             comment_seq_id_generator,
         } = article;
@@ -464,6 +524,12 @@ module aptos_blog_demo::article {
             sequence: _,
         } = comment_seq_id_generator;
         table_with_length::destroy_empty(comments);
+    }
+
+    public(friend) fun emit_add_tag_event(add_tag_event: AddTagEvent) acquires Events {
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
+        event::emit_event(&mut events.add_tag_event_handle, add_tag_event);
     }
 
     public(friend) fun emit_article_created(article_created: ArticleCreated) acquires Events {

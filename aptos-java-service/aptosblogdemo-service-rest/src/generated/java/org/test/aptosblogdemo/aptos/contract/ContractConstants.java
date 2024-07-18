@@ -11,6 +11,9 @@ public class ContractConstants {
 
     public static final String CONTRACT_NAMED_ADDRESS = "aptos_blog_demo";
 
+    public static final String ARTICLE_MODULE_ADD_TAG_EVENT = "article::AddTagEvent";
+    public static final String ARTICLE_MODULE_ADD_TAG_EVENT_HANDLE_FIELD = "add_tag_event_handle";
+
     public static final String ARTICLE_MODULE_ARTICLE_CREATED = "article::ArticleCreated";
     public static final String ARTICLE_MODULE_ARTICLE_CREATED_HANDLE_FIELD = "article_created_handle";
 

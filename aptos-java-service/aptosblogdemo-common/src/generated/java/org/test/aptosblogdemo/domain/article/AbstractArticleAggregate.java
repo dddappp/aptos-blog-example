@@ -47,6 +47,19 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
 
         @Override
+        public void addTag(String tag, Long offChainVersion, String commandId, String requesterId, ArticleCommands.AddTag c) {
+            java.util.function.Supplier<ArticleEvent.AddTagEvent> eventFactory = () -> newAddTagEvent(tag, offChainVersion, commandId, requesterId);
+            ArticleEvent.AddTagEvent e;
+            try {
+                e = verifyAddTag(eventFactory, tag, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        @Override
         public void create(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Create c) {
             java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory = () -> newArticleCreated(title, body, owner, offChainVersion, commandId, requesterId);
             ArticleEvent.ArticleCreated e;
@@ -60,11 +73,11 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
 
         @Override
-        public void update(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Update c) {
-            java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory = () -> newArticleUpdated(title, body, owner, offChainVersion, commandId, requesterId);
+        public void update(String title, String body, String owner, String[] tags, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Update c) {
+            java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory = () -> newArticleUpdated(title, body, owner, tags, offChainVersion, commandId, requesterId);
             ArticleEvent.ArticleUpdated e;
             try {
-                e = verifyUpdate(eventFactory, title, body, owner, c);
+                e = verifyUpdate(eventFactory, title, body, owner, tags, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
@@ -124,6 +137,27 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             apply(e);
         }
 
+        protected ArticleEvent.AddTagEvent verifyAddTag(java.util.function.Supplier<ArticleEvent.AddTagEvent> eventFactory, String tag, ArticleCommands.AddTag c) {
+            String Tag = tag;
+
+            ArticleEvent.AddTagEvent e = (ArticleEvent.AddTagEvent) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.article.AddTagLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), tag, VerificationContext.forCommand(c)}
+            );
+
+//package org.test.aptosblogdemo.domain.article;
+//
+//public class AddTagLogic {
+//    public static ArticleEvent.AddTagEvent verify(java.util.function.Supplier<ArticleEvent.AddTagEvent> eventFactory, ArticleState articleState, String tag, VerificationContext verificationContext) {
+//    }
+//}
+
+            return e;
+        }
+           
+
         protected ArticleEvent.ArticleCreated verifyCreate(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, String title, String body, String owner, ArticleCommands.Create c) {
             String Title = title;
             String Body = body;
@@ -147,22 +181,23 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
            
 
-        protected ArticleEvent.ArticleUpdated verifyUpdate(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, String title, String body, String owner, ArticleCommands.Update c) {
+        protected ArticleEvent.ArticleUpdated verifyUpdate(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, String title, String body, String owner, String[] tags, ArticleCommands.Update c) {
             String Title = title;
             String Body = body;
             String Owner = owner;
+            String[] Tags = tags;
 
             ArticleEvent.ArticleUpdated e = (ArticleEvent.ArticleUpdated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.article.UpdateLogic",
                     "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), title, body, owner, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, String[].class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), title, body, owner, tags, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.article;
 //
 //public class UpdateLogic {
-//    public static ArticleEvent.ArticleUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, ArticleState articleState, String title, String body, String owner, VerificationContext verificationContext) {
+//    public static ArticleEvent.ArticleUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, ArticleState articleState, String title, String body, String owner, String[] tags, VerificationContext verificationContext) {
 //    }
 //}
 
@@ -258,6 +293,25 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         }
            
 
+        protected AbstractArticleEvent.AddTagEvent newAddTagEvent(String tag, Long offChainVersion, String commandId, String requesterId) {
+            ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
+            AbstractArticleEvent.AddTagEvent e = new AbstractArticleEvent.AddTagEvent();
+
+            e.setTag(tag);
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setArticleEventId(eventId);
+            return e;
+        }
+
         protected AbstractArticleEvent.ArticleCreated newArticleCreated(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId) {
             ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.ArticleCreated e = new AbstractArticleEvent.ArticleCreated();
@@ -279,13 +333,14 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             return e;
         }
 
-        protected AbstractArticleEvent.ArticleUpdated newArticleUpdated(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractArticleEvent.ArticleUpdated newArticleUpdated(String title, String body, String owner, String[] tags, Long offChainVersion, String commandId, String requesterId) {
             ArticleEventId eventId = new ArticleEventId(getState().getId(), null);
             AbstractArticleEvent.ArticleUpdated e = new AbstractArticleEvent.ArticleUpdated();
 
             e.setTitle(title);
             e.setBody(body);
             e.setOwner(owner);
+            e.setTags(tags);
             e.setAptosEventVersion(null);
             e.setAptosEventSequenceNumber(null);
             e.setAptosEventType(null);

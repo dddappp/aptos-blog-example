@@ -40,7 +40,6 @@ module aptos_blog_demo::tag {
     #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
     struct ObjectController has key {
         extend_ref: object::ExtendRef,
-        delete_ref: object::DeleteRef,
         transfer_ref: object::TransferRef,
     }
 
@@ -48,14 +47,12 @@ module aptos_blog_demo::tag {
     public(friend) fun save_object_controller(
         object_signer: &signer,
         extend_ref: object::ExtendRef,
-        delete_ref: object::DeleteRef,
         transfer_ref: object::TransferRef,
     ) {
         move_to(
             object_signer,
             ObjectController {
                 extend_ref,
-                delete_ref,
                 transfer_ref
             }
         )
@@ -129,17 +126,6 @@ module aptos_blog_demo::tag {
 
     fun private_add_tag(object_signer: &signer, tag: Tag) {
         move_to(object_signer, tag);
-    }
-
-    public(friend) fun delete_tag(obj_addr: address) acquires ObjectController {
-        let ObjectController {
-            extend_ref: _extend_ref,
-            delete_ref,
-            transfer_ref: _transfer_ref,
-        } = move_from<ObjectController>(
-            obj_addr
-        );
-        object::delete(delete_ref)
     }
 
 //    public fun get_tag(obj_addr: address): pass_object::PassObject<Tag> acquires Tag {

@@ -15,6 +15,8 @@ public interface ArticleEventRepository extends JpaRepository<AbstractArticleEve
 
     List<AbstractArticleEvent> findByStatusIsNull();
 
+    AbstractArticleEvent.AddTagEvent findFirstAddTagEventByOrderByAptosEventSequenceNumber();
+
     AbstractArticleEvent.ArticleCreated findFirstArticleCreatedByOrderByAptosEventSequenceNumber();
 
     AbstractArticleEvent.ArticleUpdated findFirstArticleUpdatedByOrderByAptosEventSequenceNumber();

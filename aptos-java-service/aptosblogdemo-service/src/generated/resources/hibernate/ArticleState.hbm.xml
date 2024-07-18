@@ -39,5 +39,9 @@
     </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
+    <set name="tags" table="article_tags" lazy="false">
+      <key column="Id" />
+      <element column="tags_item" type="string" not-null="true" />
+    </set>
   </class>
 </hibernate-mapping>

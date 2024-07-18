@@ -21,6 +21,13 @@ public interface ArticleEvent extends Event, AptosEvent, HasStatus {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface AddTagEvent extends ArticleEvent {
+        String getTag();
+
+        void setTag(String value);
+
+    }
+
     interface ArticleCreated extends ArticleEvent {
         String getTitle();
 
@@ -48,6 +55,10 @@ public interface ArticleEvent extends Event, AptosEvent, HasStatus {
         String getOwner();
 
         void setOwner(String value);
+
+        String[] getTags();
+
+        void setTags(String[] value);
 
     }
 

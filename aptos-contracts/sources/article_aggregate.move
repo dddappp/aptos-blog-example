@@ -6,14 +6,41 @@
 module aptos_blog_demo::article_aggregate {
     use aptos_blog_demo::article::{Self, Article};
     use aptos_blog_demo::article_add_comment_logic;
+    use aptos_blog_demo::article_add_tag_logic;
     use aptos_blog_demo::article_create_logic;
     use aptos_blog_demo::article_delete_logic;
     use aptos_blog_demo::article_remove_comment_logic;
     use aptos_blog_demo::article_update_comment_logic;
     use aptos_blog_demo::article_update_logic;
+    use aptos_blog_demo::tag::{Self, Tag};
     use aptos_framework::object::{Self, Object};
+    use std::option::{Self, Option};
     use std::signer;
     use std::string::String;
+    use std::vector;
+
+    public entry fun add_tag(
+        account: &signer,
+        article_obj: Object<Article>,
+        tag: Object<Tag>,
+    ) {
+        let id = object::object_address(&article_obj);
+        let article = article::remove_article(id);
+        let add_tag_event = article_add_tag_logic::verify(
+            account,
+            tag,
+            id,
+            &article,
+        );
+        let updated_article = article_add_tag_logic::mutate(
+            account,
+            &add_tag_event,
+            id,
+            article,
+        );
+        article::update_version_and_add(id, updated_article);
+        article::emit_add_tag_event(add_tag_event);
+    }
 
     public entry fun create(
         account: &signer,
@@ -56,6 +83,7 @@ module aptos_blog_demo::article_aggregate {
         title: String,
         body: String,
         owner: address,
+        tags: vector<Object<Tag>>,
     ) {
         let id = object::object_address(&article_obj);
         let article = article::remove_article(id);
@@ -64,12 +92,13 @@ module aptos_blog_demo::article_aggregate {
             title,
             body,
             owner,
+            if (vector::is_empty(&tags)) { option::none() } else { option::some(tags) },
             id,
             &article,
         );
         let updated_article = article_update_logic::mutate(
             account,
-            &article_updated,
+            &mut article_updated,
             id,
             article,
         );
@@ -176,6 +205,14 @@ module aptos_blog_demo::article_aggregate {
         );
         article::update_version_and_add(id, updated_article);
         article::emit_comment_removed(comment_removed);
+    }
+
+    fun vector_to_option<V : drop>(v: vector<V>): Option<V> {
+        if (vector::length(&v) == 0) { option::none() } else {
+            option::some(
+                vector::pop_back(&mut v)
+            )
+        }
     }
 
 }

@@ -208,6 +208,27 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
+    public static class AddTagEvent extends ArticleClobEvent implements ArticleEvent.AddTagEvent {
+
+        @Override
+        public String getEventClass() {
+            return "AddTagEvent";
+        }
+
+        public String getTag() {
+            Object val = getDynamicProperties().get("tag");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setTag(String value) {
+            getDynamicProperties().put("tag", value);
+        }
+
+    }
+
     public static class ArticleCreated extends ArticleClobEvent implements ArticleEvent.ArticleCreated {
 
         @Override
@@ -294,6 +315,18 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
         public void setOwner(String value) {
             getDynamicProperties().put("owner", value);
+        }
+
+        public String[] getTags() {
+            Object val = getDynamicProperties().get("tags");
+            if (val instanceof String[]) {
+                return (String[]) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String[].class);
+        }
+
+        public void setTags(String[] value) {
+            getDynamicProperties().put("tags", value);
         }
 
     }

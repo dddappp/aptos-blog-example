@@ -4,6 +4,14 @@
 
 ## Article aggregate
 
+### AddTag method
+
+```shell
+aptos move run --function-id 'default::article_aggregate::add_tag' \
+--args address:id Object<Tag>:tag \
+--assume-yes
+```
+
 ### Create method
 
 ```shell
@@ -16,7 +24,7 @@ aptos move run --function-id 'default::article_aggregate::create' \
 
 ```shell
 aptos move run --function-id 'default::article_aggregate::update' \
---args address:id 'string:title' 'string:body' address:owner \
+--args address:id 'string:title' 'string:body' address:owner 'Object<Tag>:[tags_item_1,tags_item_2]' \
 --assume-yes
 ```
 

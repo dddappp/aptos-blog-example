@@ -23,7 +23,6 @@ module aptos_blog_demo::tag_aggregate {
         let constructor_ref = object::create_named_object(&genesis_account::resource_account_signer(), std::bcs::to_bytes(&name));
         let object_signer = object::generate_signer(&constructor_ref);
         let extend_ref = object::generate_extend_ref(&constructor_ref);
-        let delete_ref = object::generate_delete_ref(&constructor_ref);
         let transfer_ref = object::generate_transfer_ref(&constructor_ref);
         object::disable_ungated_transfer(&transfer_ref);
         let tag_id = object::address_from_constructor_ref(&constructor_ref);
@@ -36,7 +35,6 @@ module aptos_blog_demo::tag_aggregate {
         tag::add_tag(&object_signer, tag);
         tag::save_object_controller(&object_signer,
             extend_ref,
-            delete_ref,
             transfer_ref,
         );
         tag::set_tag_created_tag_id(&mut tag_created, tag_id);

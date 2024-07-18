@@ -193,10 +193,11 @@ Confirm that Aptos CLI is installed and enter the directory `aptos-contracts`, t
 
 ```shell
 aptos init
-# Press Enter to confirm using the default values:
-aptos account fund-with-faucet --account default --amount 1000000000
 # View Aptos Profiles:
 aptos config show-profiles
+# Press Enter to confirm using the default values:
+aptos account fund-with-faucet --account default --amount 1000000000
+aptos account list --query balance
 ```
 
 It should display similar information:
@@ -283,6 +284,8 @@ please replace them with the actual values before executing the commands.
 You can create an article like this (you need to replace the placeholder `{ACCOUNT_ADDRESS}` with your actual account address):
 
 ```shell
+#aptos move run --function-id 'default::tag_aggregate::create' --args 'string:Foo' --assume-yes
+
 aptos move run --function-id 'default::article_aggregate::create' \
 --args 'string:hello' 'string:world' address:{ACCOUNT_ADDRESS} \
 --assume-yes
