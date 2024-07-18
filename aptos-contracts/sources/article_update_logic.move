@@ -13,7 +13,7 @@ module aptos_blog_demo::article_update_logic {
         title: String,
         body: String,
         owner: address,
-        tags: Option<vector<Object<Tag>>>,
+        tags: vector<Object<Tag>>,
         id: address,
         article: &article::Article,
     ): article::ArticleUpdated {

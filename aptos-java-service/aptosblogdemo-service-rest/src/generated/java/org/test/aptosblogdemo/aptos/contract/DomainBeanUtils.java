@@ -83,7 +83,7 @@ public class DomainBeanUtils {
         articleUpdated.setTitle(contractEvent.getTitle());
         articleUpdated.setBody(contractEvent.getBody());
         articleUpdated.setOwner(contractEvent.getOwner());
-        articleUpdated.setTags(extractOptionalValue(contractEvent.getTags()));
+        articleUpdated.setTags(contractEvent.getTags());
         articleUpdated.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(articleUpdated, eventEnvelope);

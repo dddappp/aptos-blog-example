@@ -14,10 +14,8 @@ module aptos_blog_demo::article_aggregate {
     use aptos_blog_demo::article_update_logic;
     use aptos_blog_demo::tag::{Self, Tag};
     use aptos_framework::object::{Self, Object};
-    use std::option::{Self, Option};
     use std::signer;
     use std::string::String;
-    use std::vector;
 
     public entry fun add_tag(
         account: &signer,
@@ -92,13 +90,13 @@ module aptos_blog_demo::article_aggregate {
             title,
             body,
             owner,
-            if (vector::is_empty(&tags)) { option::none() } else { option::some(tags) },
+            tags,
             id,
             &article,
         );
         let updated_article = article_update_logic::mutate(
             account,
-            &mut article_updated,
+            &article_updated,
             id,
             article,
         );
@@ -205,14 +203,6 @@ module aptos_blog_demo::article_aggregate {
         );
         article::update_version_and_add(id, updated_article);
         article::emit_comment_removed(comment_removed);
-    }
-
-    fun vector_to_option<V : drop>(v: vector<V>): Option<V> {
-        if (vector::length(&v) == 0) { option::none() } else {
-            option::some(
-                vector::pop_back(&mut v)
-            )
-        }
     }
 
 }

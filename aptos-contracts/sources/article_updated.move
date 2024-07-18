@@ -8,7 +8,6 @@ module aptos_blog_demo::article_updated {
     use aptos_blog_demo::article::{Self, ArticleUpdated};
     use aptos_blog_demo::tag::Tag;
     use aptos_framework::object::Object;
-    use std::option::Option;
     use std::string::String;
 
     public fun id(article_updated: &ArticleUpdated): address {
@@ -27,7 +26,7 @@ module aptos_blog_demo::article_updated {
         article::article_updated_owner(article_updated)
     }
 
-    public fun tags(article_updated: &ArticleUpdated): Option<vector<Object<Tag>>> {
+    public fun tags(article_updated: &ArticleUpdated): vector<Object<Tag>> {
         article::article_updated_tags(article_updated)
     }
 

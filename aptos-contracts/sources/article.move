@@ -11,7 +11,7 @@ module aptos_blog_demo::article {
     use aptos_framework::event;
     use aptos_framework::object::{Self, Object};
     use aptos_std::table_with_length::{Self, TableWithLength};
-    use std::option::{Self, Option};
+    use std::option;
     use std::string::String;
     friend aptos_blog_demo::article_add_tag_logic;
     friend aptos_blog_demo::article_create_logic;
@@ -73,7 +73,7 @@ module aptos_blog_demo::article {
         title: String,
         body: String,
         owner: address,
-        tags: Option<vector<Object<Tag>>>,
+        tags: vector<Object<Tag>>,
         comments: TableWithLength<u64, Comment>,
         comment_seq_id_generator: CommentSeqIdGenerator,
     }
@@ -145,19 +145,19 @@ module aptos_blog_demo::article {
         article.owner = owner;
     }
 
-    public fun borrow_tags(article: &Article): &Option<vector<Object<Tag>>> {
+    public fun borrow_tags(article: &Article): &vector<Object<Tag>> {
         &article.tags
     }
 
-    public(friend) fun borrow_mut_tags(article: &mut Article): &mut Option<vector<Object<Tag>>> {
+    public(friend) fun borrow_mut_tags(article: &mut Article): &mut vector<Object<Tag>> {
         &mut article.tags
     }
 
-    public fun tags(article: &Article): Option<vector<Object<Tag>>> {
+    public fun tags(article: &Article): vector<Object<Tag>> {
         article.tags
     }
 
-    public(friend) fun set_tags(article: &mut Article, tags: Option<vector<Object<Tag>>>) {
+    public(friend) fun set_tags(article: &mut Article, tags: vector<Object<Tag>>) {
         article.tags = tags;
     }
 
@@ -205,7 +205,7 @@ module aptos_blog_demo::article {
             title,
             body,
             owner,
-            tags: std::option::none(),
+            tags: std::vector::empty(),
             comments: table_with_length::new<u64, Comment>(),
             comment_seq_id_generator: CommentSeqIdGenerator { sequence: 0, },
         }
@@ -283,7 +283,7 @@ module aptos_blog_demo::article {
         title: String,
         body: String,
         owner: address,
-        tags: Option<vector<Object<Tag>>>,
+        tags: vector<Object<Tag>>,
     }
 
     public fun article_updated_id(article_updated: &ArticleUpdated): address {
@@ -302,12 +302,8 @@ module aptos_blog_demo::article {
         article_updated.owner
     }
 
-    public fun article_updated_tags(article_updated: &ArticleUpdated): Option<vector<Object<Tag>>> {
+    public fun article_updated_tags(article_updated: &ArticleUpdated): vector<Object<Tag>> {
         article_updated.tags
-    }
-
-    public(friend) fun set_article_updated_tags(article_updated: &mut ArticleUpdated, tags: Option<vector<Object<Tag>>>) {
-        article_updated.tags = tags;
     }
 
     public(friend) fun new_article_updated(
@@ -316,7 +312,7 @@ module aptos_blog_demo::article {
         title: String,
         body: String,
         owner: address,
-        tags: Option<vector<Object<Tag>>>,
+        tags: vector<Object<Tag>>,
     ): ArticleUpdated {
         ArticleUpdated {
             id,
