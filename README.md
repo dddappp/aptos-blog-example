@@ -289,6 +289,10 @@ You can create an article like this (you need to replace the placeholder `{ACCOU
 aptos move run --function-id 'default::article_aggregate::create' \
 --args 'string:hello' 'string:world' address:{ACCOUNT_ADDRESS} \
 --assume-yes
+
+#aptos move run --function-id 'default::article_aggregate::add_tag' \
+#--args address:0xc7b0297a2351ebb76e0307f31e99a03db6dab34caf50d151e7b9b6f878ea192c address:0xf82d75f8246dc8694c8adfa38a5fa9ce1a5b94a3e791ce9f153174c9b3cd9acd \
+#--assume-yes
 ```
 
 Then you can change the content of the first parameter (title) and the second parameter (body) after `--args`, and create a few more articles.
