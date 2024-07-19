@@ -124,10 +124,26 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.blog.InitFaVaultLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "metadata"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.blog.DonateFaLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.UpdateLogic",
                     "verify",
-                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, String[].class, Boolean.class, VerificationContext.class},
-                    new String[]{"_", "_", "name", "articles", "isEmergency"}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, String[].class, Boolean.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "name", "articles", "isEmergency", "faVault"}
             );
 
 
@@ -228,10 +244,18 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.test.aptosblogdemo.domain.blog.InitFaVaultLogic",
+                    "mutate",
+                    new Class[]{BlogState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "metadata", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.test.aptosblogdemo.domain.blog.UpdateLogic",
                     "mutate",
-                    new Class[]{BlogState.class, String.class, String[].class, Boolean.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "name", "articles", "isEmergency", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
+                    new Class[]{BlogState.class, String.class, String[].class, Boolean.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "articles", "isEmergency", "faVault", "aptosEventVersion", "aptosEventSequenceNumber", "aptosEventType", "aptosEventGuid", "status"}
             );
 
 

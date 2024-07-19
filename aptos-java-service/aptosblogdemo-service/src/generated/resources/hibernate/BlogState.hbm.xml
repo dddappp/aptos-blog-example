@@ -18,6 +18,9 @@
     <property name="isEmergency">
       <column name="is_emergency" />
     </property>
+    <property name="faVault">
+      <column name="fa_vault" />
+    </property>
     <property name="createdBy">
       <column name="created_by" />
     </property>

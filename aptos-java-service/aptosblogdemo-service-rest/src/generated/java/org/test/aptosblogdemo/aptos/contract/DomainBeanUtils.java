@@ -27,6 +27,8 @@ import org.test.aptosblogdemo.aptos.contract.blog.ArticleAddedToBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleRemovedFromBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.DonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.VaultWithdrawn;
+import org.test.aptosblogdemo.aptos.contract.blog.InitFaVaultEvent;
+import org.test.aptosblogdemo.aptos.contract.blog.FaDonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogUpdated;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogDeleted;
 
@@ -44,6 +46,57 @@ public class DomainBeanUtils {
         org.test.aptosblogdemo.domain.Coin coin = new org.test.aptosblogdemo.domain.Coin();
         coin.setValue(contractCoin.getValue());
         return coin;
+    }
+
+    public static org.test.aptosblogdemo.domain.FAMetadata toFAMetadata(FAMetadata contractFAMetadata) {
+        if (contractFAMetadata == null) {
+            return null;
+        }
+        org.test.aptosblogdemo.domain.FAMetadata faMetadata = new org.test.aptosblogdemo.domain.FAMetadata();
+        faMetadata.setName(contractFAMetadata.getName());
+        faMetadata.setSymbol(contractFAMetadata.getSymbol());
+        faMetadata.setDecimals(contractFAMetadata.getDecimals());
+        faMetadata.setIconUri(contractFAMetadata.getIconUri());
+        faMetadata.setProjectUri(contractFAMetadata.getProjectUri());
+        return faMetadata;
+    }
+
+    public static org.test.aptosblogdemo.domain.FungibleStore toFungibleStore(FungibleStore contractFungibleStore) {
+        if (contractFungibleStore == null) {
+            return null;
+        }
+        org.test.aptosblogdemo.domain.FungibleStore fungibleStore = new org.test.aptosblogdemo.domain.FungibleStore();
+        fungibleStore.setMetadata(contractFungibleStore.getMetadata());
+        fungibleStore.setBalance(contractFungibleStore.getBalance());
+        fungibleStore.setFrozen(contractFungibleStore.getFrozen());
+        return fungibleStore;
+    }
+
+    public static org.test.aptosblogdemo.domain.ObjectDeleteRef toObjectDeleteRef(ObjectDeleteRef contractObjectDeleteRef) {
+        if (contractObjectDeleteRef == null) {
+            return null;
+        }
+        org.test.aptosblogdemo.domain.ObjectDeleteRef objectDeleteRef = new org.test.aptosblogdemo.domain.ObjectDeleteRef();
+        objectDeleteRef.setSelf(contractObjectDeleteRef.getSelf());
+        return objectDeleteRef;
+    }
+
+    public static org.test.aptosblogdemo.domain.ObjectExtendRef toObjectExtendRef(ObjectExtendRef contractObjectExtendRef) {
+        if (contractObjectExtendRef == null) {
+            return null;
+        }
+        org.test.aptosblogdemo.domain.ObjectExtendRef objectExtendRef = new org.test.aptosblogdemo.domain.ObjectExtendRef();
+        objectExtendRef.setSelf(contractObjectExtendRef.getSelf());
+        return objectExtendRef;
+    }
+
+    public static org.test.aptosblogdemo.domain.ObjectTransferRef toObjectTransferRef(ObjectTransferRef contractObjectTransferRef) {
+        if (contractObjectTransferRef == null) {
+            return null;
+        }
+        org.test.aptosblogdemo.domain.ObjectTransferRef objectTransferRef = new org.test.aptosblogdemo.domain.ObjectTransferRef();
+        objectTransferRef.setSelf(contractObjectTransferRef.getSelf());
+        return objectTransferRef;
     }
 
 
@@ -227,6 +280,32 @@ public class DomainBeanUtils {
         return vaultWithdrawn;
     }
 
+    public static AbstractBlogEvent.InitFaVaultEvent toInitFaVaultEvent(Event<InitFaVaultEvent> eventEnvelope) {
+        InitFaVaultEvent contractEvent = eventEnvelope.getData();
+
+        AbstractBlogEvent.InitFaVaultEvent initFaVaultEvent = new AbstractBlogEvent.InitFaVaultEvent();
+        initFaVaultEvent.setAccountAddress(contractEvent.getAccountAddress());
+        initFaVaultEvent.setMetadata(contractEvent.getMetadata());
+        initFaVaultEvent.setVersion(contractEvent.getVersion());
+
+        setAptosEventProperties(initFaVaultEvent, eventEnvelope);
+
+        return initFaVaultEvent;
+    }
+
+    public static AbstractBlogEvent.FaDonationReceived toFaDonationReceived(Event<FaDonationReceived> eventEnvelope) {
+        FaDonationReceived contractEvent = eventEnvelope.getData();
+
+        AbstractBlogEvent.FaDonationReceived faDonationReceived = new AbstractBlogEvent.FaDonationReceived();
+        faDonationReceived.setAccountAddress(contractEvent.getAccountAddress());
+        faDonationReceived.setFaAmount(contractEvent.getFaAmount());
+        faDonationReceived.setVersion(contractEvent.getVersion());
+
+        setAptosEventProperties(faDonationReceived, eventEnvelope);
+
+        return faDonationReceived;
+    }
+
     public static AbstractBlogEvent.BlogUpdated toBlogUpdated(Event<BlogUpdated> eventEnvelope) {
         BlogUpdated contractEvent = eventEnvelope.getData();
 
@@ -235,6 +314,7 @@ public class DomainBeanUtils {
         blogUpdated.setName(contractEvent.getName());
         blogUpdated.setArticles(contractEvent.getArticles());
         blogUpdated.setIsEmergency(contractEvent.getIsEmergency());
+        blogUpdated.setFaVault(extractOptionalValue(contractEvent.getFaVault()));
         blogUpdated.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(blogUpdated, eventEnvelope);

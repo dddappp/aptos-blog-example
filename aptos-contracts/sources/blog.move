@@ -10,12 +10,17 @@ module aptos_blog_demo::blog {
     use aptos_framework::aptos_coin::AptosCoin;
     use aptos_framework::coin::Coin;
     use aptos_framework::event;
+    use aptos_framework::fungible_asset::FungibleStore;
+    use aptos_framework::object::Object;
+    use std::option::Option;
     use std::string::String;
     friend aptos_blog_demo::blog_create_logic;
     friend aptos_blog_demo::blog_add_article_logic;
     friend aptos_blog_demo::blog_remove_article_logic;
     friend aptos_blog_demo::blog_donate_logic;
     friend aptos_blog_demo::blog_withdraw_logic;
+    friend aptos_blog_demo::blog_init_fa_vault_logic;
+    friend aptos_blog_demo::blog_donate_fa_logic;
     friend aptos_blog_demo::blog_update_logic;
     friend aptos_blog_demo::blog_delete_logic;
     friend aptos_blog_demo::blog_aggregate;
@@ -30,6 +35,8 @@ module aptos_blog_demo::blog {
         article_removed_from_blog_handle: event::EventHandle<ArticleRemovedFromBlog>,
         donation_received_handle: event::EventHandle<DonationReceived>,
         vault_withdrawn_handle: event::EventHandle<VaultWithdrawn>,
+        init_fa_vault_event_handle: event::EventHandle<InitFaVaultEvent>,
+        fa_donation_received_handle: event::EventHandle<FaDonationReceived>,
         blog_updated_handle: event::EventHandle<BlogUpdated>,
         blog_deleted_handle: event::EventHandle<BlogDeleted>,
     }
@@ -44,6 +51,8 @@ module aptos_blog_demo::blog {
             article_removed_from_blog_handle: account::new_event_handle<ArticleRemovedFromBlog>(&res_account),
             donation_received_handle: account::new_event_handle<DonationReceived>(&res_account),
             vault_withdrawn_handle: account::new_event_handle<VaultWithdrawn>(&res_account),
+            init_fa_vault_event_handle: account::new_event_handle<InitFaVaultEvent>(&res_account),
+            fa_donation_received_handle: account::new_event_handle<FaDonationReceived>(&res_account),
             blog_updated_handle: account::new_event_handle<BlogUpdated>(&res_account),
             blog_deleted_handle: account::new_event_handle<BlogDeleted>(&res_account),
         });
@@ -56,6 +65,7 @@ module aptos_blog_demo::blog {
         articles: vector<address>,
         vault: Coin<AptosCoin>,
         is_emergency: bool,
+        fa_vault: Option<Object<FungibleStore>>,
     }
 
     public fun version(blog: &Blog): u64 {
@@ -103,6 +113,14 @@ module aptos_blog_demo::blog {
         blog.is_emergency = is_emergency;
     }
 
+    public fun fa_vault(blog: &Blog): Option<Object<FungibleStore>> {
+        blog.fa_vault
+    }
+
+    public(friend) fun set_fa_vault(blog: &mut Blog, fa_vault: Option<Object<FungibleStore>>) {
+        blog.fa_vault = fa_vault;
+    }
+
     public(friend) fun new_blog(
         name: String,
         articles: vector<address>,
@@ -115,6 +133,7 @@ module aptos_blog_demo::blog {
             articles,
             vault: aptos_framework::coin::zero(),
             is_emergency,
+            fa_vault: std::option::none(),
         }
     }
 
@@ -217,11 +236,50 @@ module aptos_blog_demo::blog {
         }
     }
 
+    struct InitFaVaultEvent has store, drop {
+        version: u64,
+        metadata: address,
+    }
+
+    public fun init_fa_vault_event_metadata(init_fa_vault_event: &InitFaVaultEvent): address {
+        init_fa_vault_event.metadata
+    }
+
+    public(friend) fun new_init_fa_vault_event(
+        blog: &Blog,
+        metadata: address,
+    ): InitFaVaultEvent {
+        InitFaVaultEvent {
+            version: version(blog),
+            metadata,
+        }
+    }
+
+    struct FaDonationReceived has store, drop {
+        version: u64,
+        fa_amount: u64,
+    }
+
+    public fun fa_donation_received_fa_amount(fa_donation_received: &FaDonationReceived): u64 {
+        fa_donation_received.fa_amount
+    }
+
+    public(friend) fun new_fa_donation_received(
+        blog: &Blog,
+        fa_amount: u64,
+    ): FaDonationReceived {
+        FaDonationReceived {
+            version: version(blog),
+            fa_amount,
+        }
+    }
+
     struct BlogUpdated has store, drop {
         version: u64,
         name: String,
         articles: vector<address>,
         is_emergency: bool,
+        fa_vault: Option<Object<FungibleStore>>,
     }
 
     public fun blog_updated_name(blog_updated: &BlogUpdated): String {
@@ -236,17 +294,27 @@ module aptos_blog_demo::blog {
         blog_updated.is_emergency
     }
 
+    public fun blog_updated_fa_vault(blog_updated: &BlogUpdated): Option<Object<FungibleStore>> {
+        blog_updated.fa_vault
+    }
+
+    public(friend) fun set_blog_updated_fa_vault(blog_updated: &mut BlogUpdated, fa_vault: Option<Object<FungibleStore>>) {
+        blog_updated.fa_vault = fa_vault;
+    }
+
     public(friend) fun new_blog_updated(
         blog: &Blog,
         name: String,
         articles: vector<address>,
         is_emergency: bool,
+        fa_vault: Option<Object<FungibleStore>>,
     ): BlogUpdated {
         BlogUpdated {
             version: version(blog),
             name,
             articles,
             is_emergency,
+            fa_vault,
         }
     }
 
@@ -303,6 +371,11 @@ module aptos_blog_demo::blog {
         blog.is_emergency
     }
 
+    public fun singleton_fa_vault(): Option<Object<FungibleStore>> acquires Blog {
+        let blog = borrow_global<Blog>(genesis_account::resource_account_address());
+        blog.fa_vault
+    }
+
     public fun return_blog(blog_pass_obj: pass_object::PassObject<Blog>) {
         let blog = pass_object::extract(blog_pass_obj);
         private_add_blog(blog);
@@ -315,6 +388,7 @@ module aptos_blog_demo::blog {
             articles: _articles,
             vault,
             is_emergency: _is_emergency,
+            fa_vault: _fa_vault,
         } = blog;
         aptos_framework::coin::destroy_zero(vault);
     }
@@ -351,6 +425,18 @@ module aptos_blog_demo::blog {
         assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.vault_withdrawn_handle, vault_withdrawn);
+    }
+
+    public(friend) fun emit_init_fa_vault_event(init_fa_vault_event: InitFaVaultEvent) acquires Events {
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
+        event::emit_event(&mut events.init_fa_vault_event_handle, init_fa_vault_event);
+    }
+
+    public(friend) fun emit_fa_donation_received(fa_donation_received: FaDonationReceived) acquires Events {
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
+        event::emit_event(&mut events.fa_donation_received_handle, fa_donation_received);
     }
 
     public(friend) fun emit_blog_updated(blog_updated: BlogUpdated) acquires Events {

@@ -28,6 +28,8 @@ public class Blog {
 
     private Boolean isEmergency;
 
+    private com.github.wubuku.aptos.bean.Option<String> faVault;
+
     private BigInteger version;
 
     public String getAccountAddress() {
@@ -78,6 +80,14 @@ public class Blog {
         this.isEmergency = isEmergency;
     }
 
+    public com.github.wubuku.aptos.bean.Option<String> getFaVault() {
+        return faVault;
+    }
+
+    public void setFaVault(com.github.wubuku.aptos.bean.Option<String> faVault) {
+        this.faVault = faVault;
+    }
+
     public BigInteger getVersion() {
         return version;
     }
@@ -95,6 +105,7 @@ public class Blog {
                 ", articles=" + Arrays.toString(articles) +
                 ", vault=" + vault +
                 ", isEmergency=" + isEmergency +
+                ", faVault=" + faVault +
                 ", version=" + version +
                 '}';
     }

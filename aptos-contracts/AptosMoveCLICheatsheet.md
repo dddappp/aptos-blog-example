@@ -80,11 +80,19 @@ aptos move run --function-id 'default::blog_aggregate::create' \
 --assume-yes
 ```
 
+### InitFaVault method
+
+```shell
+aptos move run --function-id 'default::blog_aggregate::init_fa_vault' \
+--args Object<T>:metadata \
+--assume-yes
+```
+
 ### Update method
 
 ```shell
 aptos move run --function-id 'default::blog_aggregate::update' \
---args 'string:name' 'address:[articles_item_1,articles_item_2]' bool:is_emergency \
+--args 'string:name' 'address:[articles_item_1,articles_item_2]' bool:is_emergency 'Object<FungibleStore>:[fa_vault]' \
 --assume-yes
 ```
 

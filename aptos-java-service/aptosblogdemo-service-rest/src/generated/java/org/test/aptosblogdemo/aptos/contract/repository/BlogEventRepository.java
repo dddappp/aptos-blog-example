@@ -25,6 +25,10 @@ public interface BlogEventRepository extends JpaRepository<AbstractBlogEvent, Bl
 
     AbstractBlogEvent.VaultWithdrawn findFirstVaultWithdrawnByOrderByAptosEventSequenceNumber();
 
+    AbstractBlogEvent.InitFaVaultEvent findFirstInitFaVaultEventByOrderByAptosEventSequenceNumber();
+
+    AbstractBlogEvent.FaDonationReceived findFirstFaDonationReceivedByOrderByAptosEventSequenceNumber();
+
     AbstractBlogEvent.BlogUpdated findFirstBlogUpdatedByOrderByAptosEventSequenceNumber();
 
     AbstractBlogEvent.BlogDeleted findFirstBlogDeletedByOrderByAptosEventSequenceNumber();

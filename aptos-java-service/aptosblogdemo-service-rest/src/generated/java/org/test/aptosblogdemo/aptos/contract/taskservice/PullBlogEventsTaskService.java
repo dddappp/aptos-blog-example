@@ -41,6 +41,16 @@ public class PullBlogEventsTaskService {
         blogEventService.pullVaultWithdrawnEvents();
     }
 
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.init-fa-vault-event.fixed-delay:5000}")
+    public void pullInitFaVaultEvents() {
+        blogEventService.pullInitFaVaultEvents();
+    }
+
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.fa-donation-received.fixed-delay:5000}")
+    public void pullFaDonationReceivedEvents() {
+        blogEventService.pullFaDonationReceivedEvents();
+    }
+
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.blog-updated.fixed-delay:5000}")
     public void pullBlogUpdatedEvents() {
         blogEventService.pullBlogUpdatedEvents();

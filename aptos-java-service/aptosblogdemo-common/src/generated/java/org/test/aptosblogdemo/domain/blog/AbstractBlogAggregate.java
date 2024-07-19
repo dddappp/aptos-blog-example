@@ -86,11 +86,24 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
 
         @Override
-        public void update(String name, String[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c) {
-            java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory = () -> newBlogUpdated(name, articles, isEmergency, offChainVersion, commandId, requesterId);
+        public void initFaVault(String metadata, Long offChainVersion, String commandId, String requesterId, BlogCommands.InitFaVault c) {
+            java.util.function.Supplier<BlogEvent.InitFaVaultEvent> eventFactory = () -> newInitFaVaultEvent(metadata, offChainVersion, commandId, requesterId);
+            BlogEvent.InitFaVaultEvent e;
+            try {
+                e = verifyInitFaVault(eventFactory, metadata, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
+        }
+
+        @Override
+        public void update(String name, String[] articles, Boolean isEmergency, String faVault, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c) {
+            java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory = () -> newBlogUpdated(name, articles, isEmergency, faVault, offChainVersion, commandId, requesterId);
             BlogEvent.BlogUpdated e;
             try {
-                e = verifyUpdate(eventFactory, name, articles, isEmergency, c);
+                e = verifyUpdate(eventFactory, name, articles, isEmergency, faVault, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
@@ -216,22 +229,64 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         }
            
 
-        protected BlogEvent.BlogUpdated verifyUpdate(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, String name, String[] articles, Boolean isEmergency, BlogCommands.Update c) {
+        protected BlogEvent.InitFaVaultEvent verifyInitFaVault(java.util.function.Supplier<BlogEvent.InitFaVaultEvent> eventFactory, String metadata, BlogCommands.InitFaVault c) {
+            String Metadata = metadata;
+
+            BlogEvent.InitFaVaultEvent e = (BlogEvent.InitFaVaultEvent) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.blog.InitFaVaultLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), metadata, VerificationContext.forCommand(c)}
+            );
+
+//package org.test.aptosblogdemo.domain.blog;
+//
+//public class InitFaVaultLogic {
+//    public static BlogEvent.InitFaVaultEvent verify(java.util.function.Supplier<BlogEvent.InitFaVaultEvent> eventFactory, BlogState blogState, String metadata, VerificationContext verificationContext) {
+//    }
+//}
+
+            return e;
+        }
+           
+
+        protected BlogEvent.FaDonationReceived verifyDonateFa(java.util.function.Supplier<BlogEvent.FaDonationReceived> eventFactory, BlogCommands.DonateFa c) {
+
+            BlogEvent.FaDonationReceived e = (BlogEvent.FaDonationReceived) ReflectUtils.invokeStaticMethod(
+                    "org.test.aptosblogdemo.domain.blog.DonateFaLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
+            );
+
+//package org.test.aptosblogdemo.domain.blog;
+//
+//public class DonateFaLogic {
+//    public static BlogEvent.FaDonationReceived verify(java.util.function.Supplier<BlogEvent.FaDonationReceived> eventFactory, BlogState blogState, VerificationContext verificationContext) {
+//    }
+//}
+
+            return e;
+        }
+           
+
+        protected BlogEvent.BlogUpdated verifyUpdate(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, String name, String[] articles, Boolean isEmergency, String faVault, BlogCommands.Update c) {
             String Name = name;
             String[] Articles = articles;
             Boolean IsEmergency = isEmergency;
+            String FaVault = faVault;
 
             BlogEvent.BlogUpdated e = (BlogEvent.BlogUpdated) ReflectUtils.invokeStaticMethod(
                     "org.test.aptosblogdemo.domain.blog.UpdateLogic",
                     "verify",
-                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, String[].class, Boolean.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), name, articles, isEmergency, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, BlogState.class, String.class, String[].class, Boolean.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), name, articles, isEmergency, faVault, VerificationContext.forCommand(c)}
             );
 
 //package org.test.aptosblogdemo.domain.blog;
 //
 //public class UpdateLogic {
-//    public static BlogEvent.BlogUpdated verify(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, BlogState blogState, String name, String[] articles, Boolean isEmergency, VerificationContext verificationContext) {
+//    public static BlogEvent.BlogUpdated verify(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, BlogState blogState, String name, String[] articles, Boolean isEmergency, String faVault, VerificationContext verificationContext) {
 //    }
 //}
 
@@ -317,13 +372,33 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             return e;
         }
 
-        protected AbstractBlogEvent.BlogUpdated newBlogUpdated(String name, String[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractBlogEvent.InitFaVaultEvent newInitFaVaultEvent(String metadata, Long offChainVersion, String commandId, String requesterId) {
+            BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
+            AbstractBlogEvent.InitFaVaultEvent e = new AbstractBlogEvent.InitFaVaultEvent();
+
+            e.setMetadata(metadata);
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setBlogEventId(eventId);
+            return e;
+        }
+
+        protected AbstractBlogEvent.BlogUpdated newBlogUpdated(String name, String[] articles, Boolean isEmergency, String faVault, Long offChainVersion, String commandId, String requesterId) {
             BlogEventId eventId = new BlogEventId(getState().getAccountAddress(), null);
             AbstractBlogEvent.BlogUpdated e = new AbstractBlogEvent.BlogUpdated();
 
             e.setName(name);
             e.setArticles(articles);
             e.setIsEmergency(isEmergency);
+            e.setFaVault(faVault);
             e.setAptosEventVersion(null);
             e.setAptosEventSequenceNumber(null);
             e.setAptosEventType(null);

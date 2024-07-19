@@ -63,6 +63,18 @@ public class BlogStateDto {
         this.isEmergency = isEmergency;
     }
 
+    private String faVault;
+
+    public String getFaVault()
+    {
+        return this.faVault;
+    }
+
+    public void setFaVault(String faVault)
+    {
+        this.faVault = faVault;
+    }
+
     private Boolean active;
 
     public Boolean getActive()
@@ -197,6 +209,9 @@ public class BlogStateDto {
             }
             if (returnedFieldsContains("IsEmergency")) {
                 dto.setIsEmergency(state.getIsEmergency());
+            }
+            if (returnedFieldsContains("FaVault")) {
+                dto.setFaVault(state.getFaVault());
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());

@@ -14,19 +14,13 @@ import java.math.*;
 import java.util.*;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class BlogUpdated {
+public class FaDonationReceived {
 
     private String accountAddress;
 
     private BigInteger version;
 
-    private String name;
-
-    private String[] articles;
-
-    private Boolean isEmergency;
-
-    private com.github.wubuku.aptos.bean.Option<String> faVault;
+    private BigInteger faAmount;
 
     public String getAccountAddress() {
         return accountAddress;
@@ -44,47 +38,20 @@ public class BlogUpdated {
         this.version = version;
     }
 
-    public String getName() {
-        return name;
+    public BigInteger getFaAmount() {
+        return faAmount;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String[] getArticles() {
-        return articles;
-    }
-
-    public void setArticles(String[] articles) {
-        this.articles = articles;
-    }
-
-    public Boolean getIsEmergency() {
-        return isEmergency;
-    }
-
-    public void setIsEmergency(Boolean isEmergency) {
-        this.isEmergency = isEmergency;
-    }
-
-    public com.github.wubuku.aptos.bean.Option<String> getFaVault() {
-        return faVault;
-    }
-
-    public void setFaVault(com.github.wubuku.aptos.bean.Option<String> faVault) {
-        this.faVault = faVault;
+    public void setFaAmount(BigInteger faAmount) {
+        this.faAmount = faAmount;
     }
 
     @Override
     public String toString() {
-        return "BlogUpdated{" +
+        return "FaDonationReceived{" +
                 "accountAddress=" + '\'' + accountAddress + '\'' +
                 ", version=" + version +
-                ", name=" + '\'' + name + '\'' +
-                ", articles=" + Arrays.toString(articles) +
-                ", isEmergency=" + isEmergency +
-                ", faVault=" + faVault +
+                ", faAmount=" + faAmount +
                 '}';
     }
 

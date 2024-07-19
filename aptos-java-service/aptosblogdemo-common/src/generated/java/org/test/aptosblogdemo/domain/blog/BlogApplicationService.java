@@ -21,6 +21,8 @@ public interface BlogApplicationService {
 
     void when(BlogCommands.RemoveArticle c);
 
+    void when(BlogCommands.InitFaVault c);
+
     void when(BlogCommands.Update c);
 
     void when(BlogCommands.Delete c);

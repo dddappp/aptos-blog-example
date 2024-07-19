@@ -50,6 +50,12 @@ public class ContractConstants {
     public static final String BLOG_MODULE_VAULT_WITHDRAWN = "blog::VaultWithdrawn";
     public static final String BLOG_MODULE_VAULT_WITHDRAWN_HANDLE_FIELD = "vault_withdrawn_handle";
 
+    public static final String BLOG_MODULE_INIT_FA_VAULT_EVENT = "blog::InitFaVaultEvent";
+    public static final String BLOG_MODULE_INIT_FA_VAULT_EVENT_HANDLE_FIELD = "init_fa_vault_event_handle";
+
+    public static final String BLOG_MODULE_FA_DONATION_RECEIVED = "blog::FaDonationReceived";
+    public static final String BLOG_MODULE_FA_DONATION_RECEIVED_HANDLE_FIELD = "fa_donation_received_handle";
+
     public static final String BLOG_MODULE_BLOG_UPDATED = "blog::BlogUpdated";
     public static final String BLOG_MODULE_BLOG_UPDATED_HANDLE_FIELD = "blog_updated_handle";
 

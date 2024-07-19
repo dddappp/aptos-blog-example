@@ -6,6 +6,9 @@
 module aptos_blog_demo::blog_updated {
 
     use aptos_blog_demo::blog::{Self, BlogUpdated};
+    use aptos_framework::fungible_asset::FungibleStore;
+    use aptos_framework::object::Object;
+    use std::option::Option;
     use std::string::String;
 
     public fun name(blog_updated: &BlogUpdated): String {
@@ -18,6 +21,10 @@ module aptos_blog_demo::blog_updated {
 
     public fun is_emergency(blog_updated: &BlogUpdated): bool {
         blog::blog_updated_is_emergency(blog_updated)
+    }
+
+    public fun fa_vault(blog_updated: &BlogUpdated): Option<Object<FungibleStore>> {
+        blog::blog_updated_fa_vault(blog_updated)
     }
 
 }

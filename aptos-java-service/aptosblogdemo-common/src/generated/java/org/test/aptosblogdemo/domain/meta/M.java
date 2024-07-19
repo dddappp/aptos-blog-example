@@ -419,6 +419,7 @@ public class M {
             "name",
             "vault",
             "isEmergency",
+            "faVault",
             "offChainVersion",
             "createdBy",
             "createdAt",
@@ -434,6 +435,7 @@ public class M {
             "String",
             "Coin",
             "Boolean",
+            "String",
             "Long",
             "String",
             "Date",
@@ -464,6 +466,8 @@ public class M {
         aliasMap.put("Vault", "vault");
         aliasMap.put("isEmergency", "isEmergency");
         aliasMap.put("IsEmergency", "isEmergency");
+        aliasMap.put("faVault", "faVault");
+        aliasMap.put("FaVault", "faVault");
         aliasMap.put("offChainVersion", "offChainVersion");
         aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");

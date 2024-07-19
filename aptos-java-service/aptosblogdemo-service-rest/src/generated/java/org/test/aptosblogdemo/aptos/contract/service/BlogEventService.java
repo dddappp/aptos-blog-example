@@ -18,6 +18,8 @@ import org.test.aptosblogdemo.aptos.contract.blog.ArticleAddedToBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.ArticleRemovedFromBlog;
 import org.test.aptosblogdemo.aptos.contract.blog.DonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.VaultWithdrawn;
+import org.test.aptosblogdemo.aptos.contract.blog.InitFaVaultEvent;
+import org.test.aptosblogdemo.aptos.contract.blog.FaDonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogUpdated;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogDeleted;
 import org.test.aptosblogdemo.aptos.contract.repository.BlogEventRepository;
@@ -319,6 +321,108 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(vaultWithdrawn);
+    }
+
+    @Transactional
+    public void pullInitFaVaultEvents() {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getInitFaVaultEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<InitFaVaultEvent>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.BLOG_MODULE_EVENTS,
+                        ContractConstants.BLOG_MODULE_INIT_FA_VAULT_EVENT_HANDLE_FIELD,
+                        InitFaVaultEvent.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<InitFaVaultEvent> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
+                    saveInitFaVaultEvent(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getInitFaVaultEventNextCursor() {
+        AbstractBlogEvent.InitFaVaultEvent lastEvent = blogEventRepository.findFirstInitFaVaultEventByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveInitFaVaultEvent(Event<InitFaVaultEvent> eventEnvelope) {
+        AbstractBlogEvent.InitFaVaultEvent initFaVaultEvent = DomainBeanUtils.toInitFaVaultEvent(eventEnvelope);
+        if (blogEventRepository.findById(initFaVaultEvent.getBlogEventId()).isPresent()) {
+            return;
+        }
+        blogEventRepository.save(initFaVaultEvent);
+    }
+
+    @Transactional
+    public void pullFaDonationReceivedEvents() {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getFaDonationReceivedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<FaDonationReceived>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.BLOG_MODULE_EVENTS,
+                        ContractConstants.BLOG_MODULE_FA_DONATION_RECEIVED_HANDLE_FIELD,
+                        FaDonationReceived.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<FaDonationReceived> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
+                    saveFaDonationReceived(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getFaDonationReceivedEventNextCursor() {
+        AbstractBlogEvent.FaDonationReceived lastEvent = blogEventRepository.findFirstFaDonationReceivedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveFaDonationReceived(Event<FaDonationReceived> eventEnvelope) {
+        AbstractBlogEvent.FaDonationReceived faDonationReceived = DomainBeanUtils.toFaDonationReceived(eventEnvelope);
+        if (blogEventRepository.findById(faDonationReceived.getBlogEventId()).isPresent()) {
+            return;
+        }
+        blogEventRepository.save(faDonationReceived);
     }
 
     @Transactional

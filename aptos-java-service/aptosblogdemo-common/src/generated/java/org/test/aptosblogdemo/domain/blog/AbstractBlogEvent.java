@@ -299,6 +299,48 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
+    public static class InitFaVaultEvent extends BlogClobEvent implements BlogEvent.InitFaVaultEvent {
+
+        @Override
+        public String getEventClass() {
+            return "InitFaVaultEvent";
+        }
+
+        public String getMetadata() {
+            Object val = getDynamicProperties().get("metadata");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setMetadata(String value) {
+            getDynamicProperties().put("metadata", value);
+        }
+
+    }
+
+    public static class FaDonationReceived extends BlogClobEvent implements BlogEvent.FaDonationReceived {
+
+        @Override
+        public String getEventClass() {
+            return "FaDonationReceived";
+        }
+
+        public BigInteger getFaAmount() {
+            Object val = getDynamicProperties().get("faAmount");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setFaAmount(BigInteger value) {
+            getDynamicProperties().put("faAmount", value);
+        }
+
+    }
+
     public static class BlogUpdated extends BlogClobEvent implements BlogEvent.BlogUpdated {
 
         @Override
@@ -340,6 +382,18 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
         public void setIsEmergency(Boolean value) {
             getDynamicProperties().put("isEmergency", value);
+        }
+
+        public String getFaVault() {
+            Object val = getDynamicProperties().get("faVault");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setFaVault(String value) {
+            getDynamicProperties().put("faVault", value);
         }
 
     }

@@ -62,8 +62,12 @@ public abstract class AbstractBlogApplicationService implements BlogApplicationS
         update(c, ar -> ar.removeArticle(c.getArticleId(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
+    public void when(BlogCommands.InitFaVault c) {
+        update(c, ar -> ar.initFaVault(c.getMetadata(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public void when(BlogCommands.Update c) {
-        update(c, ar -> ar.update(c.getName(), c.getArticles(), c.getIsEmergency(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.update(c.getName(), c.getArticles(), c.getIsEmergency(), c.getFaVault(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(BlogCommands.Delete c) {

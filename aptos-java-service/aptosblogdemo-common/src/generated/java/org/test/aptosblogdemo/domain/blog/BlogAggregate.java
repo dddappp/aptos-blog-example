@@ -23,7 +23,9 @@ public interface BlogAggregate {
 
     void removeArticle(String articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.RemoveArticle c);
 
-    void update(String name, String[] articles, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c);
+    void initFaVault(String metadata, Long offChainVersion, String commandId, String requesterId, BlogCommands.InitFaVault c);
+
+    void update(String name, String[] articles, Boolean isEmergency, String faVault, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c);
 
     void delete(Long offChainVersion, String commandId, String requesterId, BlogCommands.Delete c);
 

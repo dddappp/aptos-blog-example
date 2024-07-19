@@ -26,6 +26,8 @@ public interface BlogState extends VersionedAptosMoveObject
 
     Boolean getIsEmergency();
 
+    String getFaVault();
+
     Long getOffChainVersion();
 
     String getCreatedBy();
@@ -50,6 +52,8 @@ public interface BlogState extends VersionedAptosMoveObject
         void setVault(Coin vault);
 
         void setIsEmergency(Boolean isEmergency);
+
+        void setFaVault(String faVault);
 
         void setOffChainVersion(Long offChainVersion);
 

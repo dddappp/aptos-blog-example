@@ -2,7 +2,10 @@ module aptos_blog_demo::blog_update_logic {
     use aptos_blog_demo::blog;
     use aptos_blog_demo::blog_updated;
     use std::string::String;
+    use aptos_framework::fungible_asset::FungibleStore;
+    use aptos_framework::object::Object;
     use aptos_blog_demo::genesis_account;
+    use std::option::Option;
 
     friend aptos_blog_demo::blog_aggregate;
 
@@ -11,6 +14,7 @@ module aptos_blog_demo::blog_update_logic {
         name: String,
         articles: vector<address>,
         is_emergency: bool,
+        fa_valut: Option<Object<FungibleStore>>,
         blog: &blog::Blog,
     ): blog::BlogUpdated {
         genesis_account::assert_genesis_account(account);
@@ -19,6 +23,7 @@ module aptos_blog_demo::blog_update_logic {
             name,
             articles,
             is_emergency,
+            fa_valut,
         )
     }
 
@@ -33,6 +38,7 @@ module aptos_blog_demo::blog_update_logic {
         blog::set_name(&mut blog, name);
         blog::set_articles(&mut blog, articles);
         blog::set_is_emergency(&mut blog, is_emergency);
+        //todo: set fa_valut
         blog
     }
 

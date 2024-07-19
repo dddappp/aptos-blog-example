@@ -67,6 +67,7 @@ public class AptosBlogStateRetriever {
         blogState.setArticles(new HashSet<>(Arrays.asList(blog.getArticles())));
         blogState.setVault(DomainBeanUtils.toCoin(blog.getVault()));
         blogState.setIsEmergency(blog.getIsEmergency());
+        blogState.setFaVault(blog.getFaVault().getVec().size() == 0 ? null : blog.getFaVault().getVec().get(0));
         return blogState;
     }
 

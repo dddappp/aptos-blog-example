@@ -60,6 +60,20 @@ public interface BlogEvent extends Event, AptosEvent, HasStatus {
 
     }
 
+    interface InitFaVaultEvent extends BlogEvent {
+        String getMetadata();
+
+        void setMetadata(String value);
+
+    }
+
+    interface FaDonationReceived extends BlogEvent {
+        BigInteger getFaAmount();
+
+        void setFaAmount(BigInteger value);
+
+    }
+
     interface BlogUpdated extends BlogEvent {
         String getName();
 
@@ -72,6 +86,10 @@ public interface BlogEvent extends Event, AptosEvent, HasStatus {
         Boolean getIsEmergency();
 
         void setIsEmergency(Boolean value);
+
+        String getFaVault();
+
+        void setFaVault(String value);
 
     }
 

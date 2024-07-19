@@ -89,6 +89,13 @@ singletonObjects:
         type: "Coin<APT>"
       IsEmergency:
         type: bool
+      FaVault:
+        type: Object<FungibleStore>
+        optional: true
+        defaultLogic:
+          Move: "std::option::none()"
+      #FaVaultExtendRef:
+      #  type: ObjectExtendRef
 
     methods:
       Create:
@@ -137,3 +144,30 @@ singletonObjects:
           type: Coin<APT>
         event:
           name: VaultWithdrawn
+
+      InitFaVault:
+        typeParameters:
+          T:
+            keyable: true
+        parameters:
+          Metadata:
+            type: Object<T>
+            eventPropertyName: Metadata
+        event:
+          properties:
+            Metadata:
+              type: address
+      DonateFa:
+        typeParameters:
+          T:
+            keyable: true
+        parameters:
+          Fa:
+            type: FungibleAsset
+            eventPropertyName: FaAmount
+            # fungible_asset::deposit<T: key>(store: Object<T>, fa: FungibleAsset)
+        event:
+          name: FaDonationReceived
+          properties:
+            FaAmount:
+              type: u64

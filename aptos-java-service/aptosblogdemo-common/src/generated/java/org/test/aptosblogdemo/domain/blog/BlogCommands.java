@@ -269,6 +269,95 @@ public class BlogCommands {
 
     }
 
+    public static class InitFaVault extends AbstractBlogCommand implements BlogCommand {
+
+        public String getCommandType() {
+            return "InitFaVault";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Account Address
+         */
+        private String accountAddress;
+
+        public String getAccountAddress() {
+            return this.accountAddress;
+        }
+
+        public void setAccountAddress(String accountAddress) {
+            this.accountAddress = accountAddress;
+        }
+
+        /**
+         * Metadata
+         */
+        private String metadata;
+
+        public String getMetadata() {
+            return this.metadata;
+        }
+
+        public void setMetadata(String metadata) {
+            this.metadata = metadata;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
+    public static class DonateFa extends AbstractBlogCommand implements BlogCommand {
+
+        public String getCommandType() {
+            return "DonateFa";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Account Address
+         */
+        private String accountAddress;
+
+        public String getAccountAddress() {
+            return this.accountAddress;
+        }
+
+        public void setAccountAddress(String accountAddress) {
+            this.accountAddress = accountAddress;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
     public static class Update extends AbstractBlogCommand implements BlogCommand {
 
         public String getCommandType() {
@@ -329,6 +418,19 @@ public class BlogCommands {
 
         public void setIsEmergency(Boolean isEmergency) {
             this.isEmergency = isEmergency;
+        }
+
+        /**
+         * Fa Vault
+         */
+        private String faVault;
+
+        public String getFaVault() {
+            return this.faVault;
+        }
+
+        public void setFaVault(String faVault) {
+            this.faVault = faVault;
         }
 
         /**

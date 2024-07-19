@@ -8,13 +8,19 @@ module aptos_blog_demo::blog_aggregate {
     use aptos_blog_demo::blog_add_article_logic;
     use aptos_blog_demo::blog_create_logic;
     use aptos_blog_demo::blog_delete_logic;
+    use aptos_blog_demo::blog_donate_fa_logic;
     use aptos_blog_demo::blog_donate_logic;
+    use aptos_blog_demo::blog_init_fa_vault_logic;
     use aptos_blog_demo::blog_remove_article_logic;
     use aptos_blog_demo::blog_update_logic;
     use aptos_blog_demo::blog_withdraw_logic;
     use aptos_framework::aptos_coin::AptosCoin;
     use aptos_framework::coin::Coin;
+    use aptos_framework::fungible_asset::{FungibleAsset, FungibleStore};
+    use aptos_framework::object::Object;
+    use std::option::{Self, Option};
     use std::string::String;
+    use std::vector;
 
     friend aptos_blog_demo::article_create_logic;
     friend aptos_blog_demo::article_delete_logic;
@@ -112,11 +118,51 @@ module aptos_blog_demo::blog_aggregate {
         withdraw_return
     }
 
+    public entry fun init_fa_vault<T: key>(
+        account: &signer,
+        metadata: Object<T>,
+    ) {
+        let blog = blog::remove_blog();
+        let init_fa_vault_event = blog_init_fa_vault_logic::verify<T>(
+            account,
+            metadata,
+            &blog,
+        );
+        let updated_blog = blog_init_fa_vault_logic::mutate<T>(
+            account,
+            &init_fa_vault_event,
+            blog,
+        );
+        blog::update_version_and_add(updated_blog);
+        blog::emit_init_fa_vault_event(init_fa_vault_event);
+    }
+
+    public fun donate_fa<T: key>(
+        account: &signer,
+        fa: FungibleAsset,
+    ) {
+        let blog = blog::remove_blog();
+        let fa_donation_received = blog_donate_fa_logic::verify<T>(
+            account,
+            &fa,
+            &blog,
+        );
+        let updated_blog = blog_donate_fa_logic::mutate<T>(
+            account,
+            &fa_donation_received,
+            fa,
+            blog,
+        );
+        blog::update_version_and_add(updated_blog);
+        blog::emit_fa_donation_received(fa_donation_received);
+    }
+
     public entry fun update(
         account: &signer,
         name: String,
         articles: vector<address>,
         is_emergency: bool,
+        fa_vault: vector<Object<FungibleStore>>,
     ) {
         let blog = blog::remove_blog();
         let blog_updated = blog_update_logic::verify(
@@ -124,11 +170,12 @@ module aptos_blog_demo::blog_aggregate {
             name,
             articles,
             is_emergency,
+            vector_to_option(fa_vault),
             &blog,
         );
         let updated_blog = blog_update_logic::mutate(
             account,
-            &blog_updated,
+            &mut blog_updated,
             blog,
         );
         blog::update_version_and_add(updated_blog);
@@ -150,6 +197,14 @@ module aptos_blog_demo::blog_aggregate {
         );
         blog::drop_blog(updated_blog);
         blog::emit_blog_deleted(blog_deleted);
+    }
+
+    fun vector_to_option<V : drop>(v: vector<V>): Option<V> {
+        if (vector::length(&v) == 0) { option::none() } else {
+            option::some(
+                vector::pop_back(&mut v)
+            )
+        }
     }
 
 }
