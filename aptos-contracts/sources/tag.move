@@ -10,6 +10,7 @@ module aptos_blog_demo::tag {
     use aptos_framework::object;
     use std::option;
     use std::string::String;
+    use aptos_blog_demo::pass_object;
     friend aptos_blog_demo::tag_create_logic;
     friend aptos_blog_demo::tag_aggregate;
 
@@ -128,16 +129,17 @@ module aptos_blog_demo::tag {
         move_to(object_signer, tag);
     }
 
-//    public fun get_tag(obj_addr: address): pass_object::PassObject<Tag> acquires Tag {
-//        let tag = remove_tag(obj_addr);
-//        pass_object::new(tag)
-//    }
-//
-//    public fun return_tag(object_signer: &signer, tag_pass_obj: pass_object::PassObject<Tag>) {
-//        assert!(std::signer::address_of(object_signer) == obj_addr, EInappropriateObjectAddress);
-//        let tag = pass_object::extract(tag_pass_obj);
-//        private_add_tag(object_signer, tag);
-//    }
+   public fun get_tag(obj_addr: address): pass_object::PassObject<Tag> acquires Tag {
+       let tag = remove_tag(obj_addr);
+       pass_object::new_with_address(tag, obj_addr)
+   }
+
+   public fun return_tag(tag_pass_obj: pass_object::PassObject<Tag>) acquires ObjectController {
+       let (tag, obj_addr) = pass_object::extract_value_and_address(tag_pass_obj);
+       let extend_ref = &borrow_global<ObjectController>(obj_addr).extend_ref;
+       let object_signer = object::generate_signer_for_extending(extend_ref);
+       private_add_tag(&object_signer, tag)
+   }
 
     public(friend) fun drop_tag(tag: Tag) {
         let Tag {

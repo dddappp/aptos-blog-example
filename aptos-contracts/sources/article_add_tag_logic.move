@@ -1,6 +1,8 @@
 module aptos_blog_demo::article_add_tag_logic {
     use std::vector;
     use aptos_framework::object::{Self, Object};
+    use aptos_blog_demo::pass_object;
+    use aptos_blog_demo::tag;
 
     use aptos_blog_demo::add_tag_event;
     use aptos_blog_demo::article;
@@ -18,7 +20,13 @@ module aptos_blog_demo::article_add_tag_logic {
     ): article::AddTagEvent {
         let tag_addr = object::object_address(&tag);
         assert!(object::object_exists<Tag>(tag_addr), ETagNotFound);
-        //TODO: How to get tag.name here?
+        // -------------------------------------------------------------------
+        // Test: get tag name here
+        let tag_pass_obj = tag::get_tag(tag_addr);
+        let tag_val = pass_object::borrow(&tag_pass_obj);
+        std::debug::print(&tag::name(tag_val));
+        tag::return_tag(tag_pass_obj);
+        // -------------------------------------------------------------------
         article::new_add_tag_event(
             id,
             article,
