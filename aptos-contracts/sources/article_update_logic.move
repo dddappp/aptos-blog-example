@@ -3,7 +3,6 @@ module aptos_blog_demo::article_update_logic {
     use aptos_blog_demo::article_updated;
     use aptos_blog_demo::tag::Tag;
     use aptos_framework::object::Object;
-    use std::option::{Self, Option};
     use std::string::String;
 
     friend aptos_blog_demo::article_aggregate;

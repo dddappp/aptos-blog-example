@@ -6,6 +6,7 @@
 module aptos_blog_demo::article {
     use aptos_blog_demo::comment::{Self, Comment};
     use aptos_blog_demo::genesis_account;
+    use aptos_blog_demo::pass_object;
     use aptos_blog_demo::tag::Tag;
     use aptos_framework::account;
     use aptos_framework::event;
@@ -495,16 +496,17 @@ module aptos_blog_demo::article {
         object::delete(delete_ref)
     }
 
-//    public fun get_article(obj_addr: address): pass_object::PassObject<Article> acquires Article {
-//        let article = remove_article(obj_addr);
-//        pass_object::new(article)
-//    }
-//
-//    public fun return_article(object_signer: &signer, article_pass_obj: pass_object::PassObject<Article>) {
-//        assert!(std::signer::address_of(object_signer) == obj_addr, EInappropriateObjectAddress);
-//        let article = pass_object::extract(article_pass_obj);
-//        private_add_article(object_signer, article);
-//    }
+    public fun get_article(obj_addr: address): pass_object::PassObject<Article> acquires Article {
+        let article = remove_article(obj_addr);
+        pass_object::new_with_address(article, obj_addr)
+    }
+
+    public fun return_article(article_pass_obj: pass_object::PassObject<Article>) acquires ObjectController {
+        let (article, obj_addr) = pass_object::extract_value_and_address(article_pass_obj);
+        let extend_ref = &borrow_global<ObjectController>(obj_addr).extend_ref;
+        let object_signer = object::generate_signer_for_extending(extend_ref);
+        private_add_article(&object_signer, article);
+    }
 
     public(friend) fun drop_article(article: Article) {
         let Article {
