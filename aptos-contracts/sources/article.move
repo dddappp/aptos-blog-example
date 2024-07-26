@@ -172,11 +172,16 @@ module aptos_blog_demo::article {
         });
     }
 
-    public(friend) fun remove_comment(article: &mut Article, comment_seq_id: u64) {
+    public(friend) fun remove_comment(article: &mut Article, comment_seq_id: u64): Comment {
         assert!(table_with_length::contains(&article.comments, comment_seq_id), EIdNotFound);
-        let comment = table_with_length::remove(&mut article.comments, comment_seq_id);
+        table_with_length::remove(&mut article.comments, comment_seq_id)
+    }
+
+    public(friend) fun remove_and_drop_comment(article: &mut Article, comment_seq_id: u64) {
+        let comment = remove_comment(article, comment_seq_id);
         comment::drop_comment(comment);
     }
+
 
     public(friend) fun borrow_mut_comment(article: &mut Article, comment_seq_id: u64): &mut Comment {
         table_with_length::borrow_mut(&mut article.comments, comment_seq_id)

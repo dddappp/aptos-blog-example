@@ -221,10 +221,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
             ;
         } else if (e instanceof AbstractBlogEvent.BlogCreated) {
             when((AbstractBlogEvent.BlogCreated)e);
-        } else if (e instanceof AbstractBlogEvent.ArticleAddedToBlog) {
-            when((AbstractBlogEvent.ArticleAddedToBlog)e);
-        } else if (e instanceof AbstractBlogEvent.ArticleRemovedFromBlog) {
-            when((AbstractBlogEvent.ArticleRemovedFromBlog)e);
         } else if (e instanceof AbstractBlogEvent.InitFaVaultEvent) {
             when((AbstractBlogEvent.InitFaVaultEvent)e);
         } else if (e instanceof AbstractBlogEvent.BlogUpdated) {

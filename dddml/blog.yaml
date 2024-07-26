@@ -89,6 +89,8 @@ singletonObjects:
         type: "Coin<APT>"
       IsEmergency:
         type: bool
+        defaultLogic:
+          Move: "false"
       FaVault:
         type: Object<FungibleStore>
         optional: true

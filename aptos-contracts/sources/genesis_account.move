@@ -12,10 +12,27 @@ module aptos_blog_demo::genesis_account {
 
     friend aptos_blog_demo::article;
     friend aptos_blog_demo::article_aggregate;
+    friend aptos_blog_demo::article_add_tag_logic;
+    friend aptos_blog_demo::article_create_logic;
+    friend aptos_blog_demo::article_update_logic;
+    friend aptos_blog_demo::article_delete_logic;
+    friend aptos_blog_demo::article_add_comment_logic;
+    friend aptos_blog_demo::article_update_comment_logic;
+    friend aptos_blog_demo::article_remove_comment_logic;
     friend aptos_blog_demo::tag;
     friend aptos_blog_demo::tag_aggregate;
+    friend aptos_blog_demo::tag_create_logic;
     friend aptos_blog_demo::blog;
     friend aptos_blog_demo::blog_aggregate;
+    friend aptos_blog_demo::blog_create_logic;
+    friend aptos_blog_demo::blog_add_article_logic;
+    friend aptos_blog_demo::blog_remove_article_logic;
+    friend aptos_blog_demo::blog_donate_logic;
+    friend aptos_blog_demo::blog_withdraw_logic;
+    friend aptos_blog_demo::blog_init_fa_vault_logic;
+    friend aptos_blog_demo::blog_donate_fa_logic;
+    friend aptos_blog_demo::blog_update_logic;
+    friend aptos_blog_demo::blog_delete_logic;
 
     const ENotGenesisAccount: u64 = 100;
 

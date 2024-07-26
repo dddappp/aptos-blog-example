@@ -25,11 +25,11 @@ module aptos_blog_demo::blog_create_logic {
     ): blog::Blog {
         let name = blog_created::name(blog_created);
         let is_emergency = blog_created::is_emergency(blog_created);
-        blog::new_blog(
-            name,
-            vector::empty(),
-            is_emergency,
-        )
+        let blog = blog::new_blog(
+        );
+        blog::set_name(&mut blog, name);
+        blog::set_is_emergency(&mut blog, is_emergency);
+        blog
     }
 
 }

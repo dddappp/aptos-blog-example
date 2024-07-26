@@ -122,17 +122,13 @@ module aptos_blog_demo::blog {
     }
 
     public(friend) fun new_blog(
-        name: String,
-        articles: vector<address>,
-        is_emergency: bool,
     ): Blog {
-        assert!(std::string::length(&name) <= 200, EDataTooLong);
         Blog {
             version: 0,
-            name,
-            articles,
+            name: std::string::utf8(b""),
+            articles: std::vector::empty(),
             vault: aptos_framework::coin::zero(),
-            is_emergency,
+            is_emergency: false,
             fa_vault: std::option::none(),
         }
     }
@@ -359,6 +355,27 @@ module aptos_blog_demo::blog {
     public fun singleton_name(): String acquires Blog {
         let blog = borrow_global<Blog>(genesis_account::resource_account_address());
         blog.name
+    }
+
+    public fun singleton_articles_length(): u64 acquires Blog {
+        let blog = borrow_global<Blog>(genesis_account::resource_account_address());
+        std::vector::length(&blog.articles)
+    }
+
+    public fun singleton_articles_get(i: u64): address acquires Blog {
+        let blog = borrow_global<Blog>(genesis_account::resource_account_address());
+        *std::vector::borrow(&blog.articles, i)
+    }
+
+    public(friend) fun singleton_articles_set(i: u64, article :address) acquires Blog {
+        let blog = borrow_global_mut<Blog>(genesis_account::resource_account_address());
+        std::vector::remove(&mut blog.articles, i);
+        std::vector::insert(&mut blog.articles, i, article)
+    }
+
+    public(friend) fun singleton_articles_push_back(article :address) acquires Blog {
+        let blog = borrow_global_mut<Blog>(genesis_account::resource_account_address());
+        std::vector::push_back(&mut blog.articles, article)
     }
 
     public fun singleton_articles(): vector<address> acquires Blog {

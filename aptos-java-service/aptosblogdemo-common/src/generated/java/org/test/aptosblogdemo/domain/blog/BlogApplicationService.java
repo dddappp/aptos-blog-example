@@ -17,10 +17,6 @@ import org.test.aptosblogdemo.domain.Command;
 public interface BlogApplicationService {
     void when(BlogCommands.Create c);
 
-    void when(BlogCommands.AddArticle c);
-
-    void when(BlogCommands.RemoveArticle c);
-
     void when(BlogCommands.InitFaVault c);
 
     void when(BlogCommands.Update c);
