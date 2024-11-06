@@ -16,16 +16,17 @@ module aptos_blog_demo::tag_aggregate {
         account: &signer,
         name: String,
     ) {
-        let tag_created = tag_create_logic::verify(
-            account,
-            name,
-        );
         let constructor_ref = object::create_named_object(&genesis_account::resource_account_signer(), std::bcs::to_bytes(&name));
         let object_signer = object::generate_signer(&constructor_ref);
         let extend_ref = object::generate_extend_ref(&constructor_ref);
         let transfer_ref = object::generate_transfer_ref(&constructor_ref);
         object::disable_ungated_transfer(&transfer_ref);
         let tag_id = object::address_from_constructor_ref(&constructor_ref);
+        let tag_created = tag_create_logic::verify(
+            account,
+            name,
+            tag_id,
+        );
         let tag = tag_create_logic::mutate(
             account,
             &tag_created,

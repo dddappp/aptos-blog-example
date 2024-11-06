@@ -103,3 +103,5 @@ aptos move run --function-id 'default::blog_aggregate::delete' \
 --assume-yes
 ```
 
+## Register "friends" in dependency packages
+

@@ -30,11 +30,11 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
     protected Session getCurrentSession() {
         return this.sessionFactory.getCurrentSession();
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("Id", "Title", "Body", "Owner", "Comments", "Tags", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
-    
+
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
-    
+
     public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
         return readOnlyProxyGenerator;
     }
@@ -59,7 +59,7 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         if (firstResult != null) { criteria.setFirstResult(firstResult); }
         if (maxResults != null) { criteria.setMaxResults(maxResults); }
-         addNotDeletedRestriction(criteria);
+        addNotDeletedRestriction(criteria);
         return criteria.list();
     }
 
@@ -84,8 +84,7 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
     @Transactional(readOnly = true)
     public ArticleState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<ArticleState> list = (List<ArticleState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);

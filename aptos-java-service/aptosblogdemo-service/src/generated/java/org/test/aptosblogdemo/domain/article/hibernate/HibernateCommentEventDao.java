@@ -26,11 +26,9 @@ public class HibernateCommentEventDao implements CommentEventDao {
     }
 
     @Override
-    public void save(CommentEvent e)
-    {
+    public void save(CommentEvent e) {
         getCurrentSession().save(e);
-        if (e instanceof Saveable)
-        {
+        if (e instanceof Saveable) {
             Saveable saveable = (Saveable) e;
             saveable.save();
         }
@@ -39,8 +37,7 @@ public class HibernateCommentEventDao implements CommentEventDao {
 
     @Transactional(readOnly = true)
     @Override
-    public Iterable<CommentEvent> findByArticleEventId(ArticleEventId articleEventId)
-    {
+    public Iterable<CommentEvent> findByArticleEventId(ArticleEventId articleEventId) {
         Criteria criteria = getCurrentSession().createCriteria(AbstractCommentEvent.class);
         Junction partIdCondition = Restrictions.conjunction()
             .add(Restrictions.eq("commentEventId.articleId", articleEventId.getId()))

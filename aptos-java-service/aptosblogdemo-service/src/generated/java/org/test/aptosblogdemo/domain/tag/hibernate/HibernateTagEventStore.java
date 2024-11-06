@@ -50,7 +50,6 @@ public class HibernateTagEventStore extends AbstractHibernateEventStore {
         if (es.size() > 0) {
             eventStream.setSteamVersion(((AbstractTagEvent) es.get(es.size() - 1)).getTagEventId().getVersion().longValue());
         } else {
-            //todo?
         }
         eventStream.setEvents(es);
         return eventStream;

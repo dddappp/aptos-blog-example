@@ -10,10 +10,6 @@ import java.math.BigInteger;
 import java.util.Date;
 import org.test.aptosblogdemo.domain.*;
 import org.hibernate.Session;
-import org.hibernate.Criteria;
-//import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projections;
 import org.hibernate.SessionFactory;
 import org.test.aptosblogdemo.domain.article.*;
 import org.test.aptosblogdemo.specialization.*;
@@ -30,7 +26,7 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
     protected Session getCurrentSession() {
         return this.sessionFactory.getCurrentSession();
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("Id", "Title", "Body", "Owner", "Comments", "Tags", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
@@ -61,14 +57,13 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
         if (getReadOnlyProxyGenerator() != null) {
             s = (ArticleState) getReadOnlyProxyGenerator().getTarget(state);
         }
-        if(s.getOffChainVersion() == null) {
+        if (s.getOffChainVersion() == null) {
             getCurrentSession().save(s);
         } else {
             getCurrentSession().update(s);
         }
 
-        if (s instanceof Saveable)
-        {
+        if (s instanceof Saveable) {
             Saveable saveable = (Saveable) s;
             saveable.save();
         }

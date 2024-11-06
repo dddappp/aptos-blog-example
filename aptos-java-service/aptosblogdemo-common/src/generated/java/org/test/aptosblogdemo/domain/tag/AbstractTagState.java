@@ -220,19 +220,9 @@ public abstract class AbstractTagState implements TagState.SqlTagState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        TagState updatedTagState = (TagState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.tag.CreateLogic",
-                    "mutate",
-                    new Class[]{TagState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, name, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        TagState updatedTagState = ApplicationContext.current.get(ICreateLogic.class).mutate(
+                this, name, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.tag;
-//
-//public class CreateLogic {
-//    public static TagState mutate(TagState tagState, String name, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<TagState, TagState.MutableTagState> mutationContext) {
-//    }
-//}
 
         if (this != updatedTagState) { merge(updatedTagState); } //else do nothing
 

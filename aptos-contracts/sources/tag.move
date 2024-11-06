@@ -129,6 +129,12 @@ module aptos_blog_demo::tag {
         move_to(object_signer, tag);
     }
 
+    public(friend) fun transfer_tag(obj_addr: address, to: address) acquires ObjectController {
+        let transfer_ref = &borrow_global<ObjectController>(obj_addr).transfer_ref;
+        let linear_transfer_ref = object::generate_linear_transfer_ref(transfer_ref);
+        object::transfer_with_ref(linear_transfer_ref, to)
+    }
+
     public fun get_tag(obj_addr: address): pass_object::PassObject<Tag> acquires Tag {
         let tag = remove_tag(obj_addr);
         pass_object::new_with_address(tag, obj_addr)
@@ -139,6 +145,10 @@ module aptos_blog_demo::tag {
         let extend_ref = &borrow_global<ObjectController>(obj_addr).extend_ref;
         let object_signer = object::generate_signer_for_extending(extend_ref);
         private_add_tag(&object_signer, tag);
+    }
+
+    public(friend) fun borrow_mut(tag_pass_obj: &mut pass_object::PassObject<Tag>): &mut Tag {
+        pass_object::borrow_mut(tag_pass_obj)
     }
 
     public(friend) fun drop_tag(tag: Tag) {

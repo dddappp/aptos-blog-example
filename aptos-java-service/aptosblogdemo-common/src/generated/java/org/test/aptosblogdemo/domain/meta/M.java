@@ -103,7 +103,6 @@ public class M {
         clsMap.put("comment", String.class);
         clsMap.put("description", String.class);
         clsMap.put("name", String.class);
-        clsMap.put("value", String.class);
         clsMap.put("credit-card-number", String.class);
         clsMap.put("credit-card-date", String.class);
         clsMap.put("email", String.class);
@@ -178,7 +177,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("id", "id");
         aliasMap.put("Id", "id");
         aliasMap.put("title", "title");
@@ -273,7 +272,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("commentSeqId", "articleCommentId.commentSeqId");
         aliasMap.put("CommentSeqId", "articleCommentId.commentSeqId");
         aliasMap.put("commenter", "commenter");
@@ -366,7 +365,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("tagId", "tagId");
         aliasMap.put("TagId", "tagId");
         aliasMap.put("name", "name");
@@ -457,7 +456,7 @@ public class M {
         initAliasMap();
     }
 
-    private static  void initAliasMap() {
+    private static void initAliasMap() {
         aliasMap.put("accountAddress", "accountAddress");
         aliasMap.put("AccountAddress", "accountAddress");
         aliasMap.put("name", "name");

@@ -24,7 +24,7 @@ public interface ArticleCommand extends Command {
 
     static void throwOnInvalidStateTransition(ArticleState state, Command c) {
         if (state.getOffChainVersion() == null) {
-            if (isCommandCreate((ArticleCommand)c)) {
+            if (isCreationCommand((ArticleCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -32,11 +32,29 @@ public interface ArticleCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((ArticleCommand)c))
+        if (isCreationCommand((ArticleCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(ArticleCommand c) {
+    static boolean isCreationCommand(ArticleCommand c) {
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+            if (commandType.equals("AddTag"))
+                return false;
+            if (commandType.equals("Create"))
+                return true;
+            if (commandType.equals("Update"))
+                return false;
+            if (commandType.equals("Delete"))
+                return false;
+            if (commandType.equals("AddComment"))
+                return false;
+            if (commandType.equals("UpdateComment"))
+                return false;
+            if (commandType.equals("RemoveComment"))
+                return false;
+        }
+
         if (c.getOffChainVersion().equals(ArticleState.VERSION_NULL))
             return true;
         return false;

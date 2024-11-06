@@ -24,7 +24,7 @@ public interface TagCommand extends Command {
 
     static void throwOnInvalidStateTransition(TagState state, Command c) {
         if (state.getOffChainVersion() == null) {
-            if (isCommandCreate((TagCommand)c)) {
+            if (isCreationCommand((TagCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -32,11 +32,17 @@ public interface TagCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((TagCommand)c))
+        if (isCreationCommand((TagCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(TagCommand c) {
+    static boolean isCreationCommand(TagCommand c) {
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+            if (commandType.equals("Create"))
+                return true;
+        }
+
         if (c.getOffChainVersion().equals(TagState.VERSION_NULL))
             return true;
         return false;

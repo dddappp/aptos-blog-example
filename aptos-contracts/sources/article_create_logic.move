@@ -11,6 +11,7 @@ module aptos_blog_demo::article_create_logic {
         title: String,
         body: String,
         owner: address,
+        id: address,
     ): article::ArticleCreated {
         let _ = account;
         article::new_article_created(

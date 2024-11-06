@@ -272,19 +272,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.CreateLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, String.class, Boolean.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, name, isEmergency, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(ICreateLogic.class).mutate(
+                this, name, isEmergency, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class CreateLogic {
-//    public static BlogState mutate(BlogState blogState, String name, Boolean isEmergency, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
@@ -315,19 +305,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.AddArticleLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, articleId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(IAddArticleLogic.class).mutate(
+                this, articleId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class AddArticleLogic {
-//    public static BlogState mutate(BlogState blogState, String articleId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
@@ -358,19 +338,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.RemoveArticleLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, articleId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(IRemoveArticleLogic.class).mutate(
+                this, articleId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class RemoveArticleLogic {
-//    public static BlogState mutate(BlogState blogState, String articleId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
@@ -401,19 +371,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.DonateLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, amount, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(IDonateLogic.class).mutate(
+                this, amount, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class DonateLogic {
-//    public static BlogState mutate(BlogState blogState, BigInteger amount, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
@@ -444,19 +404,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.InitFaVaultLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, metadata, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(IInitFaVaultLogic.class).mutate(
+                this, metadata, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class InitFaVaultLogic {
-//    public static BlogState mutate(BlogState blogState, String metadata, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
@@ -487,19 +437,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.DonateFaLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, faAmount, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(IDonateFaLogic.class).mutate(
+                this, faAmount, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class DonateFaLogic {
-//    public static BlogState mutate(BlogState blogState, BigInteger faAmount, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
@@ -536,19 +476,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.UpdateLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, String.class, String[].class, Boolean.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, name, articles, isEmergency, faVault, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(IUpdateLogic.class).mutate(
+                this, name, articles, isEmergency, faVault, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class UpdateLogic {
-//    public static BlogState mutate(BlogState blogState, String name, String[] articles, Boolean isEmergency, String faVault, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
@@ -577,19 +507,9 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        BlogState updatedBlogState = (BlogState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.blog.DeleteLogic",
-                    "mutate",
-                    new Class[]{BlogState.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        BlogState updatedBlogState = ApplicationContext.current.get(IDeleteLogic.class).mutate(
+                this, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.blog;
-//
-//public class DeleteLogic {
-//    public static BlogState mutate(BlogState blogState, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-//    }
-//}
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 

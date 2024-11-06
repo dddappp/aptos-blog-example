@@ -28,14 +28,16 @@ public class UpdateBlogStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-blog-states.fixed-delay:5000}")
     @Transactional
     public void updateBlogStates() {
-        AbstractBlogEvent e = blogEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractBlogEvent> es = blogEventRepository.findByStatusIsNull();
+        AbstractBlogEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             if (BlogEventService.isDeletionCommand(e)) {
                 aptosBlogService.deleteBlog(e.getAccountAddress());
             } else {
                 aptosBlogService.updateBlogState(e.getAccountAddress());
             }
-            blogEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getAccountAddress().equals(e.getAccountAddress()))
+                    .forEach(blogEventService::updateStatusToProcessed);
         }
     }
 

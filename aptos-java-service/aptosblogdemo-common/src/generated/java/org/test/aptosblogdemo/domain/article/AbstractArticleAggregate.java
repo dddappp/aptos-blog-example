@@ -140,46 +140,22 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         protected ArticleEvent.AddTagEvent verifyAddTag(java.util.function.Supplier<ArticleEvent.AddTagEvent> eventFactory, String tag, ArticleCommands.AddTag c) {
             String Tag = tag;
 
-            ArticleEvent.AddTagEvent e = (ArticleEvent.AddTagEvent) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.AddTagLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), tag, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class AddTagLogic {
-//    public static ArticleEvent.AddTagEvent verify(java.util.function.Supplier<ArticleEvent.AddTagEvent> eventFactory, ArticleState articleState, String tag, VerificationContext verificationContext) {
-//    }
-//}
+            ArticleEvent.AddTagEvent e = (ArticleEvent.AddTagEvent) ApplicationContext.current.get(IAddTagLogic.class).verify(
+                    eventFactory, getState(), tag, VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected ArticleEvent.ArticleCreated verifyCreate(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, String title, String body, String owner, ArticleCommands.Create c) {
             String Title = title;
             String Body = body;
             String Owner = owner;
 
-            ArticleEvent.ArticleCreated e = (ArticleEvent.ArticleCreated) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.CreateLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), title, body, owner, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class CreateLogic {
-//    public static ArticleEvent.ArticleCreated verify(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, ArticleState articleState, String title, String body, String owner, VerificationContext verificationContext) {
-//    }
-//}
+            ArticleEvent.ArticleCreated e = (ArticleEvent.ArticleCreated) ApplicationContext.current.get(ICreateLogic.class).verify(
+                    eventFactory, getState(), title, body, owner, VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected ArticleEvent.ArticleUpdated verifyUpdate(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, String title, String body, String owner, String[] tags, ArticleCommands.Update c) {
             String Title = title;
@@ -187,66 +163,30 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             String Owner = owner;
             String[] Tags = tags;
 
-            ArticleEvent.ArticleUpdated e = (ArticleEvent.ArticleUpdated) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.UpdateLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, String[].class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), title, body, owner, tags, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class UpdateLogic {
-//    public static ArticleEvent.ArticleUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, ArticleState articleState, String title, String body, String owner, String[] tags, VerificationContext verificationContext) {
-//    }
-//}
+            ArticleEvent.ArticleUpdated e = (ArticleEvent.ArticleUpdated) ApplicationContext.current.get(IUpdateLogic.class).verify(
+                    eventFactory, getState(), title, body, owner, tags, VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected ArticleEvent.ArticleDeleted verifyDelete(java.util.function.Supplier<ArticleEvent.ArticleDeleted> eventFactory, ArticleCommands.Delete c) {
 
-            ArticleEvent.ArticleDeleted e = (ArticleEvent.ArticleDeleted) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.DeleteLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class DeleteLogic {
-//    public static ArticleEvent.ArticleDeleted verify(java.util.function.Supplier<ArticleEvent.ArticleDeleted> eventFactory, ArticleState articleState, VerificationContext verificationContext) {
-//    }
-//}
+            ArticleEvent.ArticleDeleted e = (ArticleEvent.ArticleDeleted) ApplicationContext.current.get(IDeleteLogic.class).verify(
+                    eventFactory, getState(), VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected ArticleEvent.CommentAdded verifyAddComment(java.util.function.Supplier<ArticleEvent.CommentAdded> eventFactory, String commenter, String body, String owner, ArticleCommands.AddComment c) {
             String Commenter = commenter;
             String Body = body;
             String Owner = owner;
 
-            ArticleEvent.CommentAdded e = (ArticleEvent.CommentAdded) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.AddCommentLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), commenter, body, owner, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class AddCommentLogic {
-//    public static ArticleEvent.CommentAdded verify(java.util.function.Supplier<ArticleEvent.CommentAdded> eventFactory, ArticleState articleState, String commenter, String body, String owner, VerificationContext verificationContext) {
-//    }
-//}
+            ArticleEvent.CommentAdded e = (ArticleEvent.CommentAdded) ApplicationContext.current.get(IAddCommentLogic.class).verify(
+                    eventFactory, getState(), commenter, body, owner, VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected ArticleEvent.CommentUpdated verifyUpdateComment(java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory, BigInteger commentSeqId, String commenter, String body, String owner, ArticleCommands.UpdateComment c) {
             BigInteger CommentSeqId = commentSeqId;
@@ -254,44 +194,20 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             String Body = body;
             String Owner = owner;
 
-            ArticleEvent.CommentUpdated e = (ArticleEvent.CommentUpdated) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.UpdateCommentLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), commentSeqId, commenter, body, owner, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class UpdateCommentLogic {
-//    public static ArticleEvent.CommentUpdated verify(java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory, ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, VerificationContext verificationContext) {
-//    }
-//}
+            ArticleEvent.CommentUpdated e = (ArticleEvent.CommentUpdated) ApplicationContext.current.get(IUpdateCommentLogic.class).verify(
+                    eventFactory, getState(), commentSeqId, commenter, body, owner, VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected ArticleEvent.CommentRemoved verifyRemoveComment(java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory, BigInteger commentSeqId, ArticleCommands.RemoveComment c) {
             BigInteger CommentSeqId = commentSeqId;
 
-            ArticleEvent.CommentRemoved e = (ArticleEvent.CommentRemoved) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), commentSeqId, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class RemoveCommentLogic {
-//    public static ArticleEvent.CommentRemoved verify(java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory, ArticleState articleState, BigInteger commentSeqId, VerificationContext verificationContext) {
-//    }
-//}
+            ArticleEvent.CommentRemoved e = (ArticleEvent.CommentRemoved) ApplicationContext.current.get(IRemoveCommentLogic.class).verify(
+                    eventFactory, getState(), commentSeqId, VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected AbstractArticleEvent.AddTagEvent newAddTagEvent(String tag, Long offChainVersion, String commandId, String requesterId) {
             ArticleEventId eventId = new ArticleEventId(getState().getId(), null);

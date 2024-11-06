@@ -501,6 +501,12 @@ module aptos_blog_demo::article {
         object::delete(delete_ref)
     }
 
+    public(friend) fun transfer_article(obj_addr: address, to: address) acquires ObjectController {
+        let transfer_ref = &borrow_global<ObjectController>(obj_addr).transfer_ref;
+        let linear_transfer_ref = object::generate_linear_transfer_ref(transfer_ref);
+        object::transfer_with_ref(linear_transfer_ref, to)
+    }
+
     public fun get_article(obj_addr: address): pass_object::PassObject<Article> acquires Article {
         let article = remove_article(obj_addr);
         pass_object::new_with_address(article, obj_addr)
@@ -511,6 +517,10 @@ module aptos_blog_demo::article {
         let extend_ref = &borrow_global<ObjectController>(obj_addr).extend_ref;
         let object_signer = object::generate_signer_for_extending(extend_ref);
         private_add_article(&object_signer, article);
+    }
+
+    public(friend) fun borrow_mut(article_pass_obj: &mut pass_object::PassObject<Article>): &mut Article {
+        pass_object::borrow_mut(article_pass_obj)
     }
 
     public(friend) fun drop_article(article: Article) {

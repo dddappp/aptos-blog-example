@@ -322,19 +322,9 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.AddTagLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, tag, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        ArticleState updatedArticleState = ApplicationContext.current.get(IAddTagLogic.class).mutate(
+                this, tag, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class AddTagLogic {
-//    public static ArticleState mutate(ArticleState articleState, String tag, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
@@ -369,19 +359,9 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.CreateLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, title, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        ArticleState updatedArticleState = ApplicationContext.current.get(ICreateLogic.class).mutate(
+                this, title, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class CreateLogic {
-//    public static ArticleState mutate(ArticleState articleState, String title, String body, String owner, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
@@ -418,19 +398,9 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.UpdateLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, String[].class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, title, body, owner, tags, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateLogic.class).mutate(
+                this, title, body, owner, tags, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class UpdateLogic {
-//    public static ArticleState mutate(ArticleState articleState, String title, String body, String owner, String[] tags, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
@@ -459,19 +429,9 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.DeleteLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        ArticleState updatedArticleState = ApplicationContext.current.get(IDeleteLogic.class).mutate(
+                this, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class DeleteLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
@@ -508,19 +468,9 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.AddCommentLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, commentSeqId, commenter, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        ArticleState updatedArticleState = ApplicationContext.current.get(IAddCommentLogic.class).mutate(
+                this, commentSeqId, commenter, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class AddCommentLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
@@ -557,19 +507,9 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.UpdateCommentLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, commentSeqId, commenter, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateCommentLogic.class).mutate(
+                this, commentSeqId, commenter, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class UpdateCommentLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
@@ -600,19 +540,9 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.article.RemoveCommentLogic",
-                    "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, commentSeqId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+        ArticleState updatedArticleState = ApplicationContext.current.get(IRemoveCommentLogic.class).mutate(
+                this, commentSeqId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
 
-//package org.test.aptosblogdemo.domain.article;
-//
-//public class RemoveCommentLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-//    }
-//}
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 

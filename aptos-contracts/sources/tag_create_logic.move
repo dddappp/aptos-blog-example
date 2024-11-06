@@ -8,6 +8,7 @@ module aptos_blog_demo::tag_create_logic {
     public(friend) fun verify(
         account: &signer,
         name: String,
+        tag_id: address,
     ): tag::TagCreated {
         let _ = account;
         tag::new_tag_created(

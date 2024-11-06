@@ -50,7 +50,6 @@ public class HibernateBlogEventStore extends AbstractHibernateEventStore {
         if (es.size() > 0) {
             eventStream.setSteamVersion(((AbstractBlogEvent) es.get(es.size() - 1)).getBlogEventId().getVersion().longValue());
         } else {
-            //todo?
         }
         eventStream.setEvents(es);
         return eventStream;

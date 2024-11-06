@@ -24,7 +24,7 @@ public interface BlogCommand extends Command {
 
     static void throwOnInvalidStateTransition(BlogState state, Command c) {
         if (state.getOffChainVersion() == null) {
-            if (isCommandCreate((BlogCommand)c)) {
+            if (isCreationCommand((BlogCommand)c)) {
                 return;
             }
             throw DomainError.named("premature", "Can't do anything to unexistent aggregate");
@@ -32,11 +32,33 @@ public interface BlogCommand extends Command {
         if (state.getDeleted() != null && state.getDeleted()) {
             throw DomainError.named("zombie", "Can't do anything to deleted aggregate.");
         }
-        if (isCommandCreate((BlogCommand)c))
+        if (isCreationCommand((BlogCommand)c))
             throw DomainError.named("rebirth", "Can't create aggregate that already exists");
     }
 
-    static boolean isCommandCreate(BlogCommand c) {
+    static boolean isCreationCommand(BlogCommand c) {
+        if (c.getCommandType() != null) {
+            String commandType = c.getCommandType();
+            if (commandType.equals("Create"))
+                return true;
+            if (commandType.equals("AddArticle"))
+                return false;
+            if (commandType.equals("RemoveArticle"))
+                return false;
+            if (commandType.equals("Donate"))
+                return false;
+            if (commandType.equals("Withdraw"))
+                return false;
+            if (commandType.equals("InitFaVault"))
+                return false;
+            if (commandType.equals("DonateFa"))
+                return false;
+            if (commandType.equals("Update"))
+                return false;
+            if (commandType.equals("Delete"))
+                return false;
+        }
+
         if (c.getOffChainVersion().equals(BlogState.VERSION_NULL))
             return true;
         return false;

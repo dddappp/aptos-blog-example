@@ -398,6 +398,10 @@ module aptos_blog_demo::blog {
         private_add_blog(blog);
     }
 
+    public(friend) fun borrow_singleton_mut(blog_pass_obj: &mut pass_object::PassObject<Blog>): &mut Blog {
+        pass_object::borrow_mut(blog_pass_obj)
+    }
+
     public(friend) fun drop_blog(blog: Blog) {
         let Blog {
             version: _version,

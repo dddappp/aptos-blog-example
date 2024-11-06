@@ -28,10 +28,12 @@ public class UpdateTagStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-tag-states.fixed-delay:5000}")
     @Transactional
     public void updateTagStates() {
-        AbstractTagEvent e = tagEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractTagEvent> es = tagEventRepository.findByStatusIsNull();
+        AbstractTagEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             aptosTagService.updateTagState(e.getTagId());
-            tagEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getTagId().equals(e.getTagId()))
+                    .forEach(tagEventService::updateStatusToProcessed);
         }
     }
 

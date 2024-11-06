@@ -46,12 +46,6 @@ module aptos_blog_demo::article_aggregate {
         body: String,
         owner: address,
     ) {
-        let article_created = article_create_logic::verify(
-            account,
-            title,
-            body,
-            owner,
-        );
         let account_address = signer::address_of(account);
         let constructor_ref = object::create_object(account_address);
         let object_signer = object::generate_signer(&constructor_ref);
@@ -60,6 +54,13 @@ module aptos_blog_demo::article_aggregate {
         let transfer_ref = object::generate_transfer_ref(&constructor_ref);
         object::disable_ungated_transfer(&transfer_ref);
         let id = object::address_from_constructor_ref(&constructor_ref);
+        let article_created = article_create_logic::verify(
+            account,
+            title,
+            body,
+            owner,
+            id,
+        );
         let article = article_create_logic::mutate(
             account,
             &article_created,

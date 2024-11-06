@@ -50,7 +50,6 @@ public class HibernateArticleEventStore extends AbstractHibernateEventStore {
         if (es.size() > 0) {
             eventStream.setSteamVersion(((AbstractArticleEvent) es.get(es.size() - 1)).getArticleEventId().getVersion().longValue());
         } else {
-            //todo?
         }
         eventStream.setEvents(es);
         return eventStream;

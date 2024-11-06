@@ -28,14 +28,16 @@ public class UpdateArticleStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-article-states.fixed-delay:5000}")
     @Transactional
     public void updateArticleStates() {
-        AbstractArticleEvent e = articleEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractArticleEvent> es = articleEventRepository.findByStatusIsNull();
+        AbstractArticleEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             if (ArticleEventService.isDeletionCommand(e)) {
                 aptosArticleService.deleteArticle(e.getId());
             } else {
                 aptosArticleService.updateArticleState(e.getId());
             }
-            articleEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getId().equals(e.getId()))
+                    .forEach(articleEventService::updateStatusToProcessed);
         }
     }
 

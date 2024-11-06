@@ -30,11 +30,11 @@ public class HibernateTagStateQueryRepository implements TagStateQueryRepository
     protected Session getCurrentSession() {
         return this.sessionFactory.getCurrentSession();
     }
-    
+
     private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("TagId", "Name", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
-    
+
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
-    
+
     public ReadOnlyProxyGenerator getReadOnlyProxyGenerator() {
         return readOnlyProxyGenerator;
     }
@@ -59,7 +59,7 @@ public class HibernateTagStateQueryRepository implements TagStateQueryRepository
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         if (firstResult != null) { criteria.setFirstResult(firstResult); }
         if (maxResults != null) { criteria.setMaxResults(maxResults); }
-         addNotDeletedRestriction(criteria);
+        addNotDeletedRestriction(criteria);
         return criteria.list();
     }
 
@@ -84,8 +84,7 @@ public class HibernateTagStateQueryRepository implements TagStateQueryRepository
     @Transactional(readOnly = true)
     public TagState getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<TagState> list = (List<TagState>)get(filter, orders, 0, 1);
-        if (list == null || list.size() <= 0)
-        {
+        if (list == null || list.size() <= 0) {
             return null;
         }
         return list.get(0);

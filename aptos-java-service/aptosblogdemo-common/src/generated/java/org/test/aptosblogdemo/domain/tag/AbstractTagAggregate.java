@@ -62,23 +62,11 @@ public abstract class AbstractTagAggregate extends AbstractAggregate implements 
         protected TagEvent.TagCreated verifyCreate(java.util.function.Supplier<TagEvent.TagCreated> eventFactory, String name, TagCommands.Create c) {
             String Name = name;
 
-            TagEvent.TagCreated e = (TagEvent.TagCreated) ReflectUtils.invokeStaticMethod(
-                    "org.test.aptosblogdemo.domain.tag.CreateLogic",
-                    "verify",
-                    new Class[]{java.util.function.Supplier.class, TagState.class, String.class, VerificationContext.class},
-                    new Object[]{eventFactory, getState(), name, VerificationContext.forCommand(c)}
-            );
-
-//package org.test.aptosblogdemo.domain.tag;
-//
-//public class CreateLogic {
-//    public static TagEvent.TagCreated verify(java.util.function.Supplier<TagEvent.TagCreated> eventFactory, TagState tagState, String name, VerificationContext verificationContext) {
-//    }
-//}
+            TagEvent.TagCreated e = (TagEvent.TagCreated) ApplicationContext.current.get(ICreateLogic.class).verify(
+                    eventFactory, getState(), name, VerificationContext.of(c));
 
             return e;
         }
-           
 
         protected AbstractTagEvent.TagCreated newTagCreated(String name, Long offChainVersion, String commandId, String requesterId) {
             TagEventId eventId = new TagEventId(getState().getTagId(), null);
