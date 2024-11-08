@@ -90,11 +90,11 @@ Since the dddappp v0.0.1 image is updated frequently, you may be required to man
 
 ```shell
 # If you have already run it, you may need to Clean Up Exited Docker Containers first
-docker rm $(docker ps -aq --filter "ancestor=wubuku/dddappp-aptos:0.0.1")
+docker rm $(docker ps -aq --filter "ancestor=wubuku/dddappp-aptos:master")
 # remove the image
-docker image rm wubuku/dddappp-aptos:0.0.1
+docker image rm wubuku/dddappp-aptos:master
 # pull the image
-git pull wubuku/dddappp-aptos:0.0.1
+docker pull wubuku/dddappp-aptos:master
 ```
 
 ---
