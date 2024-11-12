@@ -13,6 +13,7 @@ module aptos_blog_demo::blog_aggregate {
     use aptos_blog_demo::blog_init_fa_vault_logic;
     use aptos_blog_demo::blog_remove_article_logic;
     use aptos_blog_demo::blog_update_logic;
+    use aptos_blog_demo::blog_withdraw_fa_logic;
     use aptos_blog_demo::blog_withdraw_logic;
     use aptos_framework::aptos_coin::AptosCoin;
     use aptos_framework::coin::Coin;
@@ -122,6 +123,7 @@ module aptos_blog_demo::blog_aggregate {
         account: &signer,
         metadata: Object<T>,
     ) {
+        assert!(std::signer::address_of(account) == @aptos_blog_demo, ENotPublisher);
         let blog = blog::remove_blog();
         let init_fa_vault_event = blog_init_fa_vault_logic::verify<T>(
             account,
@@ -155,6 +157,27 @@ module aptos_blog_demo::blog_aggregate {
         );
         blog::update_version_and_add(updated_blog);
         blog::emit_fa_donation_received(fa_donation_received);
+    }
+
+    public fun withdraw_fa<T: key>(
+        account: &signer,
+        amount: u64,
+    ): FungibleAsset {
+        assert!(std::signer::address_of(account) == @aptos_blog_demo, ENotPublisher);
+        let blog = blog::remove_blog();
+        let fa_vault_withdrawn = blog_withdraw_fa_logic::verify<T>(
+            account,
+            amount,
+            &blog,
+        );
+        let (updated_blog, withdraw_fa_return) = blog_withdraw_fa_logic::mutate<T>(
+            account,
+            &fa_vault_withdrawn,
+            blog,
+        );
+        blog::update_version_and_add(updated_blog);
+        blog::emit_fa_vault_withdrawn(fa_vault_withdrawn);
+        withdraw_fa_return
     }
 
     public entry fun update(

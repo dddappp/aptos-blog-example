@@ -186,6 +186,15 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
             return e;
         }
 
+        protected BlogEvent.FaVaultWithdrawn verifyWithdrawFa(java.util.function.Supplier<BlogEvent.FaVaultWithdrawn> eventFactory, BigInteger amount, BlogCommands.WithdrawFa c) {
+            BigInteger Amount = amount;
+
+            BlogEvent.FaVaultWithdrawn e = (BlogEvent.FaVaultWithdrawn) ApplicationContext.current.get(IWithdrawFaLogic.class).verify(
+                    eventFactory, getState(), amount, VerificationContext.of(c));
+
+            return e;
+        }
+
         protected BlogEvent.BlogUpdated verifyUpdate(java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory, String name, String[] articles, Boolean isEmergency, String faVault, BlogCommands.Update c) {
             String Name = name;
             String[] Articles = articles;

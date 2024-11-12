@@ -20,6 +20,7 @@ import org.test.aptosblogdemo.aptos.contract.blog.DonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.VaultWithdrawn;
 import org.test.aptosblogdemo.aptos.contract.blog.InitFaVaultEvent;
 import org.test.aptosblogdemo.aptos.contract.blog.FaDonationReceived;
+import org.test.aptosblogdemo.aptos.contract.blog.FaVaultWithdrawn;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogUpdated;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogDeleted;
 import org.test.aptosblogdemo.aptos.contract.repository.BlogEventRepository;
@@ -426,6 +427,57 @@ public class BlogEventService {
     }
 
     @Transactional
+    public void pullFaVaultWithdrawnEvents() {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getFaVaultWithdrawnEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<FaVaultWithdrawn>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.BLOG_MODULE_EVENTS,
+                        ContractConstants.BLOG_MODULE_FA_VAULT_WITHDRAWN_HANDLE_FIELD,
+                        FaVaultWithdrawn.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<FaVaultWithdrawn> eventEnvelope : eventPage) {
+                    eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
+                    saveFaVaultWithdrawn(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getFaVaultWithdrawnEventNextCursor() {
+        AbstractBlogEvent.FaVaultWithdrawn lastEvent = blogEventRepository.findFirstFaVaultWithdrawnByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveFaVaultWithdrawn(Event<FaVaultWithdrawn> eventEnvelope) {
+        AbstractBlogEvent.FaVaultWithdrawn faVaultWithdrawn = DomainBeanUtils.toFaVaultWithdrawn(eventEnvelope);
+        if (blogEventRepository.findById(faVaultWithdrawn.getBlogEventId()).isPresent()) {
+            return;
+        }
+        blogEventRepository.save(faVaultWithdrawn);
+    }
+
+    @Transactional
     public void pullBlogUpdatedEvents() {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
@@ -528,7 +580,7 @@ public class BlogEventService {
     }
 
     private String getResourceAccountAddress() {
-        return aptosAccountRepository.findById(ContractConstants.RESOURCE_ACCOUNT_ADDRESS)
+        return aptosAccountRepository.findById(ContractConstants.RESOURCE_ACCOUNT)
                 .map(AptosAccount::getAddress).orElse(null);
     }
 }

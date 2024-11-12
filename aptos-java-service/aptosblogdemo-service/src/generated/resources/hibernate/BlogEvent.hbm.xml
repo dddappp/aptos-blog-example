@@ -46,6 +46,7 @@
       <subclass name="AbstractBlogEvent$VaultWithdrawn" discriminator-value="VaultWithdrawn" />
       <subclass name="AbstractBlogEvent$InitFaVaultEvent" discriminator-value="InitFaVaultEvent" />
       <subclass name="AbstractBlogEvent$FaDonationReceived" discriminator-value="FaDonationReceived" />
+      <subclass name="AbstractBlogEvent$FaVaultWithdrawn" discriminator-value="FaVaultWithdrawn" />
       <subclass name="AbstractBlogEvent$BlogUpdated" discriminator-value="BlogUpdated" />
       <subclass name="AbstractBlogEvent$BlogDeleted" discriminator-value="BlogDeleted" />
     </subclass>

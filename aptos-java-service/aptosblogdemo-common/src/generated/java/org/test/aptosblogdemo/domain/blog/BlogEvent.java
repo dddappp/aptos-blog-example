@@ -74,6 +74,13 @@ public interface BlogEvent extends Event, AptosEvent, HasStatus {
 
     }
 
+    interface FaVaultWithdrawn extends BlogEvent {
+        BigInteger getAmount();
+
+        void setAmount(BigInteger value);
+
+    }
+
     interface BlogUpdated extends BlogEvent {
         String getName();
 

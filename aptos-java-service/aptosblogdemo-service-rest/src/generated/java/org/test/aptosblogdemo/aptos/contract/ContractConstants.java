@@ -6,8 +6,8 @@
 package org.test.aptosblogdemo.aptos.contract;
 
 public class ContractConstants {
-    public static final String RESOURCE_ACCOUNT_ADDRESS = "RESOURCE_ACCOUNT_ADDRESS";
-    public static final String RESOURCE_ACCOUNT_MODULE_RESOURCE_ACCOUNT = "resource_account::ResourceAccount";
+    public static final String RESOURCE_ACCOUNT = "RESOURCE_ACCOUNT";
+    public static final String RESOURCE_ACCOUNT_MODULE_CAP_STRUCT = "resource_account::ResourceAccount";
 
     public static final String CONTRACT_NAMED_ADDRESS = "aptos_blog_demo";
 
@@ -55,6 +55,9 @@ public class ContractConstants {
 
     public static final String BLOG_MODULE_FA_DONATION_RECEIVED = "blog::FaDonationReceived";
     public static final String BLOG_MODULE_FA_DONATION_RECEIVED_HANDLE_FIELD = "fa_donation_received_handle";
+
+    public static final String BLOG_MODULE_FA_VAULT_WITHDRAWN = "blog::FaVaultWithdrawn";
+    public static final String BLOG_MODULE_FA_VAULT_WITHDRAWN_HANDLE_FIELD = "fa_vault_withdrawn_handle";
 
     public static final String BLOG_MODULE_BLOG_UPDATED = "blog::BlogUpdated";
     public static final String BLOG_MODULE_BLOG_UPDATED_HANDLE_FIELD = "blog_updated_handle";

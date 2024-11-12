@@ -21,6 +21,7 @@ module aptos_blog_demo::blog {
     friend aptos_blog_demo::blog_withdraw_logic;
     friend aptos_blog_demo::blog_init_fa_vault_logic;
     friend aptos_blog_demo::blog_donate_fa_logic;
+    friend aptos_blog_demo::blog_withdraw_fa_logic;
     friend aptos_blog_demo::blog_update_logic;
     friend aptos_blog_demo::blog_delete_logic;
     friend aptos_blog_demo::blog_aggregate;
@@ -37,6 +38,7 @@ module aptos_blog_demo::blog {
         vault_withdrawn_handle: event::EventHandle<VaultWithdrawn>,
         init_fa_vault_event_handle: event::EventHandle<InitFaVaultEvent>,
         fa_donation_received_handle: event::EventHandle<FaDonationReceived>,
+        fa_vault_withdrawn_handle: event::EventHandle<FaVaultWithdrawn>,
         blog_updated_handle: event::EventHandle<BlogUpdated>,
         blog_deleted_handle: event::EventHandle<BlogDeleted>,
     }
@@ -53,6 +55,7 @@ module aptos_blog_demo::blog {
             vault_withdrawn_handle: account::new_event_handle<VaultWithdrawn>(&res_account),
             init_fa_vault_event_handle: account::new_event_handle<InitFaVaultEvent>(&res_account),
             fa_donation_received_handle: account::new_event_handle<FaDonationReceived>(&res_account),
+            fa_vault_withdrawn_handle: account::new_event_handle<FaVaultWithdrawn>(&res_account),
             blog_updated_handle: account::new_event_handle<BlogUpdated>(&res_account),
             blog_deleted_handle: account::new_event_handle<BlogDeleted>(&res_account),
         });
@@ -270,6 +273,25 @@ module aptos_blog_demo::blog {
         }
     }
 
+    struct FaVaultWithdrawn has store, drop {
+        version: u64,
+        amount: u64,
+    }
+
+    public fun fa_vault_withdrawn_amount(fa_vault_withdrawn: &FaVaultWithdrawn): u64 {
+        fa_vault_withdrawn.amount
+    }
+
+    public(friend) fun new_fa_vault_withdrawn(
+        blog: &Blog,
+        amount: u64,
+    ): FaVaultWithdrawn {
+        FaVaultWithdrawn {
+            version: version(blog),
+            amount,
+        }
+    }
+
     struct BlogUpdated has store, drop {
         version: u64,
         name: String,
@@ -458,6 +480,12 @@ module aptos_blog_demo::blog {
         assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.fa_donation_received_handle, fa_donation_received);
+    }
+
+    public(friend) fun emit_fa_vault_withdrawn(fa_vault_withdrawn: FaVaultWithdrawn) acquires Events {
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
+        event::emit_event(&mut events.fa_vault_withdrawn_handle, fa_vault_withdrawn);
     }
 
     public(friend) fun emit_blog_updated(blog_updated: BlogUpdated) acquires Events {

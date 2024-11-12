@@ -6,6 +6,7 @@
 package org.test.aptosblogdemo.aptos.contract;
 
 import java.math.*;
+import java.util.*;
 
 import com.github.wubuku.aptos.bean.Event;
 import com.github.wubuku.aptos.bean.Option;
@@ -29,6 +30,7 @@ import org.test.aptosblogdemo.aptos.contract.blog.DonationReceived;
 import org.test.aptosblogdemo.aptos.contract.blog.VaultWithdrawn;
 import org.test.aptosblogdemo.aptos.contract.blog.InitFaVaultEvent;
 import org.test.aptosblogdemo.aptos.contract.blog.FaDonationReceived;
+import org.test.aptosblogdemo.aptos.contract.blog.FaVaultWithdrawn;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogUpdated;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogDeleted;
 
@@ -306,6 +308,19 @@ public class DomainBeanUtils {
         return faDonationReceived;
     }
 
+    public static AbstractBlogEvent.FaVaultWithdrawn toFaVaultWithdrawn(Event<FaVaultWithdrawn> eventEnvelope) {
+        FaVaultWithdrawn contractEvent = eventEnvelope.getData();
+
+        AbstractBlogEvent.FaVaultWithdrawn faVaultWithdrawn = new AbstractBlogEvent.FaVaultWithdrawn();
+        faVaultWithdrawn.setAccountAddress(contractEvent.getAccountAddress());
+        faVaultWithdrawn.setAmount(contractEvent.getAmount());
+        faVaultWithdrawn.setVersion(contractEvent.getVersion());
+
+        setAptosEventProperties(faVaultWithdrawn, eventEnvelope);
+
+        return faVaultWithdrawn;
+    }
+
     public static AbstractBlogEvent.BlogUpdated toBlogUpdated(Event<BlogUpdated> eventEnvelope) {
         BlogUpdated contractEvent = eventEnvelope.getData();
 
@@ -358,5 +373,17 @@ public class DomainBeanUtils {
         return optionView == null ? null
                 : (optionView.getVec() == null || optionView.getVec().size() == 0) ? null
                 : optionView.getVec().get(0);
+    }
+
+    public static List<String> extractTypeArguments(String type) {
+        int i = type.indexOf("<");
+        int j = type.lastIndexOf(">");
+        if (i > 0 && j > i && j == type.length() - 1) {
+            String typeArguments = type.substring(i + 1, j);
+            String[] typeArgumentArray = typeArguments.split(",");
+            return Arrays.stream(typeArgumentArray).map(String::trim).collect(java.util.stream.Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

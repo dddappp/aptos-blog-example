@@ -53,6 +53,8 @@ public interface BlogCommand extends Command {
                 return false;
             if (commandType.equals("DonateFa"))
                 return false;
+            if (commandType.equals("WithdrawFa"))
+                return false;
             if (commandType.equals("Update"))
                 return false;
             if (commandType.equals("Delete"))

@@ -31,6 +31,7 @@ module aptos_blog_demo::genesis_account {
     friend aptos_blog_demo::blog_withdraw_logic;
     friend aptos_blog_demo::blog_init_fa_vault_logic;
     friend aptos_blog_demo::blog_donate_fa_logic;
+    friend aptos_blog_demo::blog_withdraw_fa_logic;
     friend aptos_blog_demo::blog_update_logic;
     friend aptos_blog_demo::blog_delete_logic;
 

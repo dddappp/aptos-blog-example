@@ -341,6 +341,27 @@ public abstract class AbstractBlogEvent extends AbstractEvent implements BlogEve
 
     }
 
+    public static class FaVaultWithdrawn extends BlogClobEvent implements BlogEvent.FaVaultWithdrawn {
+
+        @Override
+        public String getEventClass() {
+            return "FaVaultWithdrawn";
+        }
+
+        public BigInteger getAmount() {
+            Object val = getDynamicProperties().get("amount");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setAmount(BigInteger value) {
+            getDynamicProperties().put("amount", value);
+        }
+
+    }
+
     public static class BlogUpdated extends BlogClobEvent implements BlogEvent.BlogUpdated {
 
         @Override

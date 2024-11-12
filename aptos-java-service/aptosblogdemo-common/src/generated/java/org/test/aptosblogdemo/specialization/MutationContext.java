@@ -8,7 +8,7 @@ public interface MutationContext<T, TM> {
 
     TM createMutableState(T state);
 
-    static <T, TM> MutationContext forEvent(Event e, Function<T, TM> mutableStateFactory) {
+    static <T, TM> MutationContext of(Event e, Function<T, TM> mutableStateFactory) {
         return new MutationContext<T, TM>() {
             @Override
             public Event getEvent() {

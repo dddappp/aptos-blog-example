@@ -148,6 +148,7 @@ singletonObjects:
           name: VaultWithdrawn
 
       InitFaVault:
+        requiredPermission: "__Publisher__"
         typeParameters:
           T:
             keyable: true
@@ -173,3 +174,15 @@ singletonObjects:
           properties:
             FaAmount:
               type: u64
+      WithdrawFa:
+        requiredPermission: "__Publisher__"
+        typeParameters:
+          T:
+            keyable: true
+        parameters:
+          Amount:
+            type: u64
+        result:
+          type: FungibleAsset
+        event:
+          name: FaVaultWithdrawn
