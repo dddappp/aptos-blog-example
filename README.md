@@ -221,7 +221,7 @@ It should display similar information:
 In the directory `aptos-contracts`, execute the compilation, which should now succeed:
 
 ```shell
-aptos move compile --named-addresses aptos_blog_demo=default
+aptos move compile --named-addresses aptos_blog_demo=default --skip-fetch-latest-git-deps
 ```
 
 At this point, the coding phase of the application development is complete! Isn't it very simple?
@@ -235,7 +235,7 @@ Next, we will deploy and test the Demo application.
 Execute the following command in the directory `aptos-contracts` to publish the contracts to the chain:
 
 ```shell
-aptos move publish --named-addresses aptos_blog_demo=default --assume-yes
+aptos move publish --named-addresses aptos_blog_demo=default --skip-fetch-latest-git-deps --included-artifacts none --assume-yes
 ```
 
 If the command is executed successfully, it should display similar information:
@@ -270,8 +270,16 @@ Use `aptos move run` command to submit a transaction and initialize the contract
 
 ```shell
 aptos move run --function-id 'default::aptos_blog_demo_init::initialize' --assume-yes
-# If you're testing the current version in the repository, you'll also need this:
-#aptos move run --function-id 'default::blog_aggregate::create' --args 'string:MyBlog' 'bool:false' --assume-yes
+
+# If you're testing the current version in the repository, you'll also need to run this:
+aptos move run --function-id 'default::blog_aggregate::create' --args 'string:MyBlog' 'bool:false' --assume-yes
+#Init blog FA vault:
+aptos move run --function-id 'default::blog_aggregate::init_fa_vault' \
+  --type-args \
+    "0x1::fungible_asset::Metadata" \
+  --args \
+    'address:0x601b55598d1a02edee2d85c57f1bba537d03ccdfd77192239c80b2f263e2a876' \
+  --assume-yes
 ```
 
 ### CRUD Articles

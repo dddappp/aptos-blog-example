@@ -9,11 +9,13 @@ import com.github.wubuku.aptos.utils.NodeApiClient;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.domain.tag.*;
 import org.test.aptosblogdemo.aptos.contract.repository.*;
+import org.test.aptosblogdemo.aptos.contract.event.OnChainStateRetrieved;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.stream.*;
 import java.util.*;
@@ -24,6 +26,9 @@ public class AptosTagService {
 
     @Autowired
     private TagStateRepository tagStateRepository;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
 
     private AptosTagStateRetriever aptosTagStateRetriever;
@@ -54,6 +59,7 @@ public class AptosTagService {
             return;
         }
         tagStateRepository.merge(tagState);
+        applicationEventPublisher.publishEvent(new OnChainStateRetrieved<>(tagState, TagState.class));
     }
 
 }

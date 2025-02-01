@@ -9,46 +9,68 @@ import org.test.aptosblogdemo.aptos.contract.service.ArticleEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class PullArticleEventsTaskService {
+
+    @Value("${aptos.contract.pull-article-events.add-tag-event.limit:10}")    
+    private Integer pullAddTagEventsLimit;
+
+    @Value("${aptos.contract.pull-article-events.article-created.limit:10}")    
+    private Integer pullArticleCreatedEventsLimit;
+
+    @Value("${aptos.contract.pull-article-events.article-updated.limit:10}")    
+    private Integer pullArticleUpdatedEventsLimit;
+
+    @Value("${aptos.contract.pull-article-events.article-deleted.limit:10}")    
+    private Integer pullArticleDeletedEventsLimit;
+
+    @Value("${aptos.contract.pull-article-events.comment-added.limit:10}")    
+    private Integer pullCommentAddedEventsLimit;
+
+    @Value("${aptos.contract.pull-article-events.comment-updated.limit:10}")    
+    private Integer pullCommentUpdatedEventsLimit;
+
+    @Value("${aptos.contract.pull-article-events.comment-removed.limit:10}")    
+    private Integer pullCommentRemovedEventsLimit;
 
     @Autowired
     private ArticleEventService articleEventService;
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.add-tag-event.fixed-delay:5000}")
     public void pullAddTagEvents() {
-        articleEventService.pullAddTagEvents();
+        articleEventService.pullAddTagEvents(pullAddTagEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-created.fixed-delay:5000}")
     public void pullArticleCreatedEvents() {
-        articleEventService.pullArticleCreatedEvents();
+        articleEventService.pullArticleCreatedEvents(pullArticleCreatedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-updated.fixed-delay:5000}")
     public void pullArticleUpdatedEvents() {
-        articleEventService.pullArticleUpdatedEvents();
+        articleEventService.pullArticleUpdatedEvents(pullArticleUpdatedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-deleted.fixed-delay:5000}")
     public void pullArticleDeletedEvents() {
-        articleEventService.pullArticleDeletedEvents();
+        articleEventService.pullArticleDeletedEvents(pullArticleDeletedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-added.fixed-delay:5000}")
     public void pullCommentAddedEvents() {
-        articleEventService.pullCommentAddedEvents();
+        articleEventService.pullCommentAddedEvents(pullCommentAddedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-updated.fixed-delay:5000}")
     public void pullCommentUpdatedEvents() {
-        articleEventService.pullCommentUpdatedEvents();
+        articleEventService.pullCommentUpdatedEvents(pullCommentUpdatedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-removed.fixed-delay:5000}")
     public void pullCommentRemovedEvents() {
-        articleEventService.pullCommentRemovedEvents();
+        articleEventService.pullCommentRemovedEvents(pullCommentRemovedEventsLimit);
     }
 
 }

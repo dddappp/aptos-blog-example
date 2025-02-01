@@ -9,8 +9,8 @@ import java.math.*;
 import java.util.*;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
-
 import java.math.BigInteger;
+
 public interface IRemoveCommentLogic {
 
     ArticleEvent.CommentRemoved verify(java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory, ArticleState articleState, BigInteger commentSeqId, VerificationContext verificationContext);

@@ -26,7 +26,7 @@ public class BlogUpdated {
 
     private Boolean isEmergency;
 
-    private com.github.wubuku.aptos.bean.Option<String> faVault;
+    private com.github.wubuku.aptos.bean.AptosObject faVault;
 
     public String getAccountAddress() {
         return accountAddress;
@@ -68,11 +68,11 @@ public class BlogUpdated {
         this.isEmergency = isEmergency;
     }
 
-    public com.github.wubuku.aptos.bean.Option<String> getFaVault() {
+    public com.github.wubuku.aptos.bean.AptosObject getFaVault() {
         return faVault;
     }
 
-    public void setFaVault(com.github.wubuku.aptos.bean.Option<String> faVault) {
+    public void setFaVault(com.github.wubuku.aptos.bean.AptosObject faVault) {
         this.faVault = faVault;
     }
 

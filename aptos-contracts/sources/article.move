@@ -38,9 +38,15 @@ module aptos_blog_demo::article {
         comment_updated_handle: event::EventHandle<CommentUpdated>,
         comment_removed_handle: event::EventHandle<CommentRemoved>,
         comment_table_item_added_handle: event::EventHandle<CommentTableItemAdded>,
+        comment_table_item_removed_handle: event::EventHandle<CommentTableItemRemoved>,
     }
 
     struct CommentTableItemAdded has store, drop {
+        article_id: address,
+        comment_seq_id: u64,
+    }
+
+    struct CommentTableItemRemoved has store, drop {
         article_id: address,
         comment_seq_id: u64,
     }
@@ -49,6 +55,12 @@ module aptos_blog_demo::article {
         assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.comment_table_item_added_handle, table_item_added);
+    }
+
+    fun emit_comment_table_item_removed(table_item_removed: CommentTableItemRemoved) acquires Events {
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
+        event::emit_event(&mut events.comment_table_item_removed_handle, table_item_removed);
     }
 
     public fun initialize(account: &signer) {
@@ -64,6 +76,7 @@ module aptos_blog_demo::article {
             comment_updated_handle: account::new_event_handle<CommentUpdated>(&res_account),
             comment_removed_handle: account::new_event_handle<CommentRemoved>(&res_account),
             comment_table_item_added_handle: account::new_event_handle<CommentTableItemAdded>(&res_account),
+            comment_table_item_removed_handle: account::new_event_handle<CommentTableItemRemoved>(&res_account),
         });
 
     }
@@ -154,14 +167,6 @@ module aptos_blog_demo::article {
         &mut article.tags
     }
 
-    public fun tags(article: &Article): vector<Object<Tag>> {
-        article.tags
-    }
-
-    public(friend) fun set_tags(article: &mut Article, tags: vector<Object<Tag>>) {
-        article.tags = tags;
-    }
-
     public(friend) fun add_comment(id: address, article: &mut Article, comment: Comment) acquires Events {
         let comment_seq_id = comment::comment_seq_id(&comment);
         assert!(!table_with_length::contains(&article.comments, comment_seq_id), EIdAlreadyExists);
@@ -172,13 +177,17 @@ module aptos_blog_demo::article {
         });
     }
 
-    public(friend) fun remove_comment(article: &mut Article, comment_seq_id: u64): Comment {
+    public(friend) fun remove_comment(id: address, article: &mut Article, comment_seq_id: u64): Comment acquires Events {
         assert!(table_with_length::contains(&article.comments, comment_seq_id), EIdNotFound);
+        emit_comment_table_item_removed(CommentTableItemRemoved {
+            article_id: id,
+            comment_seq_id,
+        });
         table_with_length::remove(&mut article.comments, comment_seq_id)
     }
 
-    public(friend) fun remove_and_drop_comment(article: &mut Article, comment_seq_id: u64) {
-        let comment = remove_comment(article, comment_seq_id);
+    public(friend) fun remove_and_drop_comment(id: address, article: &mut Article, comment_seq_id: u64) acquires Events {
+        let comment = remove_comment(id, article, comment_seq_id);
         comment::drop_comment(comment);
     }
 

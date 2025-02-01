@@ -68,7 +68,7 @@ public class DomainBeanUtils {
             return null;
         }
         org.test.aptosblogdemo.domain.FungibleStore fungibleStore = new org.test.aptosblogdemo.domain.FungibleStore();
-        fungibleStore.setMetadata(contractFungibleStore.getMetadata());
+        fungibleStore.setMetadata(contractFungibleStore.getMetadata().getInner());
         fungibleStore.setBalance(contractFungibleStore.getBalance());
         fungibleStore.setFrozen(contractFungibleStore.getFrozen());
         return fungibleStore;
@@ -107,7 +107,7 @@ public class DomainBeanUtils {
 
         AbstractArticleEvent.AddTagEvent addTagEvent = new AbstractArticleEvent.AddTagEvent();
         addTagEvent.setId(contractEvent.getId());
-        addTagEvent.setTag(contractEvent.getTag());
+        //fixme: addTagEvent.setTag(contractEvent.getTag());
         addTagEvent.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(addTagEvent, eventEnvelope);
@@ -329,7 +329,7 @@ public class DomainBeanUtils {
         blogUpdated.setName(contractEvent.getName());
         blogUpdated.setArticles(contractEvent.getArticles());
         blogUpdated.setIsEmergency(contractEvent.getIsEmergency());
-        blogUpdated.setFaVault(extractOptionalValue(contractEvent.getFaVault()));
+        //fixme: blogUpdated.setFaVault(extractOptionalValue(contractEvent.getFaVault()));
         blogUpdated.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(blogUpdated, eventEnvelope);

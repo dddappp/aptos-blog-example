@@ -28,7 +28,7 @@ module aptos_blog_demo::article_remove_comment_logic {
     ): article::Article {
         let comment_seq_id = comment_removed::comment_seq_id(comment_removed);
         let _ = id;
-        article::remove_and_drop_comment(&mut article, comment_seq_id);
+        article::remove_and_drop_comment(id, &mut article, comment_seq_id);
         article
     }
 

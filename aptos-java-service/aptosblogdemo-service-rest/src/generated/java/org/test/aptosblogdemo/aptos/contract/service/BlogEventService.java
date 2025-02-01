@@ -25,10 +25,12 @@ import org.test.aptosblogdemo.aptos.contract.blog.BlogUpdated;
 import org.test.aptosblogdemo.aptos.contract.blog.BlogDeleted;
 import org.test.aptosblogdemo.aptos.contract.repository.BlogEventRepository;
 import org.test.aptosblogdemo.aptos.contract.repository.AptosAccountRepository;
+import org.test.aptosblogdemo.aptos.contract.event.OnChainEventRetrieved;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.IOException;
 import java.math.*;
@@ -63,6 +65,9 @@ public class BlogEventService {
     @Autowired
     private BlogEventRepository blogEventRepository;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     @Transactional
     public void updateStatusToProcessed(AbstractBlogEvent event) {
         event.setStatus("D");
@@ -70,12 +75,11 @@ public class BlogEventService {
     }
 
     @Transactional
-    public void pullBlogCreatedEvents() {
+    public void pullBlogCreatedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getBlogCreatedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -89,7 +93,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_BLOG_CREATED_HANDLE_FIELD,
                         BlogCreated.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -118,15 +122,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(blogCreated);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(blogCreated, AbstractBlogEvent.BlogCreated.class));
     }
 
     @Transactional
-    public void pullArticleAddedToBlogEvents() {
+    public void pullArticleAddedToBlogEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getArticleAddedToBlogEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -140,7 +144,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_ARTICLE_ADDED_TO_BLOG_HANDLE_FIELD,
                         ArticleAddedToBlog.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -169,15 +173,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(articleAddedToBlog);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(articleAddedToBlog, AbstractBlogEvent.ArticleAddedToBlog.class));
     }
 
     @Transactional
-    public void pullArticleRemovedFromBlogEvents() {
+    public void pullArticleRemovedFromBlogEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getArticleRemovedFromBlogEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -191,7 +195,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_ARTICLE_REMOVED_FROM_BLOG_HANDLE_FIELD,
                         ArticleRemovedFromBlog.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -220,15 +224,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(articleRemovedFromBlog);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(articleRemovedFromBlog, AbstractBlogEvent.ArticleRemovedFromBlog.class));
     }
 
     @Transactional
-    public void pullDonationReceivedEvents() {
+    public void pullDonationReceivedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getDonationReceivedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -242,7 +246,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_DONATION_RECEIVED_HANDLE_FIELD,
                         DonationReceived.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -271,15 +275,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(donationReceived);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(donationReceived, AbstractBlogEvent.DonationReceived.class));
     }
 
     @Transactional
-    public void pullVaultWithdrawnEvents() {
+    public void pullVaultWithdrawnEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getVaultWithdrawnEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -293,7 +297,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_VAULT_WITHDRAWN_HANDLE_FIELD,
                         VaultWithdrawn.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -322,15 +326,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(vaultWithdrawn);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(vaultWithdrawn, AbstractBlogEvent.VaultWithdrawn.class));
     }
 
     @Transactional
-    public void pullInitFaVaultEvents() {
+    public void pullInitFaVaultEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getInitFaVaultEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -344,7 +348,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_INIT_FA_VAULT_EVENT_HANDLE_FIELD,
                         InitFaVaultEvent.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -373,15 +377,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(initFaVaultEvent);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(initFaVaultEvent, AbstractBlogEvent.InitFaVaultEvent.class));
     }
 
     @Transactional
-    public void pullFaDonationReceivedEvents() {
+    public void pullFaDonationReceivedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getFaDonationReceivedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -395,7 +399,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_FA_DONATION_RECEIVED_HANDLE_FIELD,
                         FaDonationReceived.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -424,15 +428,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(faDonationReceived);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(faDonationReceived, AbstractBlogEvent.FaDonationReceived.class));
     }
 
     @Transactional
-    public void pullFaVaultWithdrawnEvents() {
+    public void pullFaVaultWithdrawnEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getFaVaultWithdrawnEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -446,7 +450,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_FA_VAULT_WITHDRAWN_HANDLE_FIELD,
                         FaVaultWithdrawn.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -475,15 +479,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(faVaultWithdrawn);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(faVaultWithdrawn, AbstractBlogEvent.FaVaultWithdrawn.class));
     }
 
     @Transactional
-    public void pullBlogUpdatedEvents() {
+    public void pullBlogUpdatedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getBlogUpdatedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -497,7 +501,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_BLOG_UPDATED_HANDLE_FIELD,
                         BlogUpdated.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -526,15 +530,15 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(blogUpdated);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(blogUpdated, AbstractBlogEvent.BlogUpdated.class));
     }
 
     @Transactional
-    public void pullBlogDeletedEvents() {
+    public void pullBlogDeletedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getBlogDeletedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -548,7 +552,7 @@ public class BlogEventService {
                         ContractConstants.BLOG_MODULE_BLOG_DELETED_HANDLE_FIELD,
                         BlogDeleted.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -577,6 +581,7 @@ public class BlogEventService {
             return;
         }
         blogEventRepository.save(blogDeleted);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(blogDeleted, AbstractBlogEvent.BlogDeleted.class));
     }
 
     private String getResourceAccountAddress() {

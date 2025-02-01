@@ -129,7 +129,6 @@ public class HibernateBlogStateQueryRepository implements BlogStateQueryReposito
         return (long)criteria.uniqueResult();
     }
 
-
     protected static void addNotDeletedRestriction(Criteria criteria) {
         criteria.add(org.hibernate.criterion.Restrictions.or(
                 org.hibernate.criterion.Restrictions.isNull("deleted"),

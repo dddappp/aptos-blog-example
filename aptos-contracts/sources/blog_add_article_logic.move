@@ -21,10 +21,10 @@ module aptos_blog_demo::blog_add_article_logic {
         blog: blog::Blog,
     ): blog::Blog {
         let article_id = article_added_to_blog::article_id(article_added_to_blog);
-        let articles = blog::articles(&blog);
-        if (!vector::contains(&articles, &article_id)) {
-            vector::push_back(&mut articles, article_id);
-            blog::set_articles(&mut blog, articles);
+        let articles = blog::borrow_mut_articles(&mut blog);
+        if (!vector::contains(articles, &article_id)) {
+            vector::push_back(articles, article_id);
+            //blog::set_articles(&mut blog, articles);
         };
         blog
     }

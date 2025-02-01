@@ -9,8 +9,8 @@ import java.math.*;
 import java.util.*;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
-
 import java.math.BigInteger;
+
 public interface IWithdrawFaLogic {
 
     BlogEvent.FaVaultWithdrawn verify(java.util.function.Supplier<BlogEvent.FaVaultWithdrawn> eventFactory, BlogState blogState, BigInteger amount, VerificationContext verificationContext);

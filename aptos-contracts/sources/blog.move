@@ -92,14 +92,6 @@ module aptos_blog_demo::blog {
         &mut blog.articles
     }
 
-    public fun articles(blog: &Blog): vector<address> {
-        blog.articles
-    }
-
-    public(friend) fun set_articles(blog: &mut Blog, articles: vector<address>) {
-        blog.articles = articles;
-    }
-
     public fun borrow_vault(blog: &Blog): &Coin<AptosCoin> {
         &blog.vault
     }

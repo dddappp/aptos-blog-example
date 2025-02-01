@@ -20,7 +20,7 @@ public class AddTagEvent {
 
     private BigInteger version;
 
-    private String tag;
+    private com.github.wubuku.aptos.bean.AptosObject tag;
 
     public String getId() {
         return id;
@@ -38,11 +38,11 @@ public class AddTagEvent {
         this.version = version;
     }
 
-    public String getTag() {
+    public com.github.wubuku.aptos.bean.AptosObject getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(com.github.wubuku.aptos.bean.AptosObject tag) {
         this.tag = tag;
     }
 
@@ -51,7 +51,7 @@ public class AddTagEvent {
         return "AddTagEvent{" +
                 "id=" + '\'' + id + '\'' +
                 ", version=" + version +
-                ", tag=" + '\'' + tag + '\'' +
+                ", tag=" + tag +
                 '}';
     }
 

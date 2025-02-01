@@ -16,10 +16,12 @@ import org.test.aptosblogdemo.aptos.contract.AptosAccount;
 import org.test.aptosblogdemo.aptos.contract.tag.TagCreated;
 import org.test.aptosblogdemo.aptos.contract.repository.TagEventRepository;
 import org.test.aptosblogdemo.aptos.contract.repository.AptosAccountRepository;
+import org.test.aptosblogdemo.aptos.contract.event.OnChainEventRetrieved;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.IOException;
 import java.math.*;
@@ -41,6 +43,9 @@ public class TagEventService {
     @Autowired
     private TagEventRepository tagEventRepository;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     @Transactional
     public void updateStatusToProcessed(AbstractTagEvent event) {
         event.setStatus("D");
@@ -48,12 +53,11 @@ public class TagEventService {
     }
 
     @Transactional
-    public void pullTagCreatedEvents() {
+    public void pullTagCreatedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getTagCreatedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -67,7 +71,7 @@ public class TagEventService {
                         ContractConstants.TAG_MODULE_TAG_CREATED_HANDLE_FIELD,
                         TagCreated.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -95,6 +99,7 @@ public class TagEventService {
             return;
         }
         tagEventRepository.save(tagCreated);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(tagCreated, AbstractTagEvent.TagCreated.class));
     }
 
     private String getResourceAccountAddress() {

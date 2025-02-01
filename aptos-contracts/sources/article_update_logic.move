@@ -4,6 +4,7 @@ module aptos_blog_demo::article_update_logic {
     use aptos_blog_demo::tag::Tag;
     use aptos_framework::object::Object;
     use std::string::String;
+    use std::vector;
 
     friend aptos_blog_demo::article_aggregate;
 
@@ -41,7 +42,9 @@ module aptos_blog_demo::article_update_logic {
         article::set_title(&mut article, title);
         article::set_body(&mut article, body);
         article::set_owner(&mut article, owner);
-        article::set_tags(&mut article, tags);
+        let mut_tags = article::borrow_mut_tags(&mut article);
+        vector::trim(mut_tags, 0);
+        vector::append(mut_tags, tags);
         article
     }
 

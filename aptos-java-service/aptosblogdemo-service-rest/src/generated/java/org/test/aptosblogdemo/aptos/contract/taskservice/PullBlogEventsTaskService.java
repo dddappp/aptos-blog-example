@@ -9,61 +9,92 @@ import org.test.aptosblogdemo.aptos.contract.service.BlogEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class PullBlogEventsTaskService {
+
+    @Value("${aptos.contract.pull-blog-events.blog-created.limit:10}")    
+    private Integer pullBlogCreatedEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.article-added-to-blog.limit:10}")    
+    private Integer pullArticleAddedToBlogEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.article-removed-from-blog.limit:10}")    
+    private Integer pullArticleRemovedFromBlogEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.donation-received.limit:10}")    
+    private Integer pullDonationReceivedEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.vault-withdrawn.limit:10}")    
+    private Integer pullVaultWithdrawnEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.init-fa-vault-event.limit:10}")    
+    private Integer pullInitFaVaultEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.fa-donation-received.limit:10}")    
+    private Integer pullFaDonationReceivedEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.fa-vault-withdrawn.limit:10}")    
+    private Integer pullFaVaultWithdrawnEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.blog-updated.limit:10}")    
+    private Integer pullBlogUpdatedEventsLimit;
+
+    @Value("${aptos.contract.pull-blog-events.blog-deleted.limit:10}")    
+    private Integer pullBlogDeletedEventsLimit;
 
     @Autowired
     private BlogEventService blogEventService;
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.blog-created.fixed-delay:5000}")
     public void pullBlogCreatedEvents() {
-        blogEventService.pullBlogCreatedEvents();
+        blogEventService.pullBlogCreatedEvents(pullBlogCreatedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.article-added-to-blog.fixed-delay:5000}")
     public void pullArticleAddedToBlogEvents() {
-        blogEventService.pullArticleAddedToBlogEvents();
+        blogEventService.pullArticleAddedToBlogEvents(pullArticleAddedToBlogEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.article-removed-from-blog.fixed-delay:5000}")
     public void pullArticleRemovedFromBlogEvents() {
-        blogEventService.pullArticleRemovedFromBlogEvents();
+        blogEventService.pullArticleRemovedFromBlogEvents(pullArticleRemovedFromBlogEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.donation-received.fixed-delay:5000}")
     public void pullDonationReceivedEvents() {
-        blogEventService.pullDonationReceivedEvents();
+        blogEventService.pullDonationReceivedEvents(pullDonationReceivedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.vault-withdrawn.fixed-delay:5000}")
     public void pullVaultWithdrawnEvents() {
-        blogEventService.pullVaultWithdrawnEvents();
+        blogEventService.pullVaultWithdrawnEvents(pullVaultWithdrawnEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.init-fa-vault-event.fixed-delay:5000}")
     public void pullInitFaVaultEvents() {
-        blogEventService.pullInitFaVaultEvents();
+        blogEventService.pullInitFaVaultEvents(pullInitFaVaultEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.fa-donation-received.fixed-delay:5000}")
     public void pullFaDonationReceivedEvents() {
-        blogEventService.pullFaDonationReceivedEvents();
+        blogEventService.pullFaDonationReceivedEvents(pullFaDonationReceivedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.fa-vault-withdrawn.fixed-delay:5000}")
     public void pullFaVaultWithdrawnEvents() {
-        blogEventService.pullFaVaultWithdrawnEvents();
+        blogEventService.pullFaVaultWithdrawnEvents(pullFaVaultWithdrawnEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.blog-updated.fixed-delay:5000}")
     public void pullBlogUpdatedEvents() {
-        blogEventService.pullBlogUpdatedEvents();
+        blogEventService.pullBlogUpdatedEvents(pullBlogUpdatedEventsLimit);
     }
 
     @Scheduled(fixedDelayString = "${aptos.contract.pull-blog-events.blog-deleted.fixed-delay:5000}")
     public void pullBlogDeletedEvents() {
-        blogEventService.pullBlogDeletedEvents();
+        blogEventService.pullBlogDeletedEvents(pullBlogDeletedEventsLimit);
     }
 
 }

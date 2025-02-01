@@ -13,18 +13,18 @@ import java.math.BigInteger;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class FungibleStore {
 
-    private String metadata;
+    private com.github.wubuku.aptos.bean.AptosObject metadata;
 
     private BigInteger balance;
 
     private Boolean frozen;
 
 
-    public String getMetadata() {
+    public com.github.wubuku.aptos.bean.AptosObject getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(String metadata) {
+    public void setMetadata(com.github.wubuku.aptos.bean.AptosObject metadata) {
         this.metadata = metadata;
     }
 
@@ -47,7 +47,7 @@ public class FungibleStore {
     @Override
     public String toString() {
         return "FungibleStore{" +
-                "metadata=" + '\'' + metadata + '\'' +
+                "metadata=" + metadata +
                 ", balance=" + balance +
                 ", frozen=" + frozen +
                 '}';

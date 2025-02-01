@@ -145,7 +145,6 @@ public class HibernateArticleStateQueryRepository implements ArticleStateQueryRe
         return criteria.add(partIdCondition).list();
     }
 
-
     protected static void addNotDeletedRestriction(Criteria criteria) {
         criteria.add(org.hibernate.criterion.Restrictions.or(
                 org.hibernate.criterion.Restrictions.isNull("deleted"),

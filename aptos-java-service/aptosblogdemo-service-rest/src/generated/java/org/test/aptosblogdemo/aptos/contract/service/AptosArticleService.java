@@ -9,11 +9,13 @@ import com.github.wubuku.aptos.utils.NodeApiClient;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.domain.article.*;
 import org.test.aptosblogdemo.aptos.contract.repository.*;
+import org.test.aptosblogdemo.aptos.contract.event.OnChainStateRetrieved;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.stream.*;
 import java.util.*;
@@ -24,6 +26,9 @@ public class AptosArticleService {
 
     @Autowired
     private ArticleStateRepository articleStateRepository;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     private CommentTableItemAddedRepository commentTableItemAddedRepository;
@@ -51,7 +56,7 @@ public class AptosArticleService {
                 (articleState, commentSeqId) -> (CommentState.MutableCommentState)
                         ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>) articleState.getComments()).getOrAddDefault(commentSeqId),
                 articleId -> {
-                    articleEventService.pullCommentTableItemAddedEvents();
+                    articleEventService.pullCommentTableItemAddedEvents(null);
                     return commentTableItemAddedRepository.findByArticleCommentId_ArticleId(articleId).stream()
                             .map(i -> i.getArticleCommentId().getCommentSeqId()).collect(Collectors.toList());
                 }
@@ -65,6 +70,7 @@ public class AptosArticleService {
             return;
         }
         articleStateRepository.merge(articleState);
+        applicationEventPublisher.publishEvent(new OnChainStateRetrieved<>(articleState, ArticleState.class));
     }
 
     @Transactional

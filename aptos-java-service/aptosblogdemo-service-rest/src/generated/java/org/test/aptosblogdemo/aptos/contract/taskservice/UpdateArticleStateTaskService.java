@@ -8,10 +8,13 @@ package org.test.aptosblogdemo.aptos.contract.taskservice;
 import org.test.aptosblogdemo.domain.article.AbstractArticleEvent;
 import org.test.aptosblogdemo.aptos.contract.repository.*;
 import org.test.aptosblogdemo.aptos.contract.service.*;
+import org.test.aptosblogdemo.aptos.contract.event.OnChainEventRetrieved;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 
 @Service
 public class UpdateArticleStateTaskService {
@@ -38,6 +41,17 @@ public class UpdateArticleStateTaskService {
             }
             es.stream().filter(ee -> ee.getId().equals(e.getId()))
                     .forEach(articleEventService::updateStatusToProcessed);
+        }
+    }
+
+    @EventListener
+    @Async("asyncEventExecutor")
+    @Transactional
+    public void handleArticleEvent(OnChainEventRetrieved<?> e) {
+        if ((e.getEvent() instanceof AbstractArticleEvent)) {
+            AbstractArticleEvent articleEvent = (AbstractArticleEvent) e.getEvent();
+            aptosArticleService.updateArticleState(articleEvent.getId());
+            articleEventService.updateStatusToProcessed(articleEvent);
         }
     }
 

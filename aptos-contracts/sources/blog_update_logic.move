@@ -6,6 +6,7 @@ module aptos_blog_demo::blog_update_logic {
     use aptos_framework::object::Object;
     use aptos_blog_demo::genesis_account;
     use std::option::Option;
+    use std::vector;
 
     friend aptos_blog_demo::blog_aggregate;
 
@@ -36,7 +37,9 @@ module aptos_blog_demo::blog_update_logic {
         let articles = blog_updated::articles(blog_updated);
         let is_emergency = blog_updated::is_emergency(blog_updated);
         blog::set_name(&mut blog, name);
-        blog::set_articles(&mut blog, articles);
+        let mut_articles = blog::borrow_mut_articles(&mut blog);
+        vector::trim(mut_articles, 0);
+        vector::append(mut_articles, articles);
         blog::set_is_emergency(&mut blog, is_emergency);
         //todo: set fa_valut
         blog

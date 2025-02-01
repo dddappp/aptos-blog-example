@@ -21,11 +21,11 @@ module aptos_blog_demo::blog_remove_article_logic {
         blog: blog::Blog,
     ): blog::Blog {
         let article_id = article_removed_from_blog::article_id(article_removed_from_blog);
-        let articles = blog::articles(&blog);
-        let (found, idx) = vector::index_of(&articles, &article_id);
+        let articles = blog::borrow_mut_articles(&mut blog);
+        let (found, idx) = vector::index_of(articles, &article_id);
         if (found) {
-            vector::remove(&mut articles, idx);
-            blog::set_articles(&mut blog, articles);
+            vector::remove(articles, idx);
+            //blog::set_articles(&mut blog, articles);
         };
         blog
     }

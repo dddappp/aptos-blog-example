@@ -8,10 +8,13 @@ package org.test.aptosblogdemo.aptos.contract.taskservice;
 import org.test.aptosblogdemo.domain.tag.AbstractTagEvent;
 import org.test.aptosblogdemo.aptos.contract.repository.*;
 import org.test.aptosblogdemo.aptos.contract.service.*;
+import org.test.aptosblogdemo.aptos.contract.event.OnChainEventRetrieved;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 
 @Service
 public class UpdateTagStateTaskService {
@@ -34,6 +37,17 @@ public class UpdateTagStateTaskService {
             aptosTagService.updateTagState(e.getTagId());
             es.stream().filter(ee -> ee.getTagId().equals(e.getTagId()))
                     .forEach(tagEventService::updateStatusToProcessed);
+        }
+    }
+
+    @EventListener
+    @Async("asyncEventExecutor")
+    @Transactional
+    public void handleTagEvent(OnChainEventRetrieved<?> e) {
+        if ((e.getEvent() instanceof AbstractTagEvent)) {
+            AbstractTagEvent tagEvent = (AbstractTagEvent) e.getEvent();
+            aptosTagService.updateTagState(tagEvent.getTagId());
+            tagEventService.updateStatusToProcessed(tagEvent);
         }
     }
 

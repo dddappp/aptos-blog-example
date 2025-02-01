@@ -9,8 +9,8 @@ import java.math.*;
 import java.util.*;
 import org.test.aptosblogdemo.domain.*;
 import org.test.aptosblogdemo.specialization.*;
-
 import java.math.BigInteger;
+
 public interface IUpdateCommentLogic {
 
     ArticleEvent.CommentUpdated verify(java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory, ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, VerificationContext verificationContext);

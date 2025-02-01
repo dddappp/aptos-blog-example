@@ -24,10 +24,12 @@ import org.test.aptosblogdemo.aptos.contract.repository.ArticleEventRepository;
 import org.test.aptosblogdemo.aptos.contract.repository.AptosAccountRepository;
 import org.test.aptosblogdemo.aptos.contract.repository.CommentTableItemAddedRepository;
 import org.test.aptosblogdemo.aptos.contract.CommentTableItemAdded;
+import org.test.aptosblogdemo.aptos.contract.event.OnChainEventRetrieved;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.io.IOException;
 import java.math.*;
@@ -65,6 +67,9 @@ public class ArticleEventService {
     @Autowired
     private CommentTableItemAddedRepository commentTableItemAddedRepository;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     @Transactional
     public void updateStatusToProcessed(AbstractArticleEvent event) {
         event.setStatus("D");
@@ -72,12 +77,11 @@ public class ArticleEventService {
     }
 
     @Transactional
-    public void pullAddTagEvents() {
+    public void pullAddTagEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getAddTagEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -91,7 +95,7 @@ public class ArticleEventService {
                         ContractConstants.ARTICLE_MODULE_ADD_TAG_EVENT_HANDLE_FIELD,
                         AddTagEvent.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -119,15 +123,15 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(addTagEvent);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(addTagEvent, AbstractArticleEvent.AddTagEvent.class));
     }
 
     @Transactional
-    public void pullArticleCreatedEvents() {
+    public void pullArticleCreatedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getArticleCreatedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -141,7 +145,7 @@ public class ArticleEventService {
                         ContractConstants.ARTICLE_MODULE_ARTICLE_CREATED_HANDLE_FIELD,
                         ArticleCreated.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -169,15 +173,15 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(articleCreated);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(articleCreated, AbstractArticleEvent.ArticleCreated.class));
     }
 
     @Transactional
-    public void pullArticleUpdatedEvents() {
+    public void pullArticleUpdatedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getArticleUpdatedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -191,7 +195,7 @@ public class ArticleEventService {
                         ContractConstants.ARTICLE_MODULE_ARTICLE_UPDATED_HANDLE_FIELD,
                         ArticleUpdated.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -219,15 +223,15 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(articleUpdated);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(articleUpdated, AbstractArticleEvent.ArticleUpdated.class));
     }
 
     @Transactional
-    public void pullArticleDeletedEvents() {
+    public void pullArticleDeletedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getArticleDeletedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -241,7 +245,7 @@ public class ArticleEventService {
                         ContractConstants.ARTICLE_MODULE_ARTICLE_DELETED_HANDLE_FIELD,
                         ArticleDeleted.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -269,15 +273,15 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(articleDeleted);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(articleDeleted, AbstractArticleEvent.ArticleDeleted.class));
     }
 
     @Transactional
-    public void pullCommentAddedEvents() {
+    public void pullCommentAddedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getCommentAddedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -291,7 +295,7 @@ public class ArticleEventService {
                         ContractConstants.ARTICLE_MODULE_COMMENT_ADDED_HANDLE_FIELD,
                         CommentAdded.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -319,15 +323,15 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(commentAdded);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(commentAdded, AbstractArticleEvent.CommentAdded.class));
     }
 
     @Transactional
-    public void pullCommentUpdatedEvents() {
+    public void pullCommentUpdatedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getCommentUpdatedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -341,7 +345,7 @@ public class ArticleEventService {
                         ContractConstants.ARTICLE_MODULE_COMMENT_UPDATED_HANDLE_FIELD,
                         CommentUpdated.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -369,15 +373,15 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(commentUpdated);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(commentUpdated, AbstractArticleEvent.CommentUpdated.class));
     }
 
     @Transactional
-    public void pullCommentRemovedEvents() {
+    public void pullCommentRemovedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getCommentRemovedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -391,7 +395,7 @@ public class ArticleEventService {
                         ContractConstants.ARTICLE_MODULE_COMMENT_REMOVED_HANDLE_FIELD,
                         CommentRemoved.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -419,15 +423,15 @@ public class ArticleEventService {
             return;
         }
         articleEventRepository.save(commentRemoved);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(commentRemoved, AbstractArticleEvent.CommentRemoved.class));
     }
 
     @Transactional
-    public void pullCommentTableItemAddedEvents() {
+    public void pullCommentTableItemAddedEvents(Integer limit) {
         String resourceAccountAddress = getResourceAccountAddress();
         if (resourceAccountAddress == null) {
             return;
         }
-        int limit = 1;
         BigInteger cursor = getCommentTableItemAddedEventNextCursor();
         if (cursor == null) {
             cursor = BigInteger.ZERO;
@@ -441,7 +445,7 @@ public class ArticleEventService {
                         ContractConstants.COMMENT_TABLE_ITEM_ADDED_HANDLE_FIELD,
                         CommentTableItemAdded.class,
                         cursor.longValue(),
-                        limit
+                        limit == null ? 1 : limit
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -469,6 +473,7 @@ public class ArticleEventService {
             return;
         }
         commentTableItemAddedRepository.save(commentTableItemAdded);
+        applicationEventPublisher.publishEvent(new OnChainEventRetrieved<>(commentTableItemAdded, org.test.aptosblogdemo.aptos.contract.persistence.CommentTableItemAdded.class));
     }
 
     private String getResourceAccountAddress() {
