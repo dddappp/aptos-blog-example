@@ -525,6 +525,24 @@ aptos move run --function-id 'default::article_aggregate::remove_comment' \
 --assume-yes
 ```
 
+### CRUD Tags
+
+```shell
+aptos move run --function-id 'default::tag_aggregate::create' \
+--args string:"TEST" \
+--assume-yes
+
+# Assuming article Id: "0x6880ae199b71da328ea0eee9e4435b923577d503c9c70cc0328cb29cca918a2a"
+# Assuming tag Id: "0x15f14661eaafb0369e650f567f22ac6bcbbe0665ef4f0c91035d8d51b6b90f6"
+# Run this to add tag to article:
+#aptos move run --function-id 'default::article_aggregate::add_tag' \
+#--args \
+#  address:"0x6880ae199b71da328ea0eee9e4435b923577d503c9c70cc0328cb29cca918a2a" \
+#  address:"0x15f14661eaafb0369e650f567f22ac6bcbbe0665ef4f0c91035d8d51b6b90f6" \
+#--assume-yes
+```
+
+
 ### Test Off-chain Service
 
 After running the latest version of the dddappp tool, an Off-chain service project will be generated in the `aptos-java-service` directory.
