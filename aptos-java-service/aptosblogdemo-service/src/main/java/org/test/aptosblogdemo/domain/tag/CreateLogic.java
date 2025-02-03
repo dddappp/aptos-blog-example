@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Tag.Create command logic.
  */
-@Component
+@Component("(tag_Create)")
 public class CreateLogic implements ICreateLogic {
     /**
      * Verifies the Tag.Create command by performing validation logic

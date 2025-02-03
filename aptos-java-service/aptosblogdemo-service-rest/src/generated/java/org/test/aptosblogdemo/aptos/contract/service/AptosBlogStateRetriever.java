@@ -67,34 +67,7 @@ public class AptosBlogStateRetriever {
         blogState.setArticles(new HashSet<>(Arrays.asList(blog.getArticles())));
         blogState.setVault(DomainBeanUtils.toCoin(blog.getVault()));
         blogState.setIsEmergency(blog.getIsEmergency());
-        //fixme: blogState.setFaVault(blog.getFaVault().getInner().getVec().size() == 0 ? null : blog.getFaVault().getInner().getVec().get(0));
-
-        // NOTE: When Option<Object<X>> is none:
-        /*
-        "fa_vault": {
-            "vec": [ ]
-        }
-         */
-
-        // NOTE: When Option<Object<X>> is some:
-        /*
-        {
-          "articles": [],
-          "fa_vault": {
-            "vec": [
-              {
-                "inner": "0x71332984cb209500001bb4b4f741630f86adaaaf40614eb5b3d2dbf47d07064"
-              }
-            ]
-          },
-          "is_emergency": false,
-          "name": "MyBlog",
-          "vault": {
-            "value": "0"
-          },
-          "version": "1"
-        }
-         */
+        blogState.setFaVault(blog.getFaVault().getVec().size() == 0 ? null : blog.getFaVault().getVec().get(0).getInner());
         return blogState;
     }
 

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.Update command logic.
  */
-@Component
+@Component("(blog_Update)")
 public class UpdateLogic implements IUpdateLogic {
     /**
      * Verifies the Blog.Update command by performing validation logic

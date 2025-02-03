@@ -107,7 +107,7 @@ public class DomainBeanUtils {
 
         AbstractArticleEvent.AddTagEvent addTagEvent = new AbstractArticleEvent.AddTagEvent();
         addTagEvent.setId(contractEvent.getId());
-        //fixme: addTagEvent.setTag(contractEvent.getTag());
+        addTagEvent.setTag(contractEvent.getTag().getInner());
         addTagEvent.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(addTagEvent, eventEnvelope);
@@ -329,7 +329,7 @@ public class DomainBeanUtils {
         blogUpdated.setName(contractEvent.getName());
         blogUpdated.setArticles(contractEvent.getArticles());
         blogUpdated.setIsEmergency(contractEvent.getIsEmergency());
-        //fixme: blogUpdated.setFaVault(extractOptionalValue(contractEvent.getFaVault()));
+        blogUpdated.setFaVault(java.util.Optional.ofNullable(extractOptionalValue(contractEvent.getFaVault())).map(value -> value.getInner()).orElse(null));
         blogUpdated.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(blogUpdated, eventEnvelope);

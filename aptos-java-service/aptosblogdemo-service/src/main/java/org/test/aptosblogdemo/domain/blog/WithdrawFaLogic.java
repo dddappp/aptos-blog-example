@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.WithdrawFa command logic.
  */
-@Component
+@Component("(blog_WithdrawFa)")
 public class WithdrawFaLogic implements IWithdrawFaLogic {
     /**
      * Verifies the Blog.WithdrawFa command by performing validation logic

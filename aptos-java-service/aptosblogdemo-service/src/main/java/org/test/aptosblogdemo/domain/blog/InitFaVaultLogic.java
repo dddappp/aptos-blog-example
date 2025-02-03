@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.InitFaVault command logic.
  */
-@Component
+@Component("(blog_InitFaVault)")
 public class InitFaVaultLogic implements IInitFaVaultLogic {
     /**
      * Verifies the Blog.InitFaVault command by performing validation logic

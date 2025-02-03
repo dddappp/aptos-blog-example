@@ -270,8 +270,12 @@ Use `aptos move run` command to submit a transaction and initialize the contract
 
 ```shell
 aptos move run --function-id 'default::aptos_blog_demo_init::initialize' --assume-yes
+```
 
-# If you're testing the current version in the repository, you'll also need to run this:
+NOTE: If you're testing the current version in the repository, you may also want to run these for test:
+
+```shell
+# Create blog:
 aptos move run --function-id 'default::blog_aggregate::create' --args 'string:MyBlog' 'bool:false' --assume-yes
 #Init blog FA vault:
 aptos move run --function-id 'default::blog_aggregate::init_fa_vault' \
@@ -279,6 +283,14 @@ aptos move run --function-id 'default::blog_aggregate::init_fa_vault' \
     "0x1::fungible_asset::Metadata" \
   --args \
     'address:0x601b55598d1a02edee2d85c57f1bba537d03ccdfd77192239c80b2f263e2a876' \
+  --assume-yes
+# Update blog:
+aptos move run --function-id 'default::blog_aggregate::update' \
+  --args \
+    'string:BLOG_NAME' \
+    'address:[]' \
+    'bool:false' \
+    'address:["0xcf73c1a4dce2d7bbdabc7fd7da5ae8101e0a39815ee1ddd5af530c4f2eb08e16"]' \
   --assume-yes
 ```
 

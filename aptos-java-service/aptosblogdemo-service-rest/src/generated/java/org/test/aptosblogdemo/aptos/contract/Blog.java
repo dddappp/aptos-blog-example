@@ -28,7 +28,7 @@ public class Blog {
 
     private Boolean isEmergency;
 
-    private com.github.wubuku.aptos.bean.AptosObject faVault;
+    private com.github.wubuku.aptos.bean.Option<com.github.wubuku.aptos.bean.AptosObject> faVault;
 
     private BigInteger version;
 
@@ -80,11 +80,11 @@ public class Blog {
         this.isEmergency = isEmergency;
     }
 
-    public com.github.wubuku.aptos.bean.AptosObject getFaVault() {
+    public com.github.wubuku.aptos.bean.Option<com.github.wubuku.aptos.bean.AptosObject> getFaVault() {
         return faVault;
     }
 
-    public void setFaVault(com.github.wubuku.aptos.bean.AptosObject faVault) {
+    public void setFaVault(com.github.wubuku.aptos.bean.Option<com.github.wubuku.aptos.bean.AptosObject> faVault) {
         this.faVault = faVault;
     }
 

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.DonateFa command logic.
  */
-@Component
+@Component("(blog_DonateFa)")
 public class DonateFaLogic implements IDonateFaLogic {
     /**
      * Verifies the Blog.DonateFa command by performing validation logic

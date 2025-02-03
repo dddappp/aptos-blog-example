@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.Create command logic.
  */
-@Component
+@Component("(blog_Create)")
 public class CreateLogic implements ICreateLogic {
     /**
      * Verifies the Blog.Create command by performing validation logic

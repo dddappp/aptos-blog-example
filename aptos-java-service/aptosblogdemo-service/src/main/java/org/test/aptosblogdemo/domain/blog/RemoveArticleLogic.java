@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.RemoveArticle command logic.
  */
-@Component
+@Component("(blog_RemoveArticle)")
 public class RemoveArticleLogic implements IRemoveArticleLogic {
     /**
      * Verifies the Blog.RemoveArticle command by performing validation logic

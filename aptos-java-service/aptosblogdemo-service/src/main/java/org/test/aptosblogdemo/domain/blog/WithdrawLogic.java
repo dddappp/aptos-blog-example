@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.Withdraw command logic.
  */
-@Component
+@Component("(blog_Withdraw)")
 public class WithdrawLogic implements IWithdrawLogic {
     /**
      * Verifies the Blog.Withdraw command by performing validation logic

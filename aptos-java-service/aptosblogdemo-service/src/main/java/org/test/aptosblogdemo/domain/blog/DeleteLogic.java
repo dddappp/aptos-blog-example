@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.Delete command logic.
  */
-@Component
+@Component("(blog_Delete)")
 public class DeleteLogic implements IDeleteLogic {
     /**
      * Verifies the Blog.Delete command by performing validation logic

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.math.*;
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 
 public class AptosArticleStateRetriever {
@@ -77,7 +78,7 @@ public class AptosArticleStateRetriever {
         articleState.setTitle(article.getTitle());
         articleState.setBody(article.getBody());
         articleState.setOwner(article.getOwner());
-        articleState.setTags(new HashSet<>(Arrays.asList(article.getTags())));
+        articleState.setTags(java.util.Arrays.stream(article.getTags()).map(x -> x.getInner()).collect(java.util.stream.Collectors.toSet()));
         if (article.getComments() != null) {
             String commentTableHandle = article.getComments().getInner().getHandle();
             List<Comment> comments = getComments(commentTableHandle, commentCommentSeqIdsGetter.getCommentCommentSeqIds(articleState.getId()));

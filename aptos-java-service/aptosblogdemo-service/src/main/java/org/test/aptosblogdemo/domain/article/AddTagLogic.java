@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Article.AddTag command logic.
  */
-@Component
+@Component("(article_AddTag)")
 public class AddTagLogic implements IAddTagLogic {
     /**
      * Verifies the Article.AddTag command by performing validation logic

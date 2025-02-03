@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Blog.AddArticle command logic.
  */
-@Component
+@Component("(blog_AddArticle)")
 public class AddArticleLogic implements IAddArticleLogic {
     /**
      * Verifies the Blog.AddArticle command by performing validation logic

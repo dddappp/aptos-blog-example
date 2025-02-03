@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Article.UpdateComment command logic.
  */
-@Component
+@Component("(article_UpdateComment)")
 public class UpdateCommentLogic implements IUpdateCommentLogic {
     /**
      * Verifies the Article.UpdateComment command by performing validation logic

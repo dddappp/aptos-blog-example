@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Article.AddComment command logic.
  */
-@Component
+@Component("(article_AddComment)")
 public class AddCommentLogic implements IAddCommentLogic {
     /**
      * Verifies the Article.AddComment command by performing validation logic

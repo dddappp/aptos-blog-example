@@ -15,7 +15,28 @@ import java.util.*;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Article {
-
+/*
+{
+  "body": "world",
+  "comment_seq_id_generator": {
+    "sequence": "0"
+  },
+  "comments": {
+    "inner": {
+      "handle": "0xd0db9a65ad45931720b3f8770bb83f3f6bf57ed47ae221b3d955ba4e0dd8a22f"
+    },
+    "length": "0"
+  },
+  "owner": "0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738",
+  "tags": [
+    {
+      "inner": "0x15f14661eaafb0369e650f567f22ac6bcbbe0665ef4f0c91035d8d51b6b90f6"
+    }
+  ],
+  "title": "hello",
+  "version": "1"
+}
+ */
     private String id;
 
     private Long offChainVersion;
@@ -26,7 +47,7 @@ public class Article {
 
     private String owner;
 
-    private String[] tags;
+    private com.github.wubuku.aptos.bean.AptosObject[] tags;
 
     private BigInteger version;
 
@@ -72,11 +93,11 @@ public class Article {
         this.owner = owner;
     }
 
-    public String[] getTags() {
+    public com.github.wubuku.aptos.bean.AptosObject[] getTags() {
         return tags;
     }
 
-    public void setTags(String[] tags) {
+    public void setTags(com.github.wubuku.aptos.bean.AptosObject[] tags) {
         this.tags = tags;
     }
 

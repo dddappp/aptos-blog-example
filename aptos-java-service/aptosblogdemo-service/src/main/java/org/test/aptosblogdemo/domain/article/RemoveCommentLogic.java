@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation of the Article.RemoveComment command logic.
  */
-@Component
+@Component("(article_RemoveComment)")
 public class RemoveCommentLogic implements IRemoveCommentLogic {
     /**
      * Verifies the Article.RemoveComment command by performing validation logic

@@ -19,7 +19,8 @@ aptos:
     address:
       "0x8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738"
     node-api:
-      base-url: "https://fullnode.devnet.aptoslabs.com/v1"
+      #base-url: "https://fullnode.devnet.aptoslabs.com/v1"
+      base-url: "https://fullnode.testnet.aptoslabs.com/v1"
 #    pull-day-summary-events:
 #      day-summary-created:
 #        fixed-delay: 6000
