@@ -7,7 +7,9 @@ package org.test.aptosblogdemo.aptos.contract;
 
 import java.math.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import com.github.wubuku.aptos.bean.AptosObject;
 import com.github.wubuku.aptos.bean.Event;
 import com.github.wubuku.aptos.bean.Option;
 import org.test.aptosblogdemo.domain.AptosEvent;
@@ -138,7 +140,7 @@ public class DomainBeanUtils {
         articleUpdated.setTitle(contractEvent.getTitle());
         articleUpdated.setBody(contractEvent.getBody());
         articleUpdated.setOwner(contractEvent.getOwner());
-        articleUpdated.setTags(contractEvent.getTags());
+        articleUpdated.setTags(java.util.Arrays.stream(contractEvent.getTags()).map(com.github.wubuku.aptos.bean.AptosObject::getInner).toArray(String[]::new));
         articleUpdated.setVersion(contractEvent.getVersion());
 
         setAptosEventProperties(articleUpdated, eventEnvelope);

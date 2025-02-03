@@ -426,13 +426,18 @@ aptos move run --function-id 'default::article_aggregate::update' \
 --assume-yes
 
 # If you're testing the current version in the repository, you need to do like this:
-#aptos move run --function-id 'default::article_aggregate::update' \
-#--args address:0xcf73c1a4dce2d7bbdabc7fd7da5ae8101e0a39815ee1ddd5af530c4f2eb08e16 'string:foo' 'string:bar' address:8bc9a5fab9a68b62117ac3aff4917eacf05dd633a766a689dd14707abeb51738 \
-#--assume-yes
+# Assuming article_id: 0x5ccb31a7304eb25f53c97a573e451728e7cfdbeedc66cbc97c307ec127d88a59
+# Assuming tag_id: 0x15f14661eaafb0369e650f567f22ac6bcbbe0665ef4f0c91035d8d51b6b90f6
+aptos move run --function-id 'default::article_aggregate::update' \
+--args address:0x5ccb31a7304eb25f53c97a573e451728e7cfdbeedc66cbc97c307ec127d88a59 \
+  'string:foo' 'string:bar' \
+  address:0x5ccb31a7304eb25f53c97a573e451728e7cfdbeedc66cbc97c307ec127d88a59 \
+  'address:["0x15f14661eaafb0369e650f567f22ac6bcbbe0665ef4f0c91035d8d51b6b90f6"]' \
+--assume-yes
 
 # View the updated article object information
 #curl --request GET \
-#  --url https://fullnode.devnet.aptoslabs.com/v1/accounts/0xcf73c1a4dce2d7bbdabc7fd7da5ae8101e0a39815ee1ddd5af530c4f2eb08e16/resources \
+#  --url https://fullnode.devnet.aptoslabs.com/v1/accounts/{ARTICLE_ID}/resources \
 #  --header 'Accept: application/json, application/x-bcs'
 ```
 
@@ -549,7 +554,6 @@ aptos move run --function-id 'default::tag_aggregate::create' \
 # Run this to add tag to article:
 #aptos move run --function-id 'default::article_aggregate::add_tag' \
 #--args \
-#  address:"0x6880ae199b71da328ea0eee9e4435b923577d503c9c70cc0328cb29cca918a2a" \
 #  address:"0x15f14661eaafb0369e650f567f22ac6bcbbe0665ef4f0c91035d8d51b6b90f6" \
 #--assume-yes
 ```

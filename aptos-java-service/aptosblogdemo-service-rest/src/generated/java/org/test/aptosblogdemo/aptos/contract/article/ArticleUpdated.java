@@ -26,7 +26,7 @@ public class ArticleUpdated {
 
     private String owner;
 
-    private String[] tags;
+    private com.github.wubuku.aptos.bean.AptosObject[] tags;
 
     public String getId() {
         return id;
@@ -68,11 +68,11 @@ public class ArticleUpdated {
         this.owner = owner;
     }
 
-    public String[] getTags() {
+    public com.github.wubuku.aptos.bean.AptosObject[] getTags() {
         return tags;
     }
 
-    public void setTags(String[] tags) {
+    public void setTags(com.github.wubuku.aptos.bean.AptosObject[] tags) {
         this.tags = tags;
     }
 
