@@ -14,5 +14,5 @@ public interface ICreateLogic {
 
     BlogEvent.BlogCreated verify(java.util.function.Supplier<BlogEvent.BlogCreated> eventFactory, BlogState blogState, String name, Boolean isEmergency, VerificationContext verificationContext);
 
-    BlogState mutate(BlogState blogState, String name, Boolean isEmergency, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
+    BlogState mutate(BlogState blogState, String name, Boolean isEmergency, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
 }

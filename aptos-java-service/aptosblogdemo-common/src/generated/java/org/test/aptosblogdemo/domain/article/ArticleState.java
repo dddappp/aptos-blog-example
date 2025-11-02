@@ -67,6 +67,8 @@ public interface ArticleState extends VersionedAptosMoveObject
 
         void setDeleted(Boolean deleted);
 
+        EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState> getComments();
+
         void setTags(Set<String> tags);
 
 

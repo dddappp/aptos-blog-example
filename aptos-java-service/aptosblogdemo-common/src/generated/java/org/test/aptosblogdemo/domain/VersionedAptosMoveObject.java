@@ -7,6 +7,7 @@ package org.test.aptosblogdemo.domain;
 
 import java.math.*;
 import java.util.*;
+import java.math.BigInteger;
 
 public interface VersionedAptosMoveObject {
 

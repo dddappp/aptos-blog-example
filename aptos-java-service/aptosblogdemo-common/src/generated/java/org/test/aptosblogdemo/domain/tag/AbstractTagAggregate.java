@@ -14,7 +14,7 @@ import org.test.aptosblogdemo.specialization.*;
 public abstract class AbstractTagAggregate extends AbstractAggregate implements TagAggregate {
     private TagState.MutableTagState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractTagAggregate(TagState state) {
         this.state = (TagState.MutableTagState)state;
@@ -49,13 +49,7 @@ public abstract class AbstractTagAggregate extends AbstractAggregate implements 
         @Override
         public void create(String name, Long offChainVersion, String commandId, String requesterId, TagCommands.Create c) {
             java.util.function.Supplier<TagEvent.TagCreated> eventFactory = () -> newTagCreated(name, offChainVersion, commandId, requesterId);
-            TagEvent.TagCreated e;
-            try {
-                e = verifyCreate(eventFactory, name, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            TagEvent.TagCreated e = verifyCreate(eventFactory, name, c);
             apply(e);
         }
 

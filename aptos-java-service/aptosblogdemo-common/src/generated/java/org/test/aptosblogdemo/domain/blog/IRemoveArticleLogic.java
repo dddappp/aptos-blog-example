@@ -14,5 +14,5 @@ public interface IRemoveArticleLogic {
 
     BlogEvent.ArticleRemovedFromBlog verify(java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory, BlogState blogState, String articleId, VerificationContext verificationContext);
 
-    BlogState mutate(BlogState blogState, String articleId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
+    BlogState mutate(BlogState blogState, String articleId, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
 }

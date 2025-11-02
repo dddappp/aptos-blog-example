@@ -36,27 +36,9 @@ public class UpdateLogic implements IUpdateLogic {
         return e;
     }
 
-    /**
-     * Performs the state mutation operation of Blog.Update command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
-     * 
-     * @param blogState The current immutable state of the Blog
-     * @param name 
-     * @param articles 
-     * @param isEmergency 
-     * @param faVault 
-     * @param aptosEventVersion 
-     * @param aptosEventSequenceNumber 
-     * @param aptosEventType 
-     * @param aptosEventGuid 
-     * @param status 
-     * @param mutationContext The context that provides functionality including creating mutable state
-     * @return The new state of the Blog
-     */
-    public BlogState mutate(BlogState blogState, String name, String[] articles, Boolean isEmergency, String faVault, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
-        BlogState.MutableBlogState s = mutationContext.createMutableState(blogState);
-        // TODO: implement
-        return s; // Return the updated state
+    @Override
+    public BlogState mutate(BlogState blogState, String name, String[] articles, Boolean isEmergency, String faVault, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext) {
+        return null;
     }
+
 }

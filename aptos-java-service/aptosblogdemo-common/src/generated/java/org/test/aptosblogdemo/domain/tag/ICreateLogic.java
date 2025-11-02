@@ -14,5 +14,5 @@ public interface ICreateLogic {
 
     TagEvent.TagCreated verify(java.util.function.Supplier<TagEvent.TagCreated> eventFactory, TagState tagState, String name, VerificationContext verificationContext);
 
-    TagState mutate(TagState tagState, String name, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<TagState, TagState.MutableTagState> mutationContext);
+    TagState mutate(TagState tagState, String name, MutationContext<TagState, TagState.MutableTagState> mutationContext);
 }

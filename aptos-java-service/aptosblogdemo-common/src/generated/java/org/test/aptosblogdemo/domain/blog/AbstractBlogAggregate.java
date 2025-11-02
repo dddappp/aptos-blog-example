@@ -14,7 +14,7 @@ import org.test.aptosblogdemo.specialization.*;
 public abstract class AbstractBlogAggregate extends AbstractAggregate implements BlogAggregate {
     private BlogState.MutableBlogState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractBlogAggregate(BlogState state) {
         this.state = (BlogState.MutableBlogState)state;
@@ -49,78 +49,42 @@ public abstract class AbstractBlogAggregate extends AbstractAggregate implements
         @Override
         public void create(String name, Boolean isEmergency, Long offChainVersion, String commandId, String requesterId, BlogCommands.Create c) {
             java.util.function.Supplier<BlogEvent.BlogCreated> eventFactory = () -> newBlogCreated(name, isEmergency, offChainVersion, commandId, requesterId);
-            BlogEvent.BlogCreated e;
-            try {
-                e = verifyCreate(eventFactory, name, isEmergency, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            BlogEvent.BlogCreated e = verifyCreate(eventFactory, name, isEmergency, c);
             apply(e);
         }
 
         @Override
         public void addArticle(String articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.AddArticle c) {
             java.util.function.Supplier<BlogEvent.ArticleAddedToBlog> eventFactory = () -> newArticleAddedToBlog(articleId, offChainVersion, commandId, requesterId);
-            BlogEvent.ArticleAddedToBlog e;
-            try {
-                e = verifyAddArticle(eventFactory, articleId, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            BlogEvent.ArticleAddedToBlog e = verifyAddArticle(eventFactory, articleId, c);
             apply(e);
         }
 
         @Override
         public void removeArticle(String articleId, Long offChainVersion, String commandId, String requesterId, BlogCommands.RemoveArticle c) {
             java.util.function.Supplier<BlogEvent.ArticleRemovedFromBlog> eventFactory = () -> newArticleRemovedFromBlog(articleId, offChainVersion, commandId, requesterId);
-            BlogEvent.ArticleRemovedFromBlog e;
-            try {
-                e = verifyRemoveArticle(eventFactory, articleId, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            BlogEvent.ArticleRemovedFromBlog e = verifyRemoveArticle(eventFactory, articleId, c);
             apply(e);
         }
 
         @Override
         public void initFaVault(String metadata, Long offChainVersion, String commandId, String requesterId, BlogCommands.InitFaVault c) {
             java.util.function.Supplier<BlogEvent.InitFaVaultEvent> eventFactory = () -> newInitFaVaultEvent(metadata, offChainVersion, commandId, requesterId);
-            BlogEvent.InitFaVaultEvent e;
-            try {
-                e = verifyInitFaVault(eventFactory, metadata, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            BlogEvent.InitFaVaultEvent e = verifyInitFaVault(eventFactory, metadata, c);
             apply(e);
         }
 
         @Override
         public void update(String name, String[] articles, Boolean isEmergency, String faVault, Long offChainVersion, String commandId, String requesterId, BlogCommands.Update c) {
             java.util.function.Supplier<BlogEvent.BlogUpdated> eventFactory = () -> newBlogUpdated(name, articles, isEmergency, faVault, offChainVersion, commandId, requesterId);
-            BlogEvent.BlogUpdated e;
-            try {
-                e = verifyUpdate(eventFactory, name, articles, isEmergency, faVault, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            BlogEvent.BlogUpdated e = verifyUpdate(eventFactory, name, articles, isEmergency, faVault, c);
             apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, BlogCommands.Delete c) {
             java.util.function.Supplier<BlogEvent.BlogDeleted> eventFactory = () -> newBlogDeleted(offChainVersion, commandId, requesterId);
-            BlogEvent.BlogDeleted e;
-            try {
-                e = verifyDelete(eventFactory, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            BlogEvent.BlogDeleted e = verifyDelete(eventFactory, c);
             apply(e);
         }
 

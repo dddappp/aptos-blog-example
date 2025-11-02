@@ -14,5 +14,5 @@ public interface IInitFaVaultLogic {
 
     BlogEvent.InitFaVaultEvent verify(java.util.function.Supplier<BlogEvent.InitFaVaultEvent> eventFactory, BlogState blogState, String metadata, VerificationContext verificationContext);
 
-    BlogState mutate(BlogState blogState, String metadata, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
+    BlogState mutate(BlogState blogState, String metadata, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
 }

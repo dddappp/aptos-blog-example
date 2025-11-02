@@ -14,5 +14,5 @@ public interface ICreateLogic {
 
     ArticleEvent.ArticleCreated verify(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, ArticleState articleState, String title, String body, String owner, VerificationContext verificationContext);
 
-    ArticleState mutate(ArticleState articleState, String title, String body, String owner, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
+    ArticleState mutate(ArticleState articleState, String title, String body, String owner, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
 }

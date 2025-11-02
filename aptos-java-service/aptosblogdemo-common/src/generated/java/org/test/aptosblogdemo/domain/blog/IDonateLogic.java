@@ -14,5 +14,5 @@ public interface IDonateLogic {
 
     BlogEvent.DonationReceived verify(java.util.function.Supplier<BlogEvent.DonationReceived> eventFactory, BlogState blogState, VerificationContext verificationContext);
 
-    BlogState mutate(BlogState blogState, BigInteger amount, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
+    BlogState mutate(BlogState blogState, BigInteger amount, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
 }

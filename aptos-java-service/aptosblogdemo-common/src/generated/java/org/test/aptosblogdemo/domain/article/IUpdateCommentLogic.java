@@ -15,5 +15,5 @@ public interface IUpdateCommentLogic {
 
     ArticleEvent.CommentUpdated verify(java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory, ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, VerificationContext verificationContext);
 
-    ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
+    ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, String commenter, String body, String owner, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
 }

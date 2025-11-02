@@ -33,24 +33,9 @@ public class CreateLogic implements ICreateLogic {
         return e;
     }
 
-    /**
-     * Performs the state mutation operation of Tag.Create command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
-     * 
-     * @param tagState The current immutable state of the Tag
-     * @param name 
-     * @param aptosEventVersion 
-     * @param aptosEventSequenceNumber 
-     * @param aptosEventType 
-     * @param aptosEventGuid 
-     * @param status 
-     * @param mutationContext The context that provides functionality including creating mutable state
-     * @return The new state of the Tag
-     */
-    public TagState mutate(TagState tagState, String name, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<TagState, TagState.MutableTagState> mutationContext) {
-        TagState.MutableTagState s = mutationContext.createMutableState(tagState);
-        // TODO: implement
-        return s; // Return the updated state
+    @Override
+    public TagState mutate(TagState tagState, String name, MutationContext<TagState, TagState.MutableTagState> mutationContext) {
+        return null;
     }
+
 }

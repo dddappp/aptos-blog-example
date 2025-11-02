@@ -193,7 +193,7 @@ module aptos_blog_demo::blog_aggregate {
             name,
             articles,
             is_emergency,
-            vector_to_option(fa_vault),
+            std::option::from_vec(fa_vault),
             &blog,
         );
         let updated_blog = blog_update_logic::mutate(
@@ -220,14 +220,6 @@ module aptos_blog_demo::blog_aggregate {
         );
         blog::drop_blog(updated_blog);
         blog::emit_blog_deleted(blog_deleted);
-    }
-
-    fun vector_to_option<V : drop>(v: vector<V>): Option<V> {
-        if (vector::length(&v) == 0) { option::none() } else {
-            option::some(
-                vector::pop_back(&mut v)
-            )
-        }
     }
 
 }

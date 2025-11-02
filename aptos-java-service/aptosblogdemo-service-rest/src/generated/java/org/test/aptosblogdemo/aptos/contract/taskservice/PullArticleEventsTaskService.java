@@ -38,37 +38,37 @@ public class PullArticleEventsTaskService {
     @Autowired
     private ArticleEventService articleEventService;
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.add-tag-event.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.add-tag-event.fixed-delay:10000}")
     public void pullAddTagEvents() {
         articleEventService.pullAddTagEvents(pullAddTagEventsLimit);
     }
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-created.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-created.fixed-delay:10000}")
     public void pullArticleCreatedEvents() {
         articleEventService.pullArticleCreatedEvents(pullArticleCreatedEventsLimit);
     }
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-updated.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-updated.fixed-delay:10000}")
     public void pullArticleUpdatedEvents() {
         articleEventService.pullArticleUpdatedEvents(pullArticleUpdatedEventsLimit);
     }
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-deleted.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.article-deleted.fixed-delay:10000}")
     public void pullArticleDeletedEvents() {
         articleEventService.pullArticleDeletedEvents(pullArticleDeletedEventsLimit);
     }
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-added.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-added.fixed-delay:10000}")
     public void pullCommentAddedEvents() {
         articleEventService.pullCommentAddedEvents(pullCommentAddedEventsLimit);
     }
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-updated.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-updated.fixed-delay:10000}")
     public void pullCommentUpdatedEvents() {
         articleEventService.pullCommentUpdatedEvents(pullCommentUpdatedEventsLimit);
     }
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-removed.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-article-events.comment-removed.fixed-delay:10000}")
     public void pullCommentRemovedEvents() {
         articleEventService.pullCommentRemovedEvents(pullCommentRemovedEventsLimit);
     }

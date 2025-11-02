@@ -14,5 +14,5 @@ public interface IUpdateLogic {
 
     ArticleEvent.ArticleUpdated verify(java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory, ArticleState articleState, String title, String body, String owner, String[] tags, VerificationContext verificationContext);
 
-    ArticleState mutate(ArticleState articleState, String title, String body, String owner, String[] tags, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
+    ArticleState mutate(ArticleState articleState, String title, String body, String owner, String[] tags, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
 }

@@ -252,16 +252,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         String Name = name;
         Boolean isEmergency = e.getIsEmergency();
         Boolean IsEmergency = isEmergency;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -272,12 +262,17 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(ICreateLogic.class).mutate(
-                this, name, isEmergency, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, name, isEmergency, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractBlogEvent.ArticleAddedToBlog e) {
@@ -285,16 +280,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
 
         String articleId = e.getArticleId();
         String ArticleId = articleId;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -305,12 +290,17 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(IAddArticleLogic.class).mutate(
-                this, articleId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, articleId, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractBlogEvent.ArticleRemovedFromBlog e) {
@@ -318,16 +308,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
 
         String articleId = e.getArticleId();
         String ArticleId = articleId;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -338,12 +318,17 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(IRemoveArticleLogic.class).mutate(
-                this, articleId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, articleId, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractBlogEvent.DonationReceived e) {
@@ -351,16 +336,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
 
         BigInteger amount = e.getAmount();
         BigInteger Amount = amount;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -371,12 +346,17 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(IDonateLogic.class).mutate(
-                this, amount, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, amount, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractBlogEvent.InitFaVaultEvent e) {
@@ -384,16 +364,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
 
         String metadata = e.getMetadata();
         String Metadata = metadata;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -404,12 +374,17 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(IInitFaVaultLogic.class).mutate(
-                this, metadata, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, metadata, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractBlogEvent.FaDonationReceived e) {
@@ -417,16 +392,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
 
         BigInteger faAmount = e.getFaAmount();
         BigInteger FaAmount = faAmount;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -437,12 +402,17 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(IDonateFaLogic.class).mutate(
-                this, faAmount, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, faAmount, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractBlogEvent.BlogUpdated e) {
@@ -456,16 +426,6 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         Boolean IsEmergency = isEmergency;
         String faVault = e.getFaVault();
         String FaVault = faVault;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -476,27 +436,22 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(IUpdateLogic.class).mutate(
-                this, name, articles, isEmergency, faVault, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, name, articles, isEmergency, faVault, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractBlogEvent.BlogDeleted e) {
         throwOnWrongEvent(e);
 
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -507,12 +462,17 @@ public abstract class AbstractBlogState implements BlogState.SqlBlogState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         BlogState updatedBlogState = ApplicationContext.current.get(IDeleteLogic.class).mutate(
-                this, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedBlogState) { merge(updatedBlogState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void save() {

@@ -14,7 +14,7 @@ import org.test.aptosblogdemo.specialization.*;
 public abstract class AbstractArticleAggregate extends AbstractAggregate implements ArticleAggregate {
     private ArticleState.MutableArticleState state;
 
-    private List<Event> changes = new ArrayList<Event>();
+    protected List<Event> changes = new ArrayList<Event>();
 
     public AbstractArticleAggregate(ArticleState state) {
         this.state = (ArticleState.MutableArticleState)state;
@@ -49,91 +49,49 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
         @Override
         public void addTag(String tag, Long offChainVersion, String commandId, String requesterId, ArticleCommands.AddTag c) {
             java.util.function.Supplier<ArticleEvent.AddTagEvent> eventFactory = () -> newAddTagEvent(tag, offChainVersion, commandId, requesterId);
-            ArticleEvent.AddTagEvent e;
-            try {
-                e = verifyAddTag(eventFactory, tag, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.AddTagEvent e = verifyAddTag(eventFactory, tag, c);
             apply(e);
         }
 
         @Override
         public void create(String title, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Create c) {
             java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory = () -> newArticleCreated(title, body, owner, offChainVersion, commandId, requesterId);
-            ArticleEvent.ArticleCreated e;
-            try {
-                e = verifyCreate(eventFactory, title, body, owner, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.ArticleCreated e = verifyCreate(eventFactory, title, body, owner, c);
             apply(e);
         }
 
         @Override
         public void update(String title, String body, String owner, String[] tags, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Update c) {
             java.util.function.Supplier<ArticleEvent.ArticleUpdated> eventFactory = () -> newArticleUpdated(title, body, owner, tags, offChainVersion, commandId, requesterId);
-            ArticleEvent.ArticleUpdated e;
-            try {
-                e = verifyUpdate(eventFactory, title, body, owner, tags, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.ArticleUpdated e = verifyUpdate(eventFactory, title, body, owner, tags, c);
             apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, ArticleCommands.Delete c) {
             java.util.function.Supplier<ArticleEvent.ArticleDeleted> eventFactory = () -> newArticleDeleted(offChainVersion, commandId, requesterId);
-            ArticleEvent.ArticleDeleted e;
-            try {
-                e = verifyDelete(eventFactory, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.ArticleDeleted e = verifyDelete(eventFactory, c);
             apply(e);
         }
 
         @Override
         public void addComment(String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.AddComment c) {
             java.util.function.Supplier<ArticleEvent.CommentAdded> eventFactory = () -> newCommentAdded(commenter, body, owner, offChainVersion, commandId, requesterId);
-            ArticleEvent.CommentAdded e;
-            try {
-                e = verifyAddComment(eventFactory, commenter, body, owner, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.CommentAdded e = verifyAddComment(eventFactory, commenter, body, owner, c);
             apply(e);
         }
 
         @Override
         public void updateComment(BigInteger commentSeqId, String commenter, String body, String owner, Long offChainVersion, String commandId, String requesterId, ArticleCommands.UpdateComment c) {
             java.util.function.Supplier<ArticleEvent.CommentUpdated> eventFactory = () -> newCommentUpdated(commentSeqId, commenter, body, owner, offChainVersion, commandId, requesterId);
-            ArticleEvent.CommentUpdated e;
-            try {
-                e = verifyUpdateComment(eventFactory, commentSeqId, commenter, body, owner, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.CommentUpdated e = verifyUpdateComment(eventFactory, commentSeqId, commenter, body, owner, c);
             apply(e);
         }
 
         @Override
         public void removeComment(BigInteger commentSeqId, Long offChainVersion, String commandId, String requesterId, ArticleCommands.RemoveComment c) {
             java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory = () -> newCommentRemoved(commentSeqId, offChainVersion, commandId, requesterId);
-            ArticleEvent.CommentRemoved e;
-            try {
-                e = verifyRemoveComment(eventFactory, commentSeqId, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
+            ArticleEvent.CommentRemoved e = verifyRemoveComment(eventFactory, commentSeqId, c);
             apply(e);
         }
 

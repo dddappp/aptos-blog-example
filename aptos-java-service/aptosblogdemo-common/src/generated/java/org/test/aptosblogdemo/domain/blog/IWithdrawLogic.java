@@ -15,5 +15,5 @@ public interface IWithdrawLogic {
 
     BlogEvent.VaultWithdrawn verify(java.util.function.Supplier<BlogEvent.VaultWithdrawn> eventFactory, BlogState blogState, BigInteger amount, VerificationContext verificationContext);
 
-    BlogState mutate(BlogState blogState, BigInteger amount, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
+    BlogState mutate(BlogState blogState, BigInteger amount, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
 }

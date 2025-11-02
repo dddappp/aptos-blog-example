@@ -32,23 +32,8 @@ public class DeleteLogic implements IDeleteLogic {
         return e;
     }
 
-    /**
-     * Performs the state mutation operation of Article.Delete command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
-     * 
-     * @param articleState The current immutable state of the Article
-     * @param aptosEventVersion 
-     * @param aptosEventSequenceNumber 
-     * @param aptosEventType 
-     * @param aptosEventGuid 
-     * @param status 
-     * @param mutationContext The context that provides functionality including creating mutable state
-     * @return The new state of the Article
-     */
-    public ArticleState mutate(ArticleState articleState, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-        ArticleState.MutableArticleState s = mutationContext.createMutableState(articleState);
-        // TODO: implement
-        return s; // Return the updated state
+    @Override
+    public ArticleState mutate(ArticleState articleState, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+        return null;
     }
 }

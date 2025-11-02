@@ -28,7 +28,7 @@ public class UpdateArticleStateTaskService {
     @Autowired
     private ArticleEventService articleEventService;
 
-    @Scheduled(fixedDelayString = "${aptos.contract.update-article-states.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.update-article-states.fixed-delay:10000}")
     @Transactional
     public void updateArticleStates() {
         java.util.List<AbstractArticleEvent> es = articleEventRepository.findByStatusIsNull();

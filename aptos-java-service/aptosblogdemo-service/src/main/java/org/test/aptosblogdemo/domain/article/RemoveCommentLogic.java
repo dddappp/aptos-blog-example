@@ -34,24 +34,9 @@ public class RemoveCommentLogic implements IRemoveCommentLogic {
         return e;
     }
 
-    /**
-     * Performs the state mutation operation of Article.RemoveComment command.
-     * Creates a mutable copy of the state, updates it with the new body text,
-     * and returns the new state.
-     * 
-     * @param articleState The current immutable state of the Article
-     * @param commentSeqId 
-     * @param aptosEventVersion 
-     * @param aptosEventSequenceNumber 
-     * @param aptosEventType 
-     * @param aptosEventGuid 
-     * @param status 
-     * @param mutationContext The context that provides functionality including creating mutable state
-     * @return The new state of the Article
-     */
-    public ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
-        ArticleState.MutableArticleState s = mutationContext.createMutableState(articleState);
-        // TODO: implement
-        return s; // Return the updated state
+    @Override
+    public ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+        return null;
     }
+
 }

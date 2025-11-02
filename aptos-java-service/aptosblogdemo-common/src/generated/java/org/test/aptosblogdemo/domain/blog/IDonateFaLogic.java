@@ -14,5 +14,5 @@ public interface IDonateFaLogic {
 
     BlogEvent.FaDonationReceived verify(java.util.function.Supplier<BlogEvent.FaDonationReceived> eventFactory, BlogState blogState, VerificationContext verificationContext);
 
-    BlogState mutate(BlogState blogState, BigInteger faAmount, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
+    BlogState mutate(BlogState blogState, BigInteger faAmount, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
 }

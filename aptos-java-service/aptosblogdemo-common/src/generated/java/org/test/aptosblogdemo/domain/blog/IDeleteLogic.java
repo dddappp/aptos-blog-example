@@ -14,5 +14,5 @@ public interface IDeleteLogic {
 
     BlogEvent.BlogDeleted verify(java.util.function.Supplier<BlogEvent.BlogDeleted> eventFactory, BlogState blogState, VerificationContext verificationContext);
 
-    BlogState mutate(BlogState blogState, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
+    BlogState mutate(BlogState blogState, MutationContext<BlogState, BlogState.MutableBlogState> mutationContext);
 }

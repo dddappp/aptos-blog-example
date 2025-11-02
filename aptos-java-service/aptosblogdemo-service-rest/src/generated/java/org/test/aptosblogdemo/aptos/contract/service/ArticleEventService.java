@@ -102,8 +102,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<AddTagEvent> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveAddTagEvent(eventEnvelope);
                 }
             } else {
@@ -114,7 +114,7 @@ public class ArticleEventService {
 
     private BigInteger getAddTagEventNextCursor() {
         AbstractArticleEvent.AddTagEvent lastEvent = articleEventRepository.findFirstAddTagEventByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveAddTagEvent(Event<AddTagEvent> eventEnvelope) {
@@ -152,8 +152,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<ArticleCreated> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveArticleCreated(eventEnvelope);
                 }
             } else {
@@ -164,7 +164,7 @@ public class ArticleEventService {
 
     private BigInteger getArticleCreatedEventNextCursor() {
         AbstractArticleEvent.ArticleCreated lastEvent = articleEventRepository.findFirstArticleCreatedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveArticleCreated(Event<ArticleCreated> eventEnvelope) {
@@ -202,8 +202,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<ArticleUpdated> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveArticleUpdated(eventEnvelope);
                 }
             } else {
@@ -214,7 +214,7 @@ public class ArticleEventService {
 
     private BigInteger getArticleUpdatedEventNextCursor() {
         AbstractArticleEvent.ArticleUpdated lastEvent = articleEventRepository.findFirstArticleUpdatedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveArticleUpdated(Event<ArticleUpdated> eventEnvelope) {
@@ -252,8 +252,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<ArticleDeleted> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveArticleDeleted(eventEnvelope);
                 }
             } else {
@@ -264,7 +264,7 @@ public class ArticleEventService {
 
     private BigInteger getArticleDeletedEventNextCursor() {
         AbstractArticleEvent.ArticleDeleted lastEvent = articleEventRepository.findFirstArticleDeletedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveArticleDeleted(Event<ArticleDeleted> eventEnvelope) {
@@ -302,8 +302,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<CommentAdded> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveCommentAdded(eventEnvelope);
                 }
             } else {
@@ -314,7 +314,7 @@ public class ArticleEventService {
 
     private BigInteger getCommentAddedEventNextCursor() {
         AbstractArticleEvent.CommentAdded lastEvent = articleEventRepository.findFirstCommentAddedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveCommentAdded(Event<CommentAdded> eventEnvelope) {
@@ -352,8 +352,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<CommentUpdated> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveCommentUpdated(eventEnvelope);
                 }
             } else {
@@ -364,7 +364,7 @@ public class ArticleEventService {
 
     private BigInteger getCommentUpdatedEventNextCursor() {
         AbstractArticleEvent.CommentUpdated lastEvent = articleEventRepository.findFirstCommentUpdatedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveCommentUpdated(Event<CommentUpdated> eventEnvelope) {
@@ -402,8 +402,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<CommentRemoved> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveCommentRemoved(eventEnvelope);
                 }
             } else {
@@ -414,7 +414,7 @@ public class ArticleEventService {
 
     private BigInteger getCommentRemovedEventNextCursor() {
         AbstractArticleEvent.CommentRemoved lastEvent = articleEventRepository.findFirstCommentRemovedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveCommentRemoved(Event<CommentRemoved> eventEnvelope) {
@@ -452,8 +452,8 @@ public class ArticleEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<CommentTableItemAdded> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveCommentTableItemAdded(eventEnvelope);
                 }
             } else {
@@ -464,7 +464,7 @@ public class ArticleEventService {
 
     private BigInteger getCommentTableItemAddedEventNextCursor() {
         org.test.aptosblogdemo.aptos.contract.persistence.CommentTableItemAdded lastEvent = commentTableItemAddedRepository.findFirstByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveCommentTableItemAdded(Event<CommentTableItemAdded> eventEnvelope) {

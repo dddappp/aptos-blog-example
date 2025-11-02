@@ -15,12 +15,12 @@ module aptos_blog_demo::resource_account {
         cap: account::SignerCapability,
     }
 
-    public(friend) fun initialize(genisis_account: &signer) {
+    public(friend) fun initialize(genesis_account: &signer) {
         let seed = vector::empty<u8>();
         vector::append(&mut seed, b"AptosBlogDemo");
         let (_resource_account_signer, resource_account_signer_cap) = account::create_resource_account(
-            genisis_account, seed);
-        move_to(genisis_account, ResourceAccount {
+            genesis_account, seed);
+        move_to(genesis_account, ResourceAccount {
             cap: resource_account_signer_cap,
         });
     }

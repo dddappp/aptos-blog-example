@@ -15,5 +15,5 @@ public interface IRemoveCommentLogic {
 
     ArticleEvent.CommentRemoved verify(java.util.function.Supplier<ArticleEvent.CommentRemoved> eventFactory, ArticleState articleState, BigInteger commentSeqId, VerificationContext verificationContext);
 
-    ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
+    ArticleState mutate(ArticleState articleState, BigInteger commentSeqId, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
 }

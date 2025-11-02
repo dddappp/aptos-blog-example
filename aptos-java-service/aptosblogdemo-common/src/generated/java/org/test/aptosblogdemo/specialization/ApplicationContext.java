@@ -1,15 +1,53 @@
 package org.test.aptosblogdemo.specialization;
 
-
 /**
  * Created by Yang on 2016/7/20.
  */
 public class ApplicationContext {
 
+    protected static final TypeConverter DEFAULT_TYPE_CONVERTER = new DefaultTypeConverter();
+
+    protected static final TimestampService DEFAULT_TIMESTAMP_SERVICE = new TimestampService() {
+        @Override
+        public Object now(Class type) {
+            if (type.equals(java.sql.Timestamp.class)) {
+                return new java.sql.Timestamp(new java.util.Date().getTime());
+            } else if (type.equals(java.time.OffsetDateTime.class)) {
+                return java.time.OffsetDateTime.now();
+            } else if (type.equals(java.time.ZonedDateTime.class)) {
+                return java.time.ZonedDateTime.now();
+            } else if (type.equals(java.util.Date.class)) {
+                return new java.util.Date();
+            } else if (type.equals(Long.class)) {
+                return System.currentTimeMillis();
+            } else {
+                throw new IllegalArgumentException("Unknown type: " + type);
+            }
+        }
+    };
+
     public static volatile ApplicationContext current;
+
+    private final ThreadLocal<String> requesterIdHolder = new ThreadLocal<>();
 
     public static void setCurrent(ApplicationContext context) {
         current = context;
+    }
+
+    public String getRequesterId() {
+        return requesterIdHolder.get();
+    }
+
+    public void setRequesterId(String requesterId) {
+        if (requesterId == null) {
+            requesterIdHolder.remove();
+        } else {
+            requesterIdHolder.set(requesterId);
+        }
+    }
+
+    public void clearRequesterId() {
+        requesterIdHolder.remove();
     }
 
     public Object get(String name) {
@@ -31,8 +69,6 @@ public class ApplicationContext {
     public ClobConverter getClobConverter() {
         throw new UnsupportedOperationException();//return (ClobConverter) get("clobConverter");
     }
-
-    protected static final TypeConverter DEFAULT_TYPE_CONVERTER = new DefaultTypeConverter();
 
     public static class DefaultTypeConverter implements TypeConverter {
 
@@ -64,20 +100,5 @@ public class ApplicationContext {
         }
 
     }
-
-    protected static final TimestampService DEFAULT_TIMESTAMP_SERVICE = new TimestampService() {
-        @Override
-        public Object now(Class type) {
-            if (type.equals(java.sql.Timestamp.class)) {
-                return new java.sql.Timestamp(new java.util.Date().getTime());
-            } else if (type.equals(java.util.Date.class)) {
-                return new java.util.Date();
-            } else if (type.equals(Long.class)) {
-                return System.currentTimeMillis();
-            } else {
-                throw new IllegalArgumentException("Unknown type: " + type);
-            }
-        }
-    };
 
 }

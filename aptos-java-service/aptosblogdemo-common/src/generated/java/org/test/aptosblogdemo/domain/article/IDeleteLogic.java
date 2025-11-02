@@ -14,5 +14,5 @@ public interface IDeleteLogic {
 
     ArticleEvent.ArticleDeleted verify(java.util.function.Supplier<ArticleEvent.ArticleDeleted> eventFactory, ArticleState articleState, VerificationContext verificationContext);
 
-    ArticleState mutate(ArticleState articleState, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
+    ArticleState mutate(ArticleState articleState, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
 }

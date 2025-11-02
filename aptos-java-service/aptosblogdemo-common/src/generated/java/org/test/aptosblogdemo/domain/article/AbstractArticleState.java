@@ -159,13 +159,13 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.protectedComments = protectedComments;
     }
 
-    private EntityStateCollection<BigInteger, CommentState> comments;
+    private EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState> comments;
 
-    public EntityStateCollection<BigInteger, CommentState> getComments() {
+    public EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState> getComments() {
         return this.comments;
     }
 
-    public void setComments(EntityStateCollection<BigInteger, CommentState> comments) {
+    public void setComments(EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState> comments) {
         this.comments = comments;
     }
 
@@ -269,7 +269,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             }
             if (iterable != null) {
                 for (CommentState ss : iterable) {
-                    CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
+                    CommentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
                     ((AbstractCommentState) thisInnerState).merge(ss);
                 }
             }
@@ -278,8 +278,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
             if (s.getComments() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
                 if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getComments()).getRemovedStates() != null) {
                     for (CommentState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<BigInteger, CommentState>)s.getComments()).getRemovedStates()) {
-                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(thisInnerState);
+                        CommentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(ss.getCommentSeqId());
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getComments()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -287,8 +287,8 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
                     Set<BigInteger> removedStateIds = new HashSet<>(this.getComments().stream().map(i -> i.getCommentSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getComments().forEach(i -> removedStateIds.remove(i.getCommentSeqId()));
                     for (BigInteger i : removedStateIds) {
-                        CommentState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(i);
-                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getComments()).removeState(thisInnerState);
+                        CommentState thisInnerState = ((EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState>)this.getComments()).getOrAddDefault(i);
+                        ((EntityStateCollection.MutableEntityStateCollection)this.getComments()).removeState(thisInnerState);
                     }
                 } else {
                     throw new UnsupportedOperationException();
@@ -302,16 +302,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
         String tag = e.getTag();
         String Tag = tag;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -322,12 +312,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(IAddTagLogic.class).mutate(
-                this, tag, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, tag, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractArticleEvent.ArticleCreated e) {
@@ -339,16 +334,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String Body = body;
         String owner = e.getOwner();
         String Owner = owner;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -359,12 +344,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(ICreateLogic.class).mutate(
-                this, title, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, title, body, owner, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractArticleEvent.ArticleUpdated e) {
@@ -378,16 +368,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String Owner = owner;
         String[] tags = e.getTags();
         String[] Tags = tags;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -398,27 +378,22 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateLogic.class).mutate(
-                this, title, body, owner, tags, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, title, body, owner, tags, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractArticleEvent.ArticleDeleted e) {
         throwOnWrongEvent(e);
 
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -429,12 +404,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(IDeleteLogic.class).mutate(
-                this, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractArticleEvent.CommentAdded e) {
@@ -448,16 +428,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String Body = body;
         String owner = e.getOwner();
         String Owner = owner;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -468,12 +438,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(IAddCommentLogic.class).mutate(
-                this, commentSeqId, commenter, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, commentSeqId, commenter, body, owner, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractArticleEvent.CommentUpdated e) {
@@ -487,16 +462,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String Body = body;
         String owner = e.getOwner();
         String Owner = owner;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -507,12 +472,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(IUpdateCommentLogic.class).mutate(
-                this, commentSeqId, commenter, body, owner, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, commentSeqId, commenter, body, owner, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void when(AbstractArticleEvent.CommentRemoved e) {
@@ -520,16 +490,6 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
         BigInteger commentSeqId = e.getCommentSeqId();
         BigInteger CommentSeqId = commentSeqId;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -540,12 +500,17 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         ArticleState updatedArticleState = ApplicationContext.current.get(IRemoveCommentLogic.class).mutate(
-                this, commentSeqId, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, commentSeqId, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedArticleState) { merge(updatedArticleState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void save() {
@@ -585,7 +550,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
     }
 
 
-    class SimpleCommentStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>, Collection<CommentState> {
+    class SimpleCommentStateCollection implements EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState>, Collection<CommentState> {
 
         @Override
         public CommentState get(BigInteger commentSeqId) {
@@ -616,8 +581,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
                 ArticleCommentId globalId = new ArticleCommentId(getId(), commentSeqId);
                 AbstractCommentState state = new AbstractCommentState.SimpleCommentState();
                 state.setArticleCommentId(globalId);
+                state.setCreatedBy(ApplicationContext.current.getRequesterId());
+                state.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
                 add(state);
                 s = state;
+            } else {
+                AbstractCommentState state = (AbstractCommentState) s;
+                state.setUpdatedBy(ApplicationContext.current.getRequesterId());
+                state.setUpdatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
             }
             return s;
         }
@@ -682,7 +653,7 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            return protectedComments.contains(c);
+            return protectedComments.containsAll(c);
         }
 
         @Override

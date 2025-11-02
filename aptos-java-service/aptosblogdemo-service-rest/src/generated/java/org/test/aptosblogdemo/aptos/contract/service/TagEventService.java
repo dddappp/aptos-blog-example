@@ -78,8 +78,8 @@ public class TagEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<TagCreated> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     saveTagCreated(eventEnvelope);
                 }
             } else {
@@ -90,7 +90,7 @@ public class TagEventService {
 
     private BigInteger getTagCreatedEventNextCursor() {
         AbstractTagEvent.TagCreated lastEvent = tagEventRepository.findFirstTagCreatedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveTagCreated(Event<TagCreated> eventEnvelope) {

@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.math.*;
 import java.util.*;
 import java.util.function.*;
-import java.util.stream.Collectors;
 
 
 public class AptosArticleStateRetriever {
@@ -83,7 +82,7 @@ public class AptosArticleStateRetriever {
             String commentTableHandle = article.getComments().getInner().getHandle();
             List<Comment> comments = getComments(commentTableHandle, commentCommentSeqIdsGetter.getCommentCommentSeqIds(articleState.getId()));
             for (Comment i : comments) {
-                ((EntityStateCollection.ModifiableEntityStateCollection)articleState.getComments()).add(toCommentState(articleState, i));
+                ((EntityStateCollection.MutableEntityStateCollection)articleState.getComments()).add(toCommentState(articleState, i));
             }
         }
 

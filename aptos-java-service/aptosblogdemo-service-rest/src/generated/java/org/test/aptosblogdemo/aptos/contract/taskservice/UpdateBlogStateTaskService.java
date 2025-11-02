@@ -28,7 +28,7 @@ public class UpdateBlogStateTaskService {
     @Autowired
     private BlogEventService blogEventService;
 
-    @Scheduled(fixedDelayString = "${aptos.contract.update-blog-states.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.update-blog-states.fixed-delay:10000}")
     @Transactional
     public void updateBlogStates() {
         java.util.List<AbstractBlogEvent> es = blogEventRepository.findByStatusIsNull();

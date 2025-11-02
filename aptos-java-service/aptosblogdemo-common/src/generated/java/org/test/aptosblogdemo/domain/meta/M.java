@@ -134,6 +134,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "id";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -326,6 +328,8 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
+    public static final String ID_PROPERTY_NAME = "tagId";
+
     public static final Class ID_CLASS = String.class;
 
     public static final String[] propertyNames = new String[] {
@@ -410,6 +414,8 @@ public class M {
     public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
     public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String ID_PROPERTY_NAME = "accountAddress";
 
     public static final Class ID_CLASS = String.class;
 

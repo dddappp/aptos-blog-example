@@ -20,7 +20,7 @@ public class PullTagEventsTaskService {
     @Autowired
     private TagEventService tagEventService;
 
-    @Scheduled(fixedDelayString = "${aptos.contract.pull-tag-events.tag-created.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.pull-tag-events.tag-created.fixed-delay:10000}")
     public void pullTagCreatedEvents() {
         tagEventService.pullTagCreatedEvents(pullTagCreatedEventsLimit);
     }

@@ -100,8 +100,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<BlogCreated> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveBlogCreated(eventEnvelope);
                 }
@@ -113,7 +113,7 @@ public class BlogEventService {
 
     private BigInteger getBlogCreatedEventNextCursor() {
         AbstractBlogEvent.BlogCreated lastEvent = blogEventRepository.findFirstBlogCreatedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveBlogCreated(Event<BlogCreated> eventEnvelope) {
@@ -151,8 +151,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<ArticleAddedToBlog> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveArticleAddedToBlog(eventEnvelope);
                 }
@@ -164,7 +164,7 @@ public class BlogEventService {
 
     private BigInteger getArticleAddedToBlogEventNextCursor() {
         AbstractBlogEvent.ArticleAddedToBlog lastEvent = blogEventRepository.findFirstArticleAddedToBlogByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveArticleAddedToBlog(Event<ArticleAddedToBlog> eventEnvelope) {
@@ -202,8 +202,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<ArticleRemovedFromBlog> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveArticleRemovedFromBlog(eventEnvelope);
                 }
@@ -215,7 +215,7 @@ public class BlogEventService {
 
     private BigInteger getArticleRemovedFromBlogEventNextCursor() {
         AbstractBlogEvent.ArticleRemovedFromBlog lastEvent = blogEventRepository.findFirstArticleRemovedFromBlogByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveArticleRemovedFromBlog(Event<ArticleRemovedFromBlog> eventEnvelope) {
@@ -253,8 +253,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<DonationReceived> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveDonationReceived(eventEnvelope);
                 }
@@ -266,7 +266,7 @@ public class BlogEventService {
 
     private BigInteger getDonationReceivedEventNextCursor() {
         AbstractBlogEvent.DonationReceived lastEvent = blogEventRepository.findFirstDonationReceivedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveDonationReceived(Event<DonationReceived> eventEnvelope) {
@@ -304,8 +304,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<VaultWithdrawn> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveVaultWithdrawn(eventEnvelope);
                 }
@@ -317,7 +317,7 @@ public class BlogEventService {
 
     private BigInteger getVaultWithdrawnEventNextCursor() {
         AbstractBlogEvent.VaultWithdrawn lastEvent = blogEventRepository.findFirstVaultWithdrawnByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveVaultWithdrawn(Event<VaultWithdrawn> eventEnvelope) {
@@ -355,8 +355,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<InitFaVaultEvent> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveInitFaVaultEvent(eventEnvelope);
                 }
@@ -368,7 +368,7 @@ public class BlogEventService {
 
     private BigInteger getInitFaVaultEventNextCursor() {
         AbstractBlogEvent.InitFaVaultEvent lastEvent = blogEventRepository.findFirstInitFaVaultEventByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveInitFaVaultEvent(Event<InitFaVaultEvent> eventEnvelope) {
@@ -406,8 +406,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<FaDonationReceived> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveFaDonationReceived(eventEnvelope);
                 }
@@ -419,7 +419,7 @@ public class BlogEventService {
 
     private BigInteger getFaDonationReceivedEventNextCursor() {
         AbstractBlogEvent.FaDonationReceived lastEvent = blogEventRepository.findFirstFaDonationReceivedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveFaDonationReceived(Event<FaDonationReceived> eventEnvelope) {
@@ -457,8 +457,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<FaVaultWithdrawn> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveFaVaultWithdrawn(eventEnvelope);
                 }
@@ -470,7 +470,7 @@ public class BlogEventService {
 
     private BigInteger getFaVaultWithdrawnEventNextCursor() {
         AbstractBlogEvent.FaVaultWithdrawn lastEvent = blogEventRepository.findFirstFaVaultWithdrawnByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveFaVaultWithdrawn(Event<FaVaultWithdrawn> eventEnvelope) {
@@ -508,8 +508,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<BlogUpdated> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveBlogUpdated(eventEnvelope);
                 }
@@ -521,7 +521,7 @@ public class BlogEventService {
 
     private BigInteger getBlogUpdatedEventNextCursor() {
         AbstractBlogEvent.BlogUpdated lastEvent = blogEventRepository.findFirstBlogUpdatedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveBlogUpdated(Event<BlogUpdated> eventEnvelope) {
@@ -559,8 +559,8 @@ public class BlogEventService {
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor.add(BigInteger.ONE);
                 for (Event<BlogDeleted> eventEnvelope : eventPage) {
+                    cursor = new BigInteger(eventEnvelope.getSequenceNumber()).add(BigInteger.ONE);
                     eventEnvelope.getData().setAccountAddress(resourceAccountAddress);
                     saveBlogDeleted(eventEnvelope);
                 }
@@ -572,7 +572,7 @@ public class BlogEventService {
 
     private BigInteger getBlogDeletedEventNextCursor() {
         AbstractBlogEvent.BlogDeleted lastEvent = blogEventRepository.findFirstBlogDeletedByOrderByAptosEventSequenceNumber();
-        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber().add(BigInteger.ONE) : null;
     }
 
     private void saveBlogDeleted(Event<BlogDeleted> eventEnvelope) {

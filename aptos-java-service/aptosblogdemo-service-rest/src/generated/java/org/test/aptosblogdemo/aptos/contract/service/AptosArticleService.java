@@ -54,7 +54,7 @@ public class AptosArticleService {
                     return s;
                 },
                 (articleState, commentSeqId) -> (CommentState.MutableCommentState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, CommentState>) articleState.getComments()).getOrAddDefault(commentSeqId),
+                        ((EntityStateCollection.MutableEntityStateCollection<BigInteger, CommentState>) articleState.getComments()).getOrAddDefault(commentSeqId),
                 articleId -> {
                     articleEventService.pullCommentTableItemAddedEvents(null);
                     return commentTableItemAddedRepository.findByArticleCommentId_ArticleId(articleId).stream()

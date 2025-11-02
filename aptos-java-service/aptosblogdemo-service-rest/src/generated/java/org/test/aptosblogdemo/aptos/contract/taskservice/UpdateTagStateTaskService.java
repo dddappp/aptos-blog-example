@@ -28,7 +28,7 @@ public class UpdateTagStateTaskService {
     @Autowired
     private TagEventService tagEventService;
 
-    @Scheduled(fixedDelayString = "${aptos.contract.update-tag-states.fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${aptos.contract.update-tag-states.fixed-delay:10000}")
     @Transactional
     public void updateTagStates() {
         java.util.List<AbstractTagEvent> es = tagEventRepository.findByStatusIsNull();

@@ -200,16 +200,6 @@ public abstract class AbstractTagState implements TagState.SqlTagState {
 
         String name = e.getName();
         String Name = name;
-        BigInteger aptosEventVersion = e.getAptosEventVersion();
-        BigInteger AptosEventVersion = aptosEventVersion;
-        BigInteger aptosEventSequenceNumber = e.getAptosEventSequenceNumber();
-        BigInteger AptosEventSequenceNumber = aptosEventSequenceNumber;
-        String aptosEventType = e.getAptosEventType();
-        String AptosEventType = aptosEventType;
-        AptosEventGuid aptosEventGuid = e.getAptosEventGuid();
-        AptosEventGuid AptosEventGuid = aptosEventGuid;
-        String status = e.getStatus();
-        String Status = status;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -220,12 +210,17 @@ public abstract class AbstractTagState implements TagState.SqlTagState {
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
+        ApplicationContext.current.setRequesterId(e.getCreatedBy());
+        try {
         TagState updatedTagState = ApplicationContext.current.get(ICreateLogic.class).mutate(
-                this, name, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}}));
+                this, name, MutationContext.of(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException("Current MutationContext implementation only supports returning the same state instance");}}));
 
 
         if (this != updatedTagState) { merge(updatedTagState); } //else do nothing
 
+        } finally {
+            ApplicationContext.current.clearRequesterId();
+        }
     }
 
     public void save() {

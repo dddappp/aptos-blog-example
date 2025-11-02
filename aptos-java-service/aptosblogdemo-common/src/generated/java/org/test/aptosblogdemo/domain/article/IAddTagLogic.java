@@ -14,5 +14,5 @@ public interface IAddTagLogic {
 
     ArticleEvent.AddTagEvent verify(java.util.function.Supplier<ArticleEvent.AddTagEvent> eventFactory, ArticleState articleState, String tag, VerificationContext verificationContext);
 
-    ArticleState mutate(ArticleState articleState, String tag, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
+    ArticleState mutate(ArticleState articleState, String tag, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext);
 }
