@@ -1,0 +1,122 @@
+typeDefinitions:
+
+  AptosObjectID:
+    sqlType: VARCHAR(66)
+    cSharpType: string
+    javaType: String
+  Object:
+    # Aptos Object
+    sqlType: VARCHAR(66)
+    cSharpType: string
+    javaType: String
+  address:
+    sqlType: VARCHAR(66)
+    cSharpType: string
+    javaType: String
+
+  u64:
+    sqlType: DECIMAL(20,0)
+  u128:
+    sqlType: DECIMAL(39,0)
+  u256:
+    sqlType: DECIMAL(50,0)
+
+  U64:
+    sqlType: DECIMAL(20,0)
+  U128:
+    sqlType: DECIMAL(39,0)
+  U256:
+    sqlType: DECIMAL(50,0)
+
+  Coin:
+    moveType: "aptos_framework::coin::Coin"
+    isResource: true
+    defaultLogic:
+      Move:
+        'aptos_framework::coin::zero()'
+    destroyLogic:
+      Move:
+        'aptos_framework::coin::destroy_zero({0})'
+    #javaType: "java.math.BigInteger"
+    dataStruct:
+      properties:
+        Value:
+          type: u64
+
+  APT:
+    moveType: "aptos_framework::aptos_coin::AptosCoin"
+
+  FAMetadata:
+    moveType: "aptos_framework::fungible_asset::Metadata"
+    # has key, copy, drop
+    keyable: true
+    #nonDroppable: false
+    #nonCopyable: false
+    dataStruct:
+      properties:
+        Name:
+          type: String
+        Symbol:
+          type: String
+        Decimals:
+          type: u8
+        IconUri:
+          type: String
+        ProjectUri:
+          type: String
+
+  FungibleAsset:
+    moveType: "aptos_framework::fungible_asset::FungibleAsset"
+    nonDroppable: true
+    nonCopyable: true
+    #    dataStruct:
+    #      properties:
+    #        Metadata:
+    #          type: address #Object<Metadata>,
+    #        Amount:
+    #          type: u64
+
+  FungibleStore:
+    moveType: "aptos_framework::fungible_asset::FungibleStore"
+    keyable: true
+    nonDroppable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Metadata:
+          type: Object<FAMetadata> #Object<Metadata>,
+        Balance:
+          type: u64
+        Frozen:
+          type: bool
+          # If true, owner transfer is disabled that only `TransferRef` can move in/out from this store.
+
+  ObjectExtendRef:
+    moveType: "aptos_framework::object::ExtendRef"
+    # has drop, store
+    storable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Self:
+          type: address
+
+  ObjectDeleteRef:
+    moveType: "aptos_framework::object::DeleteRef"
+    # has drop, store
+    storable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Self:
+          type: address
+
+  ObjectTransferRef:
+    moveType: "aptos_framework::object::TransferRef"
+    # has drop, store
+    storable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Self:
+          type: address

@@ -1,0 +1,51 @@
+#%DDDML 0.1
+---
+
+configuration:
+  sequenceNumber: 1
+
+  boundedContextName: "Test.AptosBlogDemo"
+
+  defaultModule:
+    name: "Test.AptosBlogDemo"
+
+  isSurrogateIdMandatory: false
+
+  #  defaultSurrogateId:
+  #    name: Id
+  #    type: UID
+
+  mandatoryAggregateImplements: [ "VersionedAptosMoveObject" ]
+  mandatoryAggregateEventImplements: [ "AptosEvent" ] #, "HasStatus" ]
+  ignoreEntityImmutable: true
+
+  metadata:
+    EventTypeDiscriminatorName: "EventClass"
+    IsJavaOffChainIndexer: true
+
+  aptos:
+    boundedContextPackage: "AptosBlogDemo"
+    boundedContextNamedAddress: "aptos_blog_demo"
+    moveObjectVersionPropertyName: "Version"
+    moveObjectVersionPropertyType: "u64"
+    offChainObjectNames: [ "AptosEventGuid" ]
+
+  java:
+    boundedContextPackage: "org.test.aptosblogdemo"
+    specializationPackage: "org.test.aptosblogdemo.specialization"
+
+    typeMappings:
+      "vector<u8>": "String" # Mapped to Hex String, not byte[]
+      #"Object": "String"
+
+    aggregateIdWhenSingletonObjectAsAggregate:
+      name: AccountAddress
+      type: address
+
+  move:
+    typeMappings:
+      "AptosObjectID": "address"
+      "Object": "Object"
+
+    typeModules:
+      "Object": "aptos_framework::object"

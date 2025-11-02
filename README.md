@@ -102,7 +102,7 @@ docker pull wubuku/dddappp-aptos:master
 In repository root directory, run:
 
 ```shell
-docker run \
+docker run --rm \
 -v .:/myapp \
 wubuku/dddappp-aptos:master \
 --dddmlDirectoryPath /myapp/dddml \
@@ -113,7 +113,8 @@ wubuku/dddappp-aptos:master \
 --boundedContextJavaPackageName org.test.aptosblogdemo \
 --javaProjectsDirectoryPath /myapp/aptos-java-service \
 --javaProjectNamePrefix aptosblogdemo \
---pomGroupId test.aptosblogdemo
+--pomGroupId test.aptosblogdemo \
+--exposeBaseDddmlFiles
 ```
 
 The command parameters above are straightforward:
